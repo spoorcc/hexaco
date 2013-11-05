@@ -62,6 +62,7 @@ class HexagonalPosition(object):
     TOPLEFT, TOP, TOPRIGHT, BOTTOMRIGHT, BOTTOM, BOTTOMLEFT = range(6)
 
     def __init__(self, parent):
+        """ Default initialization function """
         self.parent = parent
         self.x = 0 # pylint: disable=C0103
         self.y = 0 # pylint: disable=C0103
@@ -161,29 +162,29 @@ class HexagonalPosition(object):
         index_of_abs_highest = 0
 
         for i in range(3):
-			
-			#Check if current value is the lowest
+
+            #Check if current value is the lowest
             if temp_pos[i] < temp_pos[index_of_lowest]:
                 index_of_lowest = i
-                
-            #Check if current value is the highest    
+
+            #Check if current value is the highest
             if temp_pos[i] > temp_pos[index_of_highest]:
                 index_of_highest = i
-                
+
             #Check if current value is equal
-            # There can only be two equal values 
+            # There can only be two equal values
             # Because the sum has to be 0
             # Equal values are always adjacent when seen as continous
             # ring memory so check if next neighbour
             # is equal and store the first index
             if temp_pos[i] == temp_pos[(i+1)%3] :
                 index_of_equal = i
-                
-            # Check if current value is absolute equal    
+
+            # Check if current value is absolute equal
             if abs(temp_pos[i]) == abs(temp_pos[(i+1)%3]):
                 index_of_abs_equal = i
-                
-            # Check the highest value    
+
+            # Check the highest value
             if abs(temp_pos[i]) == self.ring:
                 index_of_abs_highest = i
 
@@ -518,7 +519,49 @@ class TestHexPos(unittest.TestCase): # pylint: disable=R0904
 
         self.pos.set_position_xyz(0, 0, 0)
         self.assertEqual( self.pos.side, 0)
-        
+
+    def test_side_from_xyz_x1y1zm2(self):
+        """ Tests only the side calculation function for known pos"""
+
+        self.pos.set_position_xyz(1, 1, -2)
+        self.assertEqual( self.pos.side, 1)
+
+    def test_side_from_xyz_x3ym2zm1(self):
+        """ Tests only the side clculation function for known pos"""
+
+        self.pos.set_position_xyz(3, -2, -1)
+        self.assertEqual( self.pos.side, 0)
+
+    def test_side_from_xyz_xm3y2z1(self):
+        """ Tests only the side clculation function for known pos"""
+
+        self.pos.set_position_xyz(-3, 2, 1)
+        self.assertEqual( self.pos.side, 3)
+
+    def test_side_from_xyz_x1y2zm3(self):
+        """ Tests only the side clculation function for known pos"""
+
+        self.pos.set_position_xyz(1, 2, -3)
+        self.assertEqual( self.pos.side, 1)
+
+    def test_side_from_xyz_xm1ym2z3(self):
+        """ Tests only the side clculation function for known pos"""
+
+        self.pos.set_position_xyz(-1, -2, 3)
+        self.assertEqual( self.pos.side, 4)
+
+    def test_side_from_xyz_x1ym3z2(self):
+        """ Tests only the side clculation function for known pos"""
+
+        self.pos.set_position_xyz(1, -3, 2)
+        self.assertEqual( self.pos.side, 5)
+
+    def test_side_from_xyz_xm1y3zm2(self):
+        """ Tests only the side clculation function for known pos"""
+
+        self.pos.set_position_xyz(-1, 3, -2)
+        self.assertEqual( self.pos.side, 2)
+
     ####################################################################
 
     def test_calc_rst_r0s0t0(self):

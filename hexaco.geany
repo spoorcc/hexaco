@@ -15,6 +15,8 @@ indent_mode=2
 [project]
 name=hexaco
 base_path=/home/ben/Public/hexaco/
+description=
+file_patterns=
 
 [long line marker]
 long_line_behaviour=1
@@ -22,8 +24,16 @@ long_line_column=72
 
 [files]
 current_page=1
-FILE_NAME_0=1341;Java;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FDropbox%2FStudie%2FAvans%2F2011-2012%2FZLS%20project%2FHEX_ACO%2Fsrc%2FMap%2FCoordinate.java;0;4
-FILE_NAME_1=74;None;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2F.gitignore;0;4
+FILE_NAME_0=75;None;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2F.gitignore;0;4
+FILE_NAME_1=527;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FHexagonalPosition.py;0;4
+FILE_NAME_2=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FGameObject.py;0;4
+FILE_NAME_3=992;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FMovingGameObject.py;0;4
+FILE_NAME_4=948;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2F__init__.py;0;4
 
 [VTE]
 last_dir=/home/ben/Public/hexaco
+
+[build-menu]
+EX_01_LB=Coverage
+EX_01_CM=coverage run --branch "%f"; coverage report -m
+EX_01_WD=
