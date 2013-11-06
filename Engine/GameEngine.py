@@ -17,7 +17,7 @@
 
 ########################################################################
 
- Game Object Class
+ Game Engine Class
  including Unit test class
 
  * Run file separate to run unit tests
@@ -26,7 +26,7 @@
 
 Description
 -----------
-Base class for a game object """
+Base class for a game Engine """
 
 import unittest
 from GameObject import GameObject
@@ -37,6 +37,13 @@ class GameEngine(object):
 
     def __init__(self, parent):
         self.parent = parent
+        self.objects = []
+        self.tiles = []
+
+    def add_game_object(self, game_object):
+
+        if type(game_object) is GameObject:
+            self.objects.append( game_object )
 
 ###################################################################
 #
@@ -69,12 +76,20 @@ class TestGameEngine(unittest.TestCase):
 
     #######################################################
 
-    def test_default(self):
+    def test_add_game_object_valid(self):
         """ Simple test"""
 
-        self.assertEqual( self.gameEng.parent, None )
+        obj = GameObject(self)
+        self.gameEng.add_game_object(obj)
 
- 
+        self.assertEqual( len(self.gameEng.objects ), 1 )
+
+    def test_add_game_object_invalid(self):
+        """ Simple test"""
+        
+        self.gameEng.add_game_object( "not an object" )
+
+        self.assertEqual( len(self.gameEng.objects ), 0 )
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)
