@@ -29,7 +29,7 @@ Description
 Base class for a game object """
 
 import unittest
-from Engine.HexagonalPosition import HexagonalPosition
+from HexagonalPosition import HexagonalPosition
 
 class GameObject(object):
     """A single Gameobject on a hexagonal field
@@ -42,6 +42,13 @@ class GameObject(object):
         self.pos = HexagonalPosition( self )
         self.visible = True
 
+    def get_shape():
+        """ Returns a vectored graphic to plot as icon to show """
+        pass
+
+    def update():
+        """ Is called after each turn to let the object perform an action """
+        pass
 
 ###################################################################
 #
@@ -90,6 +97,8 @@ class TestGameObject(unittest.TestCase):
         """ An object must be visible by default """
 
         self.assertTrue( self.gameObj.visible )
+        
+        
 
 
 if __name__ == '__main__':
