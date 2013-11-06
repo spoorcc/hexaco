@@ -26,9 +26,10 @@ long_line_column=72
 [files]
 current_page=2
 FILE_NAME_0=0;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5C__init__.py;0;4
-FILE_NAME_1=0;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CGameObject.py;0;4
-FILE_NAME_2=4056;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CHexagonalPosition.py;0;4
-FILE_NAME_3=689;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CMovingGameObject.py;0;4
+FILE_NAME_1=2722;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CGameObject.py;0;4
+FILE_NAME_2=22458;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CHexagonalPosition.py;0;4
+FILE_NAME_3=748;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CMovingGameObject.py;0;4
+FILE_NAME_4=140;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5C.gitignore;0;4
 
 [VTE]
 last_dir=/home/ben/Public/hexaco
@@ -37,3 +38,7 @@ last_dir=/home/ben/Public/hexaco
 EX_01_LB=Coverage
 EX_01_CM=C:\\Python27\\Scripts\\coverage.exe run --branch "%f" & C:\\Python27\\Scripts\\coverage.exe report -m
 EX_01_WD=
+PythonFT_01_LB=Check
+PythonFT_01_CM=C:\\Python27\\Scripts\\pylint.exe --disable="C0303, W1401" --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" -r no "%f"
+PythonFT_01_WD=
+filetypes=Python;
