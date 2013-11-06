@@ -41,6 +41,7 @@ class GameObject(object):
         self.name = "Default"
         self.pos = HexagonalPosition( self )
         self.visible = True
+        self.trampable = True
 
     def get_shape():
         """ Returns a vectored graphic to plot as icon to show """
@@ -98,8 +99,11 @@ class TestGameObject(unittest.TestCase):
 
         self.assertTrue( self.gameObj.visible )
         
-        
+    def test_defaultTrampability(self):
+        """ An object must be trampable by default """
+
+        self.assertTrue( self.gameObj.trampable )                
 
 
 if __name__ == '__main__':
-    unittest.main(verbosity=2)
+    unittest.main(verbosity=1)
