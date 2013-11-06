@@ -8,5 +8,6 @@
 *.so
 .coverage
 *.pyc
+*.bat
 metricData.csv
 metricData.sql
