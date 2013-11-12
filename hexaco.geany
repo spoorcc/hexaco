@@ -24,12 +24,14 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=2
+current_page=5
 FILE_NAME_0=0;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5C__init__.py;0;4
-FILE_NAME_1=2722;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CGameObject.py;0;4
-FILE_NAME_2=22458;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CHexagonalPosition.py;0;4
+FILE_NAME_1=2182;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CGameObjectFactory.py;0;4
+FILE_NAME_2=22614;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CHexagonalPosition.py;0;4
 FILE_NAME_3=748;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CMovingGameObject.py;0;4
-FILE_NAME_4=140;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5C.gitignore;0;4
+FILE_NAME_4=92;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5C.gitignore;0;4
+FILE_NAME_5=2710;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CTile.py;0;4
+FILE_NAME_6=0;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CGameEngine.py;0;4
 
 [VTE]
 last_dir=/home/ben/Public/hexaco
