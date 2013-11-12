@@ -39,13 +39,6 @@ class GameObject(object):
     def __init__(self, parent):
         self.parent = parent
         self.name = "Default"
-        self.pos = HexagonalPosition( self )
-        self.visible = True
-        self.trampable = True
-
-    def get_shape():
-        """ Returns a vectored graphic to plot as icon to show """
-        pass
 
     def update():
         """ Is called after each turn to let the object perform an action """
@@ -85,24 +78,7 @@ class TestGameObject(unittest.TestCase):
     def test_defaultName(self):
         """ The object must have "Default" as default name"""
 
-        self.assertEqual( self.gameObj.name, "Default" )
-
-    def test_defaultPosition(self):
-        """ The object must be initialized at the origin """
-
-        self.assertEqual( self.gameObj.pos.x, 0 )
-        self.assertEqual( self.gameObj.pos.y, 0 )
-        self.assertEqual( self.gameObj.pos.z, 0 )
-
-    def test_defaultVisibility(self):
-        """ An object must be visible by default """
-
-        self.assertTrue( self.gameObj.visible )
-        
-    def test_defaultTrampability(self):
-        """ An object must be trampable by default """
-
-        self.assertTrue( self.gameObj.trampable )                
+        self.assertEqual( self.gameObj.name, "Default" ) 
 
 
 if __name__ == '__main__':

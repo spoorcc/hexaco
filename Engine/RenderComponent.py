@@ -17,7 +17,7 @@
 
 ########################################################################
 
- Move Component Class
+ Render Component Class
  including Unit test class
 
  * Run file separate to run unit tests
@@ -26,19 +26,18 @@
 
 Description
 -----------
-Base class for a move component """
+Base class for a Render componeny """
 
 import unittest
 from Component import Component
-from HexagonalPosition import HexagonalPosition
 
-class MoveComponent( Component ):
+class RenderComponent( Component ):
     """A Move component has a position
     """
 
     def __init__(self, parent):
         self.parent = parent
-        self.pos = HexagonalPosition( self )
+        self.visible = True
 
 ###################################################################
 #
@@ -46,14 +45,14 @@ class MoveComponent( Component ):
 #
 ###################################################################
 
-class TestMoveComponent(unittest.TestCase):
+class TestMovingGameObject(unittest.TestCase):
 
     ######################################################
 
     @classmethod
     def setUpClass(cls):
         "This method is called once, when starting the tests"
-        cls.movComp = MoveComponent(None)
+        cls.rndrComp = RenderComponent(None)
 
     @classmethod
     def tearDownClass(cls):
@@ -72,11 +71,10 @@ class TestMoveComponent(unittest.TestCase):
 
     #######################################################
 
-    def test_defaultPosition(self):
+    def test_defaultVisibility(self):
 
-        self.assertEqual( self.movComp.pos.x, 0 )
-        self.assertEqual( self.movComp.pos.y, 0 )
-        self.assertEqual( self.movComp.pos.z, 0 )
+        self.assertTrue( self.rndrComp.visible )
+
         
 if __name__ == '__main__':
     unittest.main(verbosity=2)
