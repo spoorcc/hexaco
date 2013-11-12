@@ -17,7 +17,7 @@
 
 ########################################################################
 
- Component Class
+ Moving Game Object Class
  including Unit test class
 
  * Run file separate to run unit tests
@@ -26,17 +26,19 @@
 
 Description
 -----------
-Base class for a component """
+Base class for a moving game object """
 
 import unittest
+from Component import Component
+from HexagonalPosition import HexagonalPosition
 
-class Component(object):
-    """A component is a base class for features of gameobjects 
+class MoveComponent( Component ):
+    """A Move component has a position
     """
 
     def __init__(self, parent):
         self.parent = parent
-        self.initialize()
+        self.pos = HexagonalPosition( self )
 
 ###################################################################
 #
@@ -44,14 +46,14 @@ class Component(object):
 #
 ###################################################################
 
-class TestComponent(unittest.TestCase):
+class TestMovingGameObject(unittest.TestCase):
 
     ######################################################
 
     @classmethod
     def setUpClass(cls):
         "This method is called once, when starting the tests"
-        cls.comp = Component(None)
+        cls.movComp = MoveComponent(None)
 
     @classmethod
     def tearDownClass(cls):
@@ -70,9 +72,11 @@ class TestComponent(unittest.TestCase):
 
     #######################################################
 
-    def test_defaultName(self):
+    def test_defaultPosition(self):
 
-        self.assertEqual( type( self.comp), Component )
-
+        self.assertEqual( self.movComp.pos.x, 0 )
+        self.assertEqual( self.movComp.pos.y, 0 )
+        self.assertEqual( self.movComp.pos.z, 0 )
+        
 if __name__ == '__main__':
     unittest.main(verbosity=2)
