@@ -1,3 +1,4 @@
+
 [file_prefs]
 final_new_line=true
 ensure_convert_new_lines=false
@@ -14,7 +15,7 @@ indent_mode=2
 
 [project]
 name=hexaco
-base_path=/home/ben/Public/hexaco/
+base_path=C:\\Users\\spoorb\\Documents\\Python\\hexaco
 description=
 file_patterns=
 
@@ -23,17 +24,32 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
+<<<<<<< HEAD
 current_page=0
 FILE_NAME_0=74;None;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2F.gitignore;0;4
 FILE_NAME_1=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FHexagonalPosition.py;0;4
 FILE_NAME_2=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FGameObject.py;0;4
 FILE_NAME_3=992;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FMovingGameObject.py;0;4
 FILE_NAME_4=948;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2F__init__.py;0;4
+=======
+current_page=5
+FILE_NAME_0=0;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5C__init__.py;0;4
+FILE_NAME_1=2182;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CGameObjectFactory.py;0;4
+FILE_NAME_2=22614;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CHexagonalPosition.py;0;4
+FILE_NAME_3=748;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CMovingGameObject.py;0;4
+FILE_NAME_4=92;None;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5C.gitignore;0;4
+FILE_NAME_5=2710;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CTile.py;0;4
+FILE_NAME_6=0;Python;0;EUTF-8;1;1;0;C%3A%5CUsers%5Cspoorb%5CDocuments%5CPython%5Chexaco%5CEngine%5CGameEngine.py;0;4
+>>>>>>> googlecode/master
 
 [VTE]
 last_dir=/home/ben/Public/hexaco
 
 [build-menu]
 EX_01_LB=Coverage
-EX_01_CM=coverage run --branch "%f"; coverage report -m
+EX_01_CM=C:\\Python27\\Scripts\\coverage.exe run --branch "%f" & C:\\Python27\\Scripts\\coverage.exe report -m
 EX_01_WD=
+PythonFT_01_LB=Check
+PythonFT_01_CM=C:\\Python27\\Scripts\\pylint.exe --disable="C0303, W1401" --msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}" -r no "%f"
+PythonFT_01_WD=
+filetypes=Python;
