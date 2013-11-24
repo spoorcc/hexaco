@@ -23,9 +23,9 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=1
-FILE_NAME_0=75;None;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2F.gitignore;0;4
-FILE_NAME_1=527;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FHexagonalPosition.py;0;4
+current_page=0
+FILE_NAME_0=74;None;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2F.gitignore;0;4
+FILE_NAME_1=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FHexagonalPosition.py;0;4
 FILE_NAME_2=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FGameObject.py;0;4
 FILE_NAME_3=992;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FMovingGameObject.py;0;4
 FILE_NAME_4=948;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2F__init__.py;0;4
