@@ -39,6 +39,7 @@ class GameObject(object):
     def __init__(self, parent):
         self.parent = parent
         self.name = "Default"
+        self.components = {}
 
     def update():
         """ Is called after each turn to let the object perform an action """

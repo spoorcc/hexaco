@@ -30,13 +30,13 @@ Base class for a game Engine """
 
 import unittest
 from GameObject import GameObject
+ 
 
 class GameEngine(object):
     """The engine containing all gameobjects and tiles
     """
 
-    def __init__(self, parent):
-        self.parent = parent
+    def __init__(self):
         self.objects = []
         self.tiles = []
 
@@ -44,6 +44,19 @@ class GameEngine(object):
 
         if type(game_object) is GameObject:
             self.objects.append( game_object )
+            self.objects.append( self.win.create_polygon( 0, 0, 10, 200, 100, 200, outline="#ffff00", width=3) )
+
+    def update(self):
+
+        for i in range( len(self.objects) ):
+
+            pos = self.win.coords(self.objects[i])
+
+            pos[0] += self.moves[i][0]
+            pos[1] += self.moves[i][1]
+   
+            self.win.coords( self.objects[i], pos[0], pos[1])
+        
 
 ###################################################################
 #

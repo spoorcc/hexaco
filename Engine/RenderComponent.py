@@ -26,7 +26,7 @@
 
 Description
 -----------
-Base class for a Render componeny """
+Base class for a Render component """
 
 import unittest
 from Component import Component
@@ -38,6 +38,8 @@ class RenderComponent( Component ):
     def __init__(self, parent):
         self.parent = parent
         self.visible = True
+        self.color = "#ffff00"
+        self.polygon = [ 0, 0, 15, 40, 40, 15 ]
 
 ###################################################################
 #

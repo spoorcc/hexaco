@@ -39,6 +39,7 @@ class MoveComponent( Component ):
     def __init__(self, parent):
         self.parent = parent
         self.pos = HexagonalPosition( self )
+        self.XYspeed = [0.01, 0.01]
 
 ###################################################################
 #

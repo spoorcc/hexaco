@@ -30,6 +30,8 @@ Class for constructing Game Objects """
 
 import unittest
 from GameObject import GameObject
+from RenderComponent import RenderComponent
+from MoveComponent import MoveComponent
 
 class GameObjectFactory(object):
     """The ObjectFactory which construcs game objects
@@ -41,6 +43,16 @@ class GameObjectFactory(object):
     def create_object(self):
 
         return GameObject(None)
+
+    def create_tile(self):
+
+        obj = GameObject(None)
+        obj.components['render'] = RenderComponent(obj)
+        obj.components['render'].color = "#00ff00"
+        obj.components['render'].polygon = [50,50,700,50,700,700,50,700]
+
+        return obj
+        
 
 ###################################################################
 #
