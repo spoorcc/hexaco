@@ -30,7 +30,7 @@ Base class for a game Engine """
 
 import unittest
 from GameObject import GameObject
- 
+from GameObjectFactory import GameObjectFactory
 
 class GameEngine(object):
     """The engine containing all gameobjects and tiles
@@ -39,23 +39,38 @@ class GameEngine(object):
     def __init__(self):
         self.objects = []
         self.tiles = []
+        self.gameObjectFactory = GameObjectFactory(self)
+        self.callbacks_for_new_object = []
+
+    def callback_for_new_object(self, method_to_call ):
+
+        if type(method_to_call) is type(self.callback_for_new_object):
+            self.callbacks_for_new_object.append( method_to_call )
+
+    def initialize_objects(self):
+
+        tile = self.gameObjectFactory.create_tile()
+        self.add_game_object( tile )
+
 
     def add_game_object(self, game_object):
 
         if type(game_object) is GameObject:
+            print "Adding new game object"
             self.objects.append( game_object )
-            self.objects.append( self.win.create_polygon( 0, 0, 10, 200, 100, 200, outline="#ffff00", width=3) )
+
+            for method in self.callbacks_for_new_object:
+                method( game_object )
+
+    def create_map(self):
+        pass        
+            
 
     def update(self):
 
         for i in range( len(self.objects) ):
-
-            pos = self.win.coords(self.objects[i])
-
-            pos[0] += self.moves[i][0]
-            pos[1] += self.moves[i][1]
-   
-            self.win.coords( self.objects[i], pos[0], pos[1])
+            pass
+            #self.objects[i].update()
         
 
 ###################################################################

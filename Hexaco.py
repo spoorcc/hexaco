@@ -1,18 +1,19 @@
 from Engine import GraphicsEngine
 from Engine import GameEngine
-from Engine import GameObjectFactory
+from threading import Thread
 
 import Tkinter 
 
 root = Tkinter.Tk()
 
-gameFact = GameObjectFactory.GameObjectFactory(None)
 gameEngine = GameEngine.GameEngine()
 graphicsEngine = GraphicsEngine.GraphicsEngine(master=root)
 
-i = 0
+gameEngine.callback_for_new_object( graphicsEngine.add_component )
 
-graphicsEngine.add_component( gameFact.create_tile() )
+gameEngine.initialize_objects()
+
+i = 0
 
 print "Starting main game loop"
 while 1:
