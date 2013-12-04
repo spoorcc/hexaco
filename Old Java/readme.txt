@@ -1,0 +1,1 @@
+The java code is one of my first sorry attempts to code. It is ugly and meant to give a global idea.
