@@ -49,7 +49,9 @@ class GameObjectFactory(object):
         obj = GameObject(None)
         obj.components['render'] = RenderComponent(obj)
         obj.components['render'].color = "#00ff00"
-        obj.components['render'].polygon = [50,50,700,50,700,700,50,700]
+        obj.components['render'].fill = "#ffff00"
+        obj.components['render'].polygon = [10,50,70,50,70,70,50,70]
+        obj.components['render'].XYspeed = [0.01, 0.01]
 
         return obj
         

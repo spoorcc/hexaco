@@ -32,14 +32,16 @@ import unittest
 from Component import Component
 
 class RenderComponent( Component ):
-    """A Move component has a position
+    """A Render component has a color and a shape
     """
 
     def __init__(self, parent):
         self.parent = parent
         self.visible = True
         self.color = "#ffff00"
-        self.polygon = [ 0, 0, 15, 40, 40, 15 ]
+        self.fill = "#ffffff"
+        self.polygon = [ 0, 0, 10, 0, 10, 10, 0, 10 ]
+        self.XYspeed = [0, 0]
 
 ###################################################################
 #
@@ -47,7 +49,7 @@ class RenderComponent( Component ):
 #
 ###################################################################
 
-class TestMovingGameObject(unittest.TestCase):
+class TestRenderComponent(unittest.TestCase):
 
     ######################################################
 
@@ -77,6 +79,9 @@ class TestMovingGameObject(unittest.TestCase):
 
         self.assertTrue( self.rndrComp.visible )
 
+    def test_defaultPolygon(self):
+
+		self.assertEqual( self.rndrComp.polygon,  [0,0,10,0,10,10,0,10] )
         
 if __name__ == '__main__':
     unittest.main(verbosity=2)

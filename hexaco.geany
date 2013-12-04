@@ -23,7 +23,7 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=9
+current_page=8
 FILE_NAME_0=130;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FHexaco.py;0;4
 FILE_NAME_1=2088;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FGameEngine.py;0;4
 FILE_NAME_2=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponent.py;0;4
@@ -33,7 +33,6 @@ FILE_NAME_5=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FG
 FILE_NAME_6=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FHexagonalPosition.py;0;4
 FILE_NAME_7=1103;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FMoveComponent.py;0;4
 FILE_NAME_8=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FRenderComponent.py;0;4
-FILE_NAME_9=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FTile.py;0;4
 
 [VTE]
 last_dir=/home/ben/Public/hexaco

@@ -30,7 +30,10 @@ Base class for a Graphics Engine """
 
 from Tkinter import *
 import Tkinter
+
 import unittest
+from mock import MagicMock
+
 from RenderComponent import RenderComponent
 from MoveComponent import MoveComponent
 
@@ -41,7 +44,7 @@ class GraphicsEngine(Frame):
     def __init__(self, master=None):
         Frame.__init__(self,master)
         self.objects = []
-        self.moves = []
+        self.moves = {}
         self.tiles = []
 
         self.setupWindow()   
@@ -49,10 +52,11 @@ class GraphicsEngine(Frame):
     def setupWindow(self):
         
         # Create black backgrounded window
-        self.win = Tkinter.Canvas( self.master, width=800, height=400, background="#000000")
+        self.win = Tkinter.Canvas( self.master, width=800, height=800, background="#000000")
         self.win.create_text( 25, 6, text="Hexaco", font="Arial 10", fill="#ff0000")
         self.turnText = self.win.create_text( 250, 6, text="No turn", font="Arial 10", fill="#ff0000")        
         self.win.pack(fill=BOTH, expand=1)
+       
     
     def setTurnText( self, turnText ):
 
@@ -60,37 +64,39 @@ class GraphicsEngine(Frame):
 
     def add_component(self, gameObject ):
 
-        try:
+        try:            
             rend_comp = gameObject.components['render']
-            
-            self.objects.append( self.win.create_polygon( rend_comp.polygon , outline=rend_comp.color, width=1, fill="white") )
+            obj_to_render = self.win.create_polygon( rend_comp.polygon, outline=rend_comp.color, width=1, fill=rend_comp.fill, tag=gameObject.name )
+                        
+            self.objects.append( obj_to_render )
                
         except AttributeError:
-            print "Something went wrong"
-            pass        
-
-    def add_render_component(self, renderComponent):
-
-        if type(renderComponent) is RenderComponent:
-            #self.objects.append( renderComponent )
-            self.objects.append( self.win.create_polygon( 0, 0, 10, 200, 100, 200, outline="#ffff00", width=1) )
-            
+            print "Render component of has wrong attributes"
+            print gameObject
+        except: 
+            print "Something went wrong"    
+                    
     def updateScreen(self):
 
         for i in range( len(self.objects) ):
+            pos = self.win.coords( self.objects[i] )
 
-            pos = self.win.coords(self.objects[i])
+            # For each coordinate in the polygon
+            for j in range( len(pos) ):
 
-            #pos[0] += self.moves[i].XYspeed[0]
-            #pos[1] += self.moves[i].XYspeed[1]
+                # X-coordinate
+                if j%2 == 0:
+                    pos[j] += 0.01
+                # Y-coordinate  
+                else:
+                    pos[j] += 0.02  
 
-            pos[0] += 0.01
-            pos[1] += 0.01
-   
-            self.win.coords( self.objects[i], pos[0], pos[1])
+            # Would like to do somethinglike underneath
+            #self.win.coords(  self.objects[i], pos  )
+            self.win.coords( self.objects[i], pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6], pos[7] )
       
         self.master.update_idletasks() # redraw
-        self.master.update() # process events
+        #self.master.update() # process events
            
 
 ###################################################################
@@ -120,23 +126,25 @@ class TestGraphicsEngine(unittest.TestCase):
 
     def tearDown(self):
         "This method is called after each test case"
-        pass
+        self.graphEng.objects = []
 
     #######################################################
 
     def test_add_game_object_valid(self):
         """ Simple test"""
 
-        obj = RenderComponent(self)
-        self.graphEng.add_render_component(obj)
-
+        obj = MagicMock()
+        obj.components = {}
+        obj.components['render'] = RenderComponent(obj)
+        
+        self.graphEng.add_component(obj)
+        
         self.assertEqual( len(self.graphEng.objects ), 1 )
 
     def test_add_game_object_invalid(self):
         """ Simple test"""
         
-        self.graphEng.add_render_component( "not an object" )
-
+        self.graphEng.add_component( "not an object" )
         self.assertEqual( len(self.graphEng.objects ), 0 )
 
 if __name__ == '__main__':

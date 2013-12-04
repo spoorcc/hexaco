@@ -36,7 +36,6 @@ class Component(object):
 
     def __init__(self, parent):
         self.parent = parent
-        self.initialize()
 
 ###################################################################
 #

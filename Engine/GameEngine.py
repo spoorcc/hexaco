@@ -29,6 +29,8 @@ Description
 Base class for a game Engine """
 
 import unittest
+from mock import MagicMock
+
 from GameObject import GameObject
 from GameObjectFactory import GameObjectFactory
 
@@ -37,32 +39,36 @@ class GameEngine(object):
     """
 
     def __init__(self):
+        """ Initializes all the member variables """
         self.objects = []
         self.tiles = []
         self.gameObjectFactory = GameObjectFactory(self)
         self.callbacks_for_new_object = []
 
     def callback_for_new_object(self, method_to_call ):
+        """ Methods registered here will be called when a new object is created """
 
-        if type(method_to_call) is type(self.callback_for_new_object):
+        if callable(method_to_call):
             self.callbacks_for_new_object.append( method_to_call )
 
     def initialize_objects(self):
+        """ All objects in the world will be initialized here """
 
         tile = self.gameObjectFactory.create_tile()
         self.add_game_object( tile )
 
 
     def add_game_object(self, game_object):
+        """ Add a game object and call all the methods registered to this event with the game_obj handle """
 
         if type(game_object) is GameObject:
-            print "Adding new game object"
             self.objects.append( game_object )
 
             for method in self.callbacks_for_new_object:
                 method( game_object )
 
-    def create_map(self):
+    def create_map(self, rings):
+		
         pass        
             
 
@@ -85,7 +91,7 @@ class TestGameEngine(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         "This method is called once, when starting the tests"
-        cls.gameEng = GameEngine(None)
+        cls.gameEng = GameEngine()
 
     @classmethod
     def tearDownClass(cls):
@@ -95,12 +101,12 @@ class TestGameEngine(unittest.TestCase):
     #######################################################
 
     def setUp(self):
-        "This method is called befire each test case"
+        "This method is called before each test case"
         pass
 
     def tearDown(self):
         "This method is called after each test case"
-        pass
+        self.gameEng.objects = []
 
     #######################################################
 
@@ -118,6 +124,19 @@ class TestGameEngine(unittest.TestCase):
         self.gameEng.add_game_object( "not an object" )
 
         self.assertEqual( len(self.gameEng.objects ), 0 )
+
+    def test_add_game_object_callback(self):
+        """ Test if callbacks are called """
+
+        myMock = MagicMock()
+        myMock.foo = MagicMock()
+
+        obj = GameObject(self)
+
+        self.gameEng.callback_for_new_object( myMock.foo )
+        self.gameEng.add_game_object(obj)
+
+        myMock.foo.assert_called_with( obj )
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)
