@@ -33,6 +33,8 @@ from GameObject import GameObject
 from RenderComponent import RenderComponent
 from MoveComponent import MoveComponent
 
+from math import sin, cos, radians
+
 class GameObjectFactory(object):
     """The ObjectFactory which construcs game objects
     """
@@ -44,7 +46,7 @@ class GameObjectFactory(object):
 
         return GameObject(None)
 
-    def create_tile(self):
+    def create_ant(self):
 
         obj = GameObject(None)
         obj.components['render'] = RenderComponent(obj)
@@ -54,8 +56,29 @@ class GameObjectFactory(object):
         obj.components['render'].XYspeed = [0.01, 0.01]
 
         return obj
-        
 
+    def create_tile(self):
+
+        obj = GameObject(None)
+        obj.components['render'] = RenderComponent(obj)
+        obj.components['render'].color = "#00ff00"
+        obj.components['render'].fill = "#110000"
+        obj.components['render'].polygon = self.create_hexagon( 20 )
+        obj.components['render'].XYspeed = [0.01, 0.01]
+
+        return obj
+
+    def give_point_on_circle(self, degrees, radius ):
+        return [ radius * cos( radians(degrees) ), radius * sin( radians(degrees) )]
+        
+    def create_hexagon(self, radius ):
+
+        coordinates = []
+        for i in range(0,6):
+            coordinates = coordinates + self.give_point_on_circle( i * 60, radius )
+
+        return coordinates
+        
 ###################################################################
 #
 # Test Code
@@ -92,6 +115,30 @@ class TestGameObjectFactory(unittest.TestCase):
 
         obj = self.gameObjFact.create_object()
         self.assertEqual( type(obj), GameObject )
+
+    def test_give_point_on_circle(self):
+
+        coordinates = self.gameObjFact.give_point_on_circle( 30, 1 )
+
+        self.assertAlmostEqual( coordinates[0], 0.866, 3 )
+        self.assertAlmostEqual( coordinates[1], 0.5, 3 )
+
+    def test_create_hexagon_radius_one(self):
+
+        hexagon = self.gameObjFact.create_hexagon( 1 )
+        expected = [ 1.0, 0.0, 0.5, 0.866, -0.5, 0.866, -1.0, 0.0, -0.5, -0.866, 0.5, -0.866]
+
+        for i in range( len(hexagon) ):
+            self.assertAlmostEqual( hexagon[i], expected[i] , 3, "%.3f != %.3f @ %d" % (hexagon[i], expected[i], i) )
+
+
+    def test_create_hexagon_radius_twenty(self):
+
+        hexagon = self.gameObjFact.create_hexagon( 20 )
+        expected = [ 20.0, 0.0, 10.0, 17.321, -10.0, 17.321, -20.0, 0.0, -10.0, -17.321, 10.0, -17.321]
+
+        for i in range( len(hexagon) ):
+            self.assertAlmostEqual( hexagon[i], expected[i] , 3, "%.3f != %.3f @ %d" % (hexagon[i], expected[i], i) )
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)

@@ -37,6 +37,8 @@ from mock import MagicMock
 from RenderComponent import RenderComponent
 from MoveComponent import MoveComponent
 
+from math import sin, cos, radians
+
 class GraphicsEngine(Frame):
     """The engine containing all drawable objects
     """
@@ -46,13 +48,17 @@ class GraphicsEngine(Frame):
         self.objects = []
         self.moves = {}
         self.tiles = []
-
-        self.setupWindow()   
+        self.size = [800, 400]
+        self.setupWindow()
+        self.hexRadius = 20
+        self.xOff = sin( radians(30) ) * self.hexRadius
+        self.yOff = cos( radians(30) ) * self.hexRadius
+        
 
     def setupWindow(self):
         
         # Create black backgrounded window
-        self.win = Tkinter.Canvas( self.master, width=800, height=800, background="#000000")
+        self.win = Tkinter.Canvas( self.master, width=self.size[0], height=self.size[1], background="#000000")
         self.win.create_text( 25, 6, text="Hexaco", font="Arial 10", fill="#ff0000")
         self.turnText = self.win.create_text( 250, 6, text="No turn", font="Arial 10", fill="#ff0000")        
         self.win.pack(fill=BOTH, expand=1)
@@ -66,35 +72,48 @@ class GraphicsEngine(Frame):
 
         try:            
             rend_comp = gameObject.components['render']
-            obj_to_render = self.win.create_polygon( rend_comp.polygon, outline=rend_comp.color, width=1, fill=rend_comp.fill, tag=gameObject.name )
-                        
+
+            coordinates_placed = self.move_object( rend_comp.polygon, self.size[0]/2, self.size[1]/2)
+            obj_to_render = self.win.create_polygon( coordinates_placed, outline=rend_comp.color, width=rend_comp.width, fill=rend_comp.fill, tag=gameObject.name )
+            
             self.objects.append( obj_to_render )
                
         except AttributeError:
             print "Render component of has wrong attributes"
             print gameObject
         except: 
-            print "Something went wrong"    
+            print "Something went wrong"
+
+
+    def move_object(self, coordinates, delta_x, delta_y ):
+        # For each coordinate 
+        for j in range( len(coordinates) ):
+
+            # X-coordinate
+            if j%2 == 0:
+                coordinates[j] += delta_x
+            # Y-coordinate  
+            else:
+                coordinates[j] += delta_y      
+
+        return coordinates
+
+    def game_coordinates_to_screen_coordinates( self, x, y, z ):
+
+        screen_x, screen_y = self.size[0]/2, self.size[1]/2
+
+        screen_x += self.xOff * 3 * y
+        screen_y += self.yOff * 2 * x
+
+        return [screen_x, screen_y]    
                     
     def updateScreen(self):
 
         for i in range( len(self.objects) ):
             pos = self.win.coords( self.objects[i] )
-
-            # For each coordinate in the polygon
-            for j in range( len(pos) ):
-
-                # X-coordinate
-                if j%2 == 0:
-                    pos[j] += 0.01
-                # Y-coordinate  
-                else:
-                    pos[j] += 0.02  
-
-            # Would like to do somethinglike underneath
-            #self.win.coords(  self.objects[i], pos  )
-            self.win.coords( self.objects[i], pos[0], pos[1], pos[2], pos[3], pos[4], pos[5], pos[6], pos[7] )
-      
+            
+            self.win.coords(  self.objects[i], *pos  )
+                  
         self.master.update_idletasks() # redraw
         #self.master.update() # process events
            
@@ -146,6 +165,54 @@ class TestGraphicsEngine(unittest.TestCase):
         
         self.graphEng.add_component( "not an object" )
         self.assertEqual( len(self.graphEng.objects ), 0 )
+
+    def test_move_object(self):
+
+        coordinates = [100, 100, 50, 50]
+        actual = self.graphEng.move_object( coordinates, 10, 5 )
+
+        self.assertEqual( actual, [110, 105, 60, 55] )
+
+    def test_game_coordinates_to_screen_coordinates_center( self ):
+
+        [x,y] =self.graphEng.game_coordinates_to_screen_coordinates( 0,0,0 )
+  
+        self.assertEqual( [x,y], [self.graphEng.size[0]/2, self.graphEng.size[1]/2] )
+
+    def test_game_coordinates_to_screen_coordinates_1_0_m1( self ):
+
+        [x,y] =self.graphEng.game_coordinates_to_screen_coordinates( 1, 0, -1 )
+
+        expected = [self.graphEng.size[0]/2, self.graphEng.size[1]/2]
+        expected[1] +=  2 * self.graphEng.yOff
+
+        self.assertAlmostEqual( x, expected[0], 3 )
+        self.assertAlmostEqual( y, expected[1], 3 )
+
+    def test_game_coordinates_to_screen_coordinates_m2_2_0( self ):
+
+        [x,y] =self.graphEng.game_coordinates_to_screen_coordinates( -2, 2, 0 )
+
+        expected = [self.graphEng.size[0]/2, self.graphEng.size[1]/2]
+
+        expected[0] +=  3 * self.graphEng.hexRadius
+        expected[1] +=  -4 * self.graphEng.yOff
+
+        self.assertAlmostEqual( x, expected[0], 3 )
+        self.assertAlmostEqual( y, expected[1], 3 )
+
+    def test_game_coordinates_to_screen_coordinates_m2_3_1( self ):
+
+        [x,y] =self.graphEng.game_coordinates_to_screen_coordinates( -2, 3, 1 )
+
+        expected = [self.graphEng.size[0]/2, self.graphEng.size[1]/2]
+
+        expected[0] +=   9 * self.graphEng.xOff
+        expected[1] +=  -4 * self.graphEng.yOff
+
+        self.assertAlmostEqual( x, expected[0], 3 )
+        self.assertAlmostEqual( y, expected[1], 3 )        
+            
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)

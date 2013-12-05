@@ -40,6 +40,7 @@ class RenderComponent( Component ):
         self.visible = True
         self.color = "#ffff00"
         self.fill = "#ffffff"
+        self.width = 2
         self.polygon = [ 0, 0, 10, 0, 10, 10, 0, 10 ]
         self.XYspeed = [0, 0]
 
