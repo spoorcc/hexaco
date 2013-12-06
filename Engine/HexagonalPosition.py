@@ -39,8 +39,8 @@ There are two systems, XYZ and ring, side and tile
  _______/ x1 y-1 z0  \_______/ x0 y1 z-1 \________/ x-1 y3 z-2 \________
         \ r1 s0  t0  /CENTER \ r1 s2 t0  /        \ r3 s2 t1   /
          \          /         \         /          \          /
-          \________/ x0 y0 z0  \_______/_____+Y     \________/
-          /        \ r0 s0 t0  /       \            /        \
+x1 y-2 z1 \________/ x0 y0 z0  \_______/_____+Y     \________/
+r2 s5 t1  /        \ r0 s0 t0  /       \            /        \
          /          \         /         \          /          \
  _______/ x0 y-1 z1  \_______/ x-1 y1 z0 \________/ x-2 y3 z-1 \________
         \ r1 s5 t0   /       \ r1 s3 t0  /        \ r3 s2 t2   /
@@ -48,7 +48,8 @@ There are two systems, XYZ and ring, side and tile
           \________/ x-1 y0 z1 \_______/ x-2 y2 z0  \________/
           /       /\ r1 s4 t0  /       \ r2 s3 t0   /        \
          /       /  \         /         \          /          \
- _______/      +Z    \_______/           \________/            \________
+ _______/      +Z    \_______/ x-2 y1 z1 \________/            \________
+        \            /       \ r2  s3 t1 /        \            /
 """
 
 import unittest
@@ -91,6 +92,60 @@ class HexagonalPosition(object):
             return True
         else:
             return False
+            
+    def set_position_rst(self, ring, side, tile):
+        """Sets the position in Ring Side Tile coordinates,
+        Updates the x, y and z variables
+        Returns a boolean if it was a valid position
+        """
+
+        if not( type(ring) == type(side) == type(tile) is int):
+            return False
+
+        if ring < 0:
+            return False
+
+        if ( ring > 0 and tile > ring ):
+            return False
+
+        if  side < 0  or side > 5:
+            return False
+
+        [self.x, self.y, self.z] = self.calc_xyz_from_rst( ring, side, tile )
+        return True    
+
+    def calc_xyz_from_rst( self, ring, side, tile ):
+
+        if ring == 0:
+            x = 0
+            y = 0
+            z = 0
+        elif side == 0:
+            x =  ring
+            y = -ring + tile
+            z =  -tile
+        elif side == 1:
+            x =  ring - tile
+            y =  tile
+            z = -ring
+        elif side == 2:
+            x =  -tile
+            y =  ring
+            z =  tile - ring
+        elif side == 3:
+            x = -ring
+            y =  ring - tile
+            z =  tile
+        elif side == 4:
+            x = -ring + tile
+            y =  -tile
+            z =  ring            
+        else:
+            x =  tile
+            y = -ring
+            z =  ring - tile
+
+        return [x, y, z]
 
     def get_neighbour(self, direction):
         """Returns the neighbour as mentioned in the direction"""
@@ -343,6 +398,70 @@ class TestHexPos(unittest.TestCase): # pylint: disable=R0904
         self.assertEqual( self.pos.x, 0 )
         self.assertEqual( self.pos.y, 0 )
         self.assertEqual( self.pos.z, 0 )
+
+    ####################################################################
+
+    def test_set_position_rst_cent_pos(self):
+        """Test if center position can be set"""
+
+        result = self.pos.set_position_rst( 0, 0, 0)
+
+        self.assertTrue( result )
+
+        self.assertEqual( self.pos.x, 0)
+        self.assertEqual( self.pos.y, 0)
+        self.assertEqual( self.pos.z, 0)
+
+    def test_set_position_rst_invalid_ring(self):
+        """Test if invalid ring value is not accepted"""
+
+        result = self.pos.set_position_rst( -1, 0, 0)
+
+        self.assertFalse( result )
+
+        self.assertEqual( self.pos.x, 0)
+        self.assertEqual( self.pos.y, 0)
+        self.assertEqual( self.pos.z, 0)
+
+    def test_set_position_rst_invalid_side(self):
+        """Test if invalid side value is not accepted"""
+
+        result = self.pos.set_position_rst( 0, 7, 0)
+
+        self.assertFalse( result )
+
+        self.assertEqual( self.pos.x, 0)
+        self.assertEqual( self.pos.y, 0)
+        self.assertEqual( self.pos.z, 0)
+
+    def test_set_position_rst_invalid_tile(self):
+        """Test if invalid tile value is not accepted"""
+
+        result = self.pos.set_position_rst( 1, 2, 3)
+
+        self.assertFalse( result )
+
+        self.assertEqual( self.pos.x, 0)
+        self.assertEqual( self.pos.y, 0)
+        self.assertEqual( self.pos.z, 0)
+
+    def test_calc_xyz_from_rst_r1s0t0(self):
+        """Test if ring 1 side 0 tile 0 results in x1 y-1 z0"""
+
+        [x, y, z] = self.pos.calc_xyz_from_rst( 1, 0, 0)
+
+        self.assertEqual( x,  1)
+        self.assertEqual( y, -1)
+        self.assertEqual( z,  0)
+
+    def test_calc_xyz_from_rst_r3s2t1(self):
+        """Test if ring 3 side 2 tile 1 results in x-1 y3 z-2"""
+
+        [x, y, z] = self.pos.calc_xyz_from_rst( 3, 2, 1)
+
+        self.assertEqual( x, -1)
+        self.assertEqual( y,  3)
+        self.assertEqual( z, -2)    
 
     ####################################################################
 

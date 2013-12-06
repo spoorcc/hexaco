@@ -40,6 +40,7 @@ class MoveComponent( Component ):
         self.parent = parent
         self.pos = HexagonalPosition( self )
         self.XYspeed = [0.01, 0.01]
+        self.static = True
 
 ###################################################################
 #

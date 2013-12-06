@@ -41,6 +41,7 @@ class GameObjectFactory(object):
 
     def __init__(self, parent):
         self.parent = parent
+        self.hexRadius = 20
 
     def create_object(self):
 
@@ -50,10 +51,15 @@ class GameObjectFactory(object):
 
         obj = GameObject(None)
         obj.components['render'] = RenderComponent(obj)
-        obj.components['render'].color = "#00ff00"
-        obj.components['render'].fill = "#ffff00"
-        obj.components['render'].polygon = [10,50,70,50,70,70,50,70]
+        obj.components['render'].color = "#880000"
+        obj.components['render'].fill = "#001100"
+
+        x = 0.4 * self.hexRadius
+        obj.components['render'].polygon = [0, -x, x, x, -x, x ]
         obj.components['render'].XYspeed = [0.01, 0.01]
+
+        obj.components['move'] = MoveComponent(obj)
+        obj.components['move'].static = False
 
         return obj
 
@@ -61,10 +67,12 @@ class GameObjectFactory(object):
 
         obj = GameObject(None)
         obj.components['render'] = RenderComponent(obj)
-        obj.components['render'].color = "#00ff00"
-        obj.components['render'].fill = "#110000"
-        obj.components['render'].polygon = self.create_hexagon( 20 )
+        obj.components['render'].color = "#005500"
+        obj.components['render'].fill = "#220000"
+        obj.components['render'].polygon = self.create_hexagon( self.hexRadius )
         obj.components['render'].XYspeed = [0.01, 0.01]
+
+        obj.components['move'] = MoveComponent(obj)
 
         return obj
 

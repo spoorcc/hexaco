@@ -54,9 +54,12 @@ class GameEngine(object):
     def initialize_objects(self):
         """ All objects in the world will be initialized here """
 
-        tile = self.gameObjectFactory.create_tile()
-        self.add_game_object( tile )
+        self.create_map( 5 )
 
+        ant = self.gameObjectFactory.create_ant()
+        ant.components['move'].pos.set_position_xyz( 3, -3, 0)
+        self.add_game_object( ant )
+        
 
     def add_game_object(self, game_object):
         """ Add a game object and call all the methods registered to this event with the game_obj handle """
@@ -68,16 +71,25 @@ class GameEngine(object):
                 method( game_object )
 
     def create_map(self, rings):
-		
-        pass        
-            
+
+        # Create the center tile
+        tile_obj = self.gameObjectFactory.create_tile()
+        self.add_game_object( tile_obj )
+
+        for ring in range( rings  ):
+            for side in range( 6 ):  # Hexagon has 6 sides
+                for tile in range( ring ):
+                    tile_obj = self.gameObjectFactory.create_tile()
+                    tile_obj.components['move'].pos.set_position_rst( ring, side, tile )
+
+                    self.add_game_object( tile_obj )                
 
     def update(self):
 
-        for i in range( len(self.objects) ):
-            pass
-            #self.objects[i].update()
-        
+        for obj in self.objects:
+
+            if not obj.components['move'].static:
+                pass
 
 ###################################################################
 #
@@ -137,6 +149,30 @@ class TestGameEngine(unittest.TestCase):
         self.gameEng.add_game_object(obj)
 
         myMock.foo.assert_called_with( obj )
+
+    def test_create_map_one_tile(self):
+        """ Test if a map is created of 1 tile when ring 1 is selected """
+
+        tile = self.gameEng.gameObjectFactory.create_tile()
+
+        self.gameEng.gameObjectFactory.create_tile = MagicMock()
+        self.gameEng.gameObjectFactory.create_tile.return_value = tile
+        
+        self.gameEng.create_map( 1 )
+        
+        self.assertEqual( len(self.gameEng.gameObjectFactory.create_tile.mock_calls), 1 )
+
+    def test_create_map_seven_tiles(self):
+        """ Test if a map is created of 7 tile when ring 2 is selected """
+
+        tile = self.gameEng.gameObjectFactory.create_tile()
+
+        self.gameEng.gameObjectFactory.create_tile = MagicMock()
+        self.gameEng.gameObjectFactory.create_tile.return_value = tile
+        
+        self.gameEng.create_map( 2 )
+        
+        self.assertEqual( len(self.gameEng.gameObjectFactory.create_tile.mock_calls), 7 )    
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)
