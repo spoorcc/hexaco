@@ -35,23 +35,28 @@ import unittest
 from mock import MagicMock
 
 from RenderComponent import RenderComponent
-from MoveComponent import MoveComponent
+from PositionComponent import PositionComponent
 
 from math import sin, cos, radians
 
 class GraphicsEngine(Frame):
-    """The engine containing all drawable objects
+    """The engine managing all drawing to screen
     """
+
+    _instance = None
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(GraphicsEngine, cls).__new__(
+                                cls, *args, **kwargs)
+        return cls._instance
 
     def __init__(self, master=None):
         Frame.__init__(self,master)
         self.objects = []
-        self.moves = {}
-        self.static_objects = []
         self.size = [800, 600]
-        self.setupWindow()
         self.hexRadius = 10
-        
+        self.setupWindow()
+                
     def setupWindow(self):
         
         # Create black backgrounded window
@@ -63,28 +68,34 @@ class GraphicsEngine(Frame):
     def setTurnText( self, turnText ):
         self.win.itemconfigure(self.turnText, text=turnText)
 
+    def get_game_object( self, objectID ):
+        print "Wrong method!"
+        pass    
+
     def add_component(self, gameObject ):
         """ If a component has a render and a move component it is added
         to the list of objects to render """
         try:            
             rend_comp = gameObject.components['render']
-            pos = gameObject.components['move'].pos
+            pos = gameObject.components['position'].pos
 
+            # Find out where to draw
             [x, y] = self.game_coordinates_to_screen_coordinates( pos.x, pos.y, pos.z )
-            coordinates_placed = self.move_object( rend_comp.polygon, x, y )
-            obj_to_render = self.win.create_polygon( coordinates_placed, outline=rend_comp.color, width=rend_comp.width, fill=rend_comp.fill, tag=gameObject.name )
 
-            if gameObject.components['move'].static:
-                self.static_objects.append( obj_to_render )
-            else:   
-                self.objects.append( obj_to_render )
+            # Find out what to draw there
+            coordinates_placed = self.move_object( rend_comp.polygon, x, y )
+
+            # Find out how to draw, and draw it
+            rend_comp.renderID = self.win.create_polygon( coordinates_placed, outline=rend_comp.color, width=rend_comp.width, fill=rend_comp.fill, tag=gameObject.name )
+                     
+            self.objects.append( gameObject.objectID )
                
         except AttributeError:
-            print "Render component of has wrong attributes"
-            print gameObject
+            print "Render/Position component of has wrong attributes"
         except: 
             print "Something went wrong"
 
+          
 
     def move_object(self, coordinates, delta_x, delta_y ):
         """ Updates a list of coordinates assuming [x0,y0,x1,y1,...xN,yN]"""
@@ -110,12 +121,27 @@ class GraphicsEngine(Frame):
                     
     def updateScreen(self):
 
-        for i in range( len(self.objects) ):
-            pos = self.win.coords( self.objects[i] )
+        for objectID in self.objects:
+
+            try:
+                obj = self.get_game_object( objectID )
+                
+            except:
+                print "Could not find object"    
+                
+            pos  = obj.components['position']
+            rend = obj.components['render']
+
+            # Find out where to draw
+            [x, y] = self.game_coordinates_to_screen_coordinates( pos.x, pos.y, pos.z )
+
+            # Find out what to draw there
+            coordinates_placed = self.move_object( rend.polygon, x, y )
+
+            # Move the object
+            self.win.coords( rend.renderID, *coordinates_placed  )
 
             
-            
-            self.win.coords( self.objects[i], *pos  )
                   
         self.master.update_idletasks() # redraw
         #self.master.update() # process events
@@ -134,6 +160,8 @@ class TestGraphicsEngine(unittest.TestCase):
     def setUpClass(cls):
         "This method is called once, when starting the tests"
         cls.graphEng = GraphicsEngine(None)
+        cls.xOff = cos( radians(30) ) * cls.graphEng.hexRadius
+        cls.yOff = sin( radians(30) ) * cls.graphEng.hexRadius
 
     @classmethod
     def tearDownClass(cls):
@@ -158,6 +186,7 @@ class TestGraphicsEngine(unittest.TestCase):
         obj = MagicMock()
         obj.components = {}
         obj.components['render'] = RenderComponent(obj)
+        obj.components['position'] = PositionComponent(obj)
         
         self.graphEng.add_component(obj)
         
@@ -190,7 +219,7 @@ class TestGraphicsEngine(unittest.TestCase):
         [x,y] = self.graphEng.game_coordinates_to_screen_coordinates( 1, 0, -1 )
 
         expected = [self.graphEng.size[0]/2, self.graphEng.size[1]/2]
-        expected[1] +=  2 * self.graphEng.yOff
+        expected[1] +=  2 * self.yOff
 
         self.assertAlmostEqual( x, expected[0], 3 )
         self.assertAlmostEqual( y, expected[1], 3 )
@@ -202,7 +231,7 @@ class TestGraphicsEngine(unittest.TestCase):
         expected = [self.graphEng.size[0]/2, self.graphEng.size[1]/2]
 
         expected[0] +=  3 * self.graphEng.hexRadius
-        expected[1] +=  -4 * self.graphEng.yOff
+        expected[1] +=  -4 * self.yOff
 
         self.assertAlmostEqual( x, expected[0], 3 )
         self.assertAlmostEqual( y, expected[1], 3 )
@@ -213,11 +242,28 @@ class TestGraphicsEngine(unittest.TestCase):
 
         expected = [self.graphEng.size[0]/2, self.graphEng.size[1]/2]
 
-        expected[0] +=   9 * self.graphEng.xOff
-        expected[1] +=  -4 * self.graphEng.yOff
+        expected[0] +=   9 * self.xOff
+        expected[1] +=  -4 * self.yOff
 
         self.assertAlmostEqual( x, expected[0], 3 )
-        self.assertAlmostEqual( y, expected[1], 3 )        
+        self.assertAlmostEqual( y, expected[1], 3 )
+
+    def test_get_game_object(self):
+
+        # Replace the method with the mock method
+        gameEng = MagicMock()
+        gameEng.get_game_object = MagicMock()
+        self.graphEng.get_game_object = gameEng.get_game_object
+
+        # Add an object to the object list
+        self.graphEng.objects.append( 123 )
+        self.assertEqual( len( self.graphEng.objects), 1 )
+
+        # Trigger the function that should call get_game_object
+        self.graphEng.updateScreen()
+
+        gameEng.get_game_object.assert_called_with( 123 )
+              
             
 
 if __name__ == '__main__':

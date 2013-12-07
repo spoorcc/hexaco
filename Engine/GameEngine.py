@@ -35,8 +35,16 @@ from GameObject import GameObject
 from GameObjectFactory import GameObjectFactory
 
 class GameEngine(object):
-    """The engine containing all gameobjects and tiles
+    """The engine containing all gameobjects and tiles (following the singleton pattern)
     """
+
+    _instance = None 
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super(GameEngine, cls).__new__(
+                                cls, *args, **kwargs)
+        return cls._instance
 
     def __init__(self):
         """ Initializes all the member variables """
@@ -57,9 +65,8 @@ class GameEngine(object):
         self.create_map( 5 )
 
         ant = self.gameObjectFactory.create_ant()
-        ant.components['move'].pos.set_position_xyz( 3, -3, 0)
+        ant.components['position'].pos.set_position_xyz( 3, -3, 0)
         self.add_game_object( ant )
-        
 
     def add_game_object(self, game_object):
         """ Add a game object and call all the methods registered to this event with the game_obj handle """
@@ -69,6 +76,10 @@ class GameEngine(object):
 
             for method in self.callbacks_for_new_object:
                 method( game_object )
+
+    def get_game_object( self, object_id):
+        print cls
+        return cls._instance.objects( object_id )            
 
     def create_map(self, rings):
 
@@ -80,7 +91,7 @@ class GameEngine(object):
             for side in range( 6 ):  # Hexagon has 6 sides
                 for tile in range( ring ):
                     tile_obj = self.gameObjectFactory.create_tile()
-                    tile_obj.components['move'].pos.set_position_rst( ring, side, tile )
+                    tile_obj.components['position'].pos.set_position_rst( ring, side, tile )
 
                     self.add_game_object( tile_obj )                
 
@@ -88,8 +99,11 @@ class GameEngine(object):
 
         for obj in self.objects:
 
-            if not obj.components['move'].static:
+            # Execute move actions
+            if 'move' in obj.components:
                 pass
+
+                
 
 ###################################################################
 #

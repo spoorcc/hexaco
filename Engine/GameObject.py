@@ -39,6 +39,7 @@ class GameObject(object):
     def __init__(self, parent):
         self.parent = parent
         self.name = "Default"
+        self.objectID = -1
         self.components = {}
 
     def update():

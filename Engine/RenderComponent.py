@@ -45,6 +45,7 @@ class RenderComponent( Component ):
         self.XYspeed = [0, 0]
         self.gameXYZ = [0,0,0]
         self.screenXY = [0,0]
+        self.renderID = -1
         
 
 ###################################################################

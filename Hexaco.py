@@ -14,6 +14,7 @@ graphicsEngine.hexRadius = hexRadius
 gameEngine.gameObjectFactory.hexRadius = hexRadius
 
 gameEngine.callback_for_new_object( graphicsEngine.add_component )
+graphicsEngine.get_game_object = gameEngine.get_game_object
 
 gameEngine.initialize_objects()
 

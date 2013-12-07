@@ -32,6 +32,7 @@ import unittest
 from GameObject import GameObject
 from RenderComponent import RenderComponent
 from MoveComponent import MoveComponent
+from PositionComponent import PositionComponent
 
 from math import sin, cos, radians
 
@@ -42,14 +43,24 @@ class GameObjectFactory(object):
     def __init__(self, parent):
         self.parent = parent
         self.hexRadius = 20
+        self.nextObjectId = 0
 
     def create_object(self):
 
         return GameObject(None)
 
+    def create_game_object(self):
+
+		obj = GameObject(None)
+		obj.objectID = self.nextObjectId
+
+		self.nextObjectId += 1
+
+		return obj
+
     def create_ant(self):
 
-        obj = GameObject(None)
+        obj = self.create_game_object()
         obj.components['render'] = RenderComponent(obj)
         obj.components['render'].color = "#880000"
         obj.components['render'].fill = "#001100"
@@ -58,22 +69,23 @@ class GameObjectFactory(object):
         obj.components['render'].polygon = [0, -x, x, x, -x, x ]
         obj.components['render'].XYspeed = [0.01, 0.01]
 
-        obj.components['move'] = MoveComponent(obj)
-        obj.components['move'].static = False
+        obj.components['position'] = PositionComponent(obj)
 
+        obj.components['move'] = MoveComponent(obj)
+        
         return obj
 
     def create_tile(self):
 
-        obj = GameObject(None)
+        obj = self.create_game_object()
         obj.components['render'] = RenderComponent(obj)
         obj.components['render'].color = "#005500"
         obj.components['render'].fill = "#220000"
         obj.components['render'].polygon = self.create_hexagon( self.hexRadius )
         obj.components['render'].XYspeed = [0.01, 0.01]
 
-        obj.components['move'] = MoveComponent(obj)
-
+        obj.components['position'] = PositionComponent(obj)
+        
         return obj
 
     def give_point_on_circle(self, degrees, radius ):

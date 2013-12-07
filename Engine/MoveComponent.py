@@ -30,17 +30,14 @@ Base class for a move component """
 
 import unittest
 from Component import Component
-from HexagonalPosition import HexagonalPosition
 
 class MoveComponent( Component ):
-    """A Move component has a position
+    """A Move component 
     """
 
     def __init__(self, parent):
         self.parent = parent
-        self.pos = HexagonalPosition( self )
-        self.XYspeed = [0.01, 0.01]
-        self.static = True
+        self.XYspeed = [0.0, 0.0]
 
 ###################################################################
 #
@@ -74,11 +71,9 @@ class TestMoveComponent(unittest.TestCase):
 
     #######################################################
 
-    def test_defaultPosition(self):
+    def test_defaultSpeed(self):
 
-        self.assertEqual( self.movComp.pos.x, 0 )
-        self.assertEqual( self.movComp.pos.y, 0 )
-        self.assertEqual( self.movComp.pos.z, 0 )
-        
+        self.assertEqual( self.movComp.XYspeed, [0.0,0.0] )
+                
 if __name__ == '__main__':
     unittest.main(verbosity=2)
