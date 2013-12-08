@@ -45,10 +45,6 @@ class GameObjectFactory(object):
         self.hexRadius = 20
         self.nextObjectId = 0
 
-    def create_object(self):
-
-        return GameObject(None)
-
     def create_game_object(self):
 
 		obj = GameObject(None)
@@ -67,11 +63,11 @@ class GameObjectFactory(object):
 
         x = 0.4 * self.hexRadius
         obj.components['render'].polygon = [0, -x, x, x, -x, x ]
-        obj.components['render'].XYspeed = [0.01, 0.01]
-
+        
         obj.components['position'] = PositionComponent(obj)
 
         obj.components['move'] = MoveComponent(obj)
+        obj.components['move'].speed = 0.001
         
         return obj
 
@@ -82,8 +78,7 @@ class GameObjectFactory(object):
         obj.components['render'].color = "#005500"
         obj.components['render'].fill = "#220000"
         obj.components['render'].polygon = self.create_hexagon( self.hexRadius )
-        obj.components['render'].XYspeed = [0.01, 0.01]
-
+        
         obj.components['position'] = PositionComponent(obj)
         
         return obj
@@ -130,10 +125,10 @@ class TestGameObjectFactory(unittest.TestCase):
 
     #######################################################
 
-    def test_create_object(self):
+    def test_create_game_object_returns_object(self):
         """ Simple test"""
 
-        obj = self.gameObjFact.create_object()
+        obj = self.gameObjFact.create_game_object()
         self.assertEqual( type(obj), GameObject )
 
     def test_give_point_on_circle(self):
@@ -159,6 +154,13 @@ class TestGameObjectFactory(unittest.TestCase):
 
         for i in range( len(hexagon) ):
             self.assertAlmostEqual( hexagon[i], expected[i] , 3, "%.3f != %.3f @ %d" % (hexagon[i], expected[i], i) )
+
+    def test_create_game_object_unique_ids(self):
+
+		 obj1 = self.gameObjFact.create_game_object()
+		 obj2 = self.gameObjFact.create_game_object()
+
+		 self.assertNotEqual( obj1.objectID, obj2.objectID )       
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)

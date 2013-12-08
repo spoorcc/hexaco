@@ -40,6 +40,8 @@ from PositionComponent import PositionComponent
 
 from math import sin, cos, radians, sqrt
 
+from copy import deepcopy
+
 class GraphicsEngine(Frame):
     """The engine managing all drawing to screen
     """
@@ -54,9 +56,14 @@ class GraphicsEngine(Frame):
     def __init__(self, master=None):
         Frame.__init__(self,master)
         self.objects = []
-        self.size = [800, 600]
-        self.set_hex_radius( 10 )        
+
+        self.set_window_size( 800, 600 )
+        self.set_hex_radius( 10 )
+        
         self.setupWindow()
+
+        assert( self.size[0] == 800 )
+        assert( self.size[1] == 600 )
                 
     def setupWindow(self):
         
@@ -75,7 +82,12 @@ class GraphicsEngine(Frame):
         self.screen_x_offset = 3 * self.hex_width / 4
 
         self.hex_height = sqrt(3)/2 * self.hex_width
-        self.screen_y_offset = self.hex_height / 2     
+        self.screen_y_offset = self.hex_height / 2
+
+    def set_window_size( self, width, height ):
+
+        self.size = [width, height]
+        self.centerScreenCoordinate = [ self.size[0]/2, self.size[1]/2]     
     
     def setTurnText( self, turnText ):
         self.win.itemconfigure(self.turnText, text=turnText)
@@ -96,7 +108,7 @@ class GraphicsEngine(Frame):
             [x, y] = self.game_coordinates_to_screen_coordinates( pos.x, pos.y, pos.z )
 
             # Find out what to draw there
-            coordinates_placed = self.move_object( rend_comp.polygon, x, y )
+            coordinates_placed = self.move_object( deepcopy(rend_comp.polygon), x, y )
 
             # Find out how to draw, and draw it
             rend_comp.renderID = self.win.create_polygon( coordinates_placed, outline=rend_comp.color, width=rend_comp.width, fill=rend_comp.fill, tag=gameObject.name )
@@ -139,20 +151,19 @@ class GraphicsEngine(Frame):
                 obj = self.get_game_object( objectID )
                 
             except:
-                print "Could not find object"    
-            """    
-            pos  = obj.components['position']
-            rend = obj.components['render']
+                print "Could not find object"
+                
+            pos_comp  = obj.components['position']
+            rend_comp = obj.components['render']
 
             # Find out where to draw
-            [x, y] = self.game_coordinates_to_screen_coordinates( pos.x, pos.y, pos.z )
-
+            [x, y] = self.game_coordinates_to_screen_coordinates( pos_comp.pos.x, pos_comp.pos.y, pos_comp.pos.z )
+          
             # Find out what to draw there
-            coordinates_placed = self.move_object( rend.polygon, x, y )
+            coordinates_placed = self.move_object( deepcopy(rend_comp.polygon), x, y )
 
             # Move the object
-            self.win.coords( rend.renderID, *coordinates_placed  )
-"""
+            self.win.coords( rend_comp.renderID, *coordinates_placed  )
             
                   
         self.master.update_idletasks() # redraw
@@ -172,9 +183,8 @@ class TestGraphicsEngine(unittest.TestCase):
     def setUpClass(cls):
         "This method is called once, when starting the tests"
         cls.graphEng = GraphicsEngine(None)
-        cls.graphEng.size = [800, 600]
-        cls.centerScreenCoordinate = [ cls.graphEng.size[0]/2, cls.graphEng.size[1]/2]
-        
+        cls.graphEng.set_window_size( 800, 600 )
+                
     @classmethod
     def tearDownClass(cls):
         "This method is called after finishing all tests"
@@ -184,11 +194,18 @@ class TestGraphicsEngine(unittest.TestCase):
 
     def setUp(self):
         "This method is called befire each test case"
-        pass
+        self.graphEng = GraphicsEngine(None)
+        self.graphEng.set_window_size( 800, 600 )
+
+        self.dummyGameObject = GameObject( None )
+        self.dummyGameObject.components['position'] = PositionComponent(None)
+        self.dummyGameObject.components['render'] = RenderComponent(None)
+
 
     def tearDown(self):
         "This method is called after each test case"
         self.graphEng.objects = []
+        
 
     #######################################################
 
@@ -196,7 +213,24 @@ class TestGraphicsEngine(unittest.TestCase):
         """ Assure the constants used by the test class are correct """
 
         self.assertEqual( self.graphEng.size, [800, 600] )
-        self.assertEqual( self.centerScreenCoordinate, [400, 300] )
+        self.assertEqual( self.graphEng.centerScreenCoordinate, [400, 300] )
+
+    def test_set_window_size( self ):
+        """ Assure setting window size succeeds """
+
+        gE = GraphicsEngine( None )
+        gE.set_window_size( 800, 600)
+
+        self.assertEqual( gE.size, [800, 600] )
+
+    def test_game_coordinates_to_screen_coordinates_no_effects_on_size( self ):
+        """ It is assumed this calculation has no side effects, this method tests this """
+
+        [screenX, screenY] = self.graphEng.size
+        
+        [x, y] = self.graphEng.game_coordinates_to_screen_coordinates( 0, 0, 0 )
+        
+        self.assertEqual( self.graphEng.size, [screenX, screenY], "Screen size cahnged" )
 
     def test_add_game_object_valid(self):
         """ Test if adding a valid object succeeds """
@@ -227,21 +261,21 @@ class TestGraphicsEngine(unittest.TestCase):
     def test_game_coordinates_to_screen_coordinates_center( self ):
         """ Test if setting game coordinate 0, 0, 0 ends in the center """
 
-        self.assertEqual( self.centerScreenCoordinate, [ 400, 300] )
+        self.assertEqual( self.graphEng.centerScreenCoordinate, [ 400, 300] )
         
         [x,y] = self.graphEng.game_coordinates_to_screen_coordinates( 0,0,0 )
   
-        self.assertEqual( [x,y], self.centerScreenCoordinate )
+        self.assertEqual( [x,y], self.graphEng.centerScreenCoordinate )
 
     def test_game_coordinates_to_screen_coordinates_1_0_m1( self ):
         """ Test if x1 y0 z-1 ends in the correct position """
 
         [x,y] = self.graphEng.game_coordinates_to_screen_coordinates( 1, 0, -1 )
 
-        expected = self.centerScreenCoordinate
+        expected = self.graphEng.centerScreenCoordinate
 
         expected[0] +=  0 * self.graphEng.screen_x_offset 
-        expected[1] += -1 * self.graphEng.screen_y_offset
+        expected[1] += -2 * self.graphEng.screen_y_offset
 
         self.assertAlmostEqual( x, expected[0], 3 )
         self.assertAlmostEqual( y, expected[1], 3 )
@@ -251,7 +285,7 @@ class TestGraphicsEngine(unittest.TestCase):
         
         [x,y] = self.graphEng.game_coordinates_to_screen_coordinates( -2, 2, 0 )
 
-        expected = self.centerScreenCoordinate
+        expected = self.graphEng.centerScreenCoordinate
 
         expected[0] +=  2 * self.graphEng.screen_x_offset
         expected[1] +=  2 * self.graphEng.screen_y_offset
@@ -264,7 +298,7 @@ class TestGraphicsEngine(unittest.TestCase):
 
         [x,y] =self.graphEng.game_coordinates_to_screen_coordinates( -2, 3, -1 )
 
-        expected = self.centerScreenCoordinate
+        expected = self.graphEng.centerScreenCoordinate
 
         expected[0] +=   3 * self.graphEng.screen_x_offset
         expected[1] +=   1 * self.graphEng.screen_y_offset
@@ -296,15 +330,10 @@ class TestGraphicsEngine(unittest.TestCase):
         # Replace the method with the mock method
         gameEng = MagicMock()
         gameEng.get_game_object = MagicMock()
-
-        dummyGameObject = GameObject( None )
-        dummyGameObject.components['position'] = PositionComponent(None)
-        dummyGameObject.components['render'] = RenderComponent(None)
-
-        gameEng.get_game_object.return_value = dummyGameObject
-
         
+        gameEng.get_game_object.return_value = self.dummyGameObject
 
+        # Set the function to call
         self.graphEng.get_game_object = gameEng.get_game_object
         
         # Add an object to the object list
@@ -314,8 +343,16 @@ class TestGraphicsEngine(unittest.TestCase):
         # Trigger the function that should redraw
         self.assertRaises( KeyError, self.graphEng.updateScreen() )
 
+    def test_render_component_not_affected_by_drawing(self):
+        """  """    
+
+        polygon = self.dummyGameObject.components['render'].polygon
+        polygon_copy = deepcopy( polygon )
+        self.graphEng.add_component( self.dummyGameObject )
+
+        self.assertEqual( self.dummyGameObject.components['render'].polygon, polygon_copy )
         
         
 
 if __name__ == '__main__':
-    unittest.main(verbosity=2)
+    unittest.main(verbosity=1)

@@ -37,7 +37,17 @@ class MoveComponent( Component ):
 
     def __init__(self, parent):
         self.parent = parent
-        self.XYspeed = [0.0, 0.0]
+        self.speed = 0.0
+
+        
+
+    def get_xyz_speed(self, orientation):
+
+        speed_mat = [ [1,-1,0], [1,0,-1], [0,1,-1], [-1,1,0], [-1,0,1], [0,-1,1] ]
+
+        xyz_speed = speed_mat[ orientation ]
+
+        return [x*self.speed for x in xyz_speed] 
 
 ###################################################################
 #
@@ -63,7 +73,7 @@ class TestMoveComponent(unittest.TestCase):
 
     def setUp(self):
         "This method is called befire each test case"
-        pass
+        self.movComp.speed = 0.0
 
     def tearDown(self):
         "This method is called after each test case"
@@ -73,7 +83,49 @@ class TestMoveComponent(unittest.TestCase):
 
     def test_defaultSpeed(self):
 
-        self.assertEqual( self.movComp.XYspeed, [0.0,0.0] )
-                
+        self.assertEqual( self.movComp.speed, 0.0 )
+
+    def test_xyz_speed_or0(self):
+
+        self.movComp.speed = 2.0
+        xyz_speed = self.movComp.get_xyz_speed( 0 )
+
+        self.assertEqual( xyz_speed, [ 2.0, -2.0, 0.0 ]  )
+
+    def test_xyz_speed_or1(self):
+
+        self.movComp.speed = 2.0
+        xyz_speed = self.movComp.get_xyz_speed( 1 )
+
+        self.assertEqual( xyz_speed, [ 2.0, 0.0, -2.0 ]  )
+
+    def test_xyz_speed_or2(self):
+
+        self.movComp.speed = 2.0
+        xyz_speed = self.movComp.get_xyz_speed( 2 )
+
+        self.assertEqual( xyz_speed, [ 0.0, 2.0, -2.0 ]  )
+
+    def test_xyz_speed_or3(self):
+
+        self.movComp.speed = 2.0
+        xyz_speed = self.movComp.get_xyz_speed( 3 )
+
+        self.assertEqual( xyz_speed, [ -2.0, 2.0, 0.0 ]  )
+
+    def test_xyz_speed_or4(self):
+
+        self.movComp.speed = 2.0
+        xyz_speed = self.movComp.get_xyz_speed( 4 )
+
+        self.assertEqual( xyz_speed, [ -2.0, 0.0, 2.0 ]  )                      
+        
+    def test_xyz_speed_or5(self):
+
+        self.movComp.speed = 2.0
+        xyz_speed = self.movComp.get_xyz_speed( 5 )
+
+        self.assertEqual( xyz_speed, [ 0.0, -2.0, 2.0 ]  )
+                        
 if __name__ == '__main__':
     unittest.main(verbosity=2)

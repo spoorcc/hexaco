@@ -2,11 +2,13 @@ from Engine import GraphicsEngine
 from Engine import GameEngine
 from threading import Thread
 
-import Tkinter 
+import Tkinter
+
+from time import sleep
 
 root = Tkinter.Tk()
 
-hexRadius = 30
+hexRadius = 45
 
 gameEngine = GameEngine.GameEngine()
 graphicsEngine = GraphicsEngine.GraphicsEngine(master=root)
@@ -27,3 +29,4 @@ while 1:
 	graphicsEngine.setTurnText( i )
 	gameEngine.update()
 	graphicsEngine.updateScreen()
+	sleep( 0 )

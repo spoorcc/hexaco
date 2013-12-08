@@ -48,8 +48,7 @@ class GameEngine(object):
 
     def __init__(self):
         """ Initializes all the member variables """
-        self.objects = []
-        self.tiles = []
+        self.objects = dict()
         self.gameObjectFactory = GameObjectFactory(self)
         self.callbacks_for_new_object = []
 
@@ -62,7 +61,7 @@ class GameEngine(object):
     def initialize_objects(self):
         """ All objects in the world will be initialized here """
 
-        self.create_map( 6 )
+        self.create_map( 4 )
 
         ant = self.gameObjectFactory.create_ant()
         ant.components['position'].pos.set_position_xyz( 3, -3, 0)
@@ -72,14 +71,13 @@ class GameEngine(object):
         """ Add a game object and call all the methods registered to this event with the game_obj handle """
 
         if type(game_object) is GameObject:
-            self.objects.append( game_object )
+            self.objects[ str(game_object.objectID) ] =  game_object
 
             for method in self.callbacks_for_new_object:
                 method( game_object )
 
     def get_game_object( self, object_id):
-        print cls
-        return cls._instance.objects( object_id )            
+        return self._instance.objects[ str(object_id) ]
 
     def create_map(self, rings):
 
@@ -97,11 +95,24 @@ class GameEngine(object):
 
     def update(self):
 
-        for obj in self.objects:
+        for obj_id, obj in self.objects.iteritems():
 
-            # Execute move actions
-            if 'move' in obj.components:
-                pass
+            try:
+                # Execute move actions
+                if 'move' in obj.components:
+
+                    move_comp = obj.components['move']
+                    pos_comp = obj.components['position']
+
+                    # Only do the move computations if there is a movement
+                    if move_comp.speed != 0.0:
+                        speed_mat = move_comp.get_xyz_speed( pos_comp.orientation )
+                        
+                        pos_comp.pos.x += speed_mat[0]
+                        pos_comp.pos.y += speed_mat[1]
+                        pos_comp.pos.z += speed_mat[2]                    
+            except:
+                print obj
 
                 
 
@@ -132,20 +143,29 @@ class TestGameEngine(unittest.TestCase):
 
     def tearDown(self):
         "This method is called after each test case"
-        self.gameEng.objects = []
+        self.gameEng.objects = {}
 
     #######################################################
 
     def test_add_game_object_valid(self):
-        """ Simple test"""
+        """ Test if adding a valid game object succeeds """
 
         obj = GameObject(self)
         self.gameEng.add_game_object(obj)
 
         self.assertEqual( len(self.gameEng.objects ), 1 )
 
+    def test_add_game_object_multiple_valid_objects(self):
+        """ Test if adding multiple valid game objects succeeds """
+
+        for i in range( 5 ): 
+            obj = self.gameEng.gameObjectFactory.create_tile()
+            self.gameEng.add_game_object(obj)
+
+        self.assertEqual( len(self.gameEng.objects ), 5 )
+
     def test_add_game_object_invalid(self):
-        """ Simple test"""
+        """ Test if a invalid game object is not added """
         
         self.gameEng.add_game_object( "not an object" )
 
@@ -186,7 +206,27 @@ class TestGameEngine(unittest.TestCase):
         
         self.gameEng.create_map( 2 )
         
-        self.assertEqual( len(self.gameEng.gameObjectFactory.create_tile.mock_calls), 7 )    
+        self.assertEqual( len(self.gameEng.gameObjectFactory.create_tile.mock_calls), 7 )
+
+    def test_get_game_object_call(self):
+        """ Test if getting the game object returns an object """
+
+        obj = self.gameEng.gameObjectFactory.create_game_object()
+        
+        self.gameEng.add_game_object( obj )
+
+        fetchedObj = self.gameEng.get_game_object( obj.objectID )
+
+        self.assertEqual( fetchedObj, obj )
+
+    def test_update(self):
+        """ Test the update call """
+
+        obj = self.gameEng.gameObjectFactory.create_ant()
+
+        self.gameEng.add_game_object( obj )
+
+        
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)

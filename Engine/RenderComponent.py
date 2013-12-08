@@ -42,9 +42,6 @@ class RenderComponent( Component ):
         self.fill = "#ffffff"
         self.width = 0.5
         self.polygon = [ 0, 0, 10, 0, 10, 10, 0, 10 ]
-        self.XYspeed = [0, 0]
-        self.gameXYZ = [0,0,0]
-        self.screenXY = [0,0]
         self.renderID = -1
         
 
