@@ -62,7 +62,7 @@ class GameEngine(object):
     def initialize_objects(self):
         """ All objects in the world will be initialized here """
 
-        self.create_map( 5 )
+        self.create_map( 6 )
 
         ant = self.gameObjectFactory.create_ant()
         ant.components['position'].pos.set_position_xyz( 3, -3, 0)

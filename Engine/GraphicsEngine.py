@@ -34,10 +34,11 @@ import Tkinter
 import unittest
 from mock import MagicMock
 
+from GameObject import GameObject
 from RenderComponent import RenderComponent
 from PositionComponent import PositionComponent
 
-from math import sin, cos, radians
+from math import sin, cos, radians, sqrt
 
 class GraphicsEngine(Frame):
     """The engine managing all drawing to screen
@@ -54,7 +55,7 @@ class GraphicsEngine(Frame):
         Frame.__init__(self,master)
         self.objects = []
         self.size = [800, 600]
-        self.hexRadius = 10
+        self.set_hex_radius( 10 )        
         self.setupWindow()
                 
     def setupWindow(self):
@@ -64,13 +65,25 @@ class GraphicsEngine(Frame):
         self.win.create_text( 25, 6, text="Hexaco", font="Arial 10", fill="#ff0000")
         self.turnText = self.win.create_text( 250, 6, text="No turn", font="Arial 10", fill="#ff0000")        
         self.win.pack(fill=BOTH, expand=1)
+
+    def set_hex_radius( self, hexRadius ):
+        """ Sets the hexRadius and calculates the offsets needed for rendering"""
+
+        self.hexRadius = hexRadius
+        
+        self.hex_width = self.hexRadius * 2.0
+        self.screen_x_offset = 3 * self.hex_width / 4
+
+        self.hex_height = sqrt(3)/2 * self.hex_width
+        self.screen_y_offset = self.hex_height / 2     
     
     def setTurnText( self, turnText ):
         self.win.itemconfigure(self.turnText, text=turnText)
 
     def get_game_object( self, objectID ):
-        print "Wrong method!"
-        pass    
+        """ This method gets called by the graphics engine to get an
+        gameobject by ID, it must be replaced by the correct method """
+        raise Exception("get_game_object method should be replaced with the correct method")
 
     def add_component(self, gameObject ):
         """ If a component has a render and a move component it is added
@@ -94,8 +107,7 @@ class GraphicsEngine(Frame):
             print "Render/Position component of has wrong attributes"
         except: 
             print "Something went wrong"
-
-          
+        
 
     def move_object(self, coordinates, delta_x, delta_y ):
         """ Updates a list of coordinates assuming [x0,y0,x1,y1,...xN,yN]"""
@@ -114,8 +126,8 @@ class GraphicsEngine(Frame):
 
         screen_x, screen_y = self.size[0]/2, self.size[1]/2
 
-        screen_x += cos( radians(30) ) * self.hexRadius * 2 * y
-        screen_y -= sin( radians(30) ) * self.hexRadius * 2 * (2 * x + y)
+        screen_x += self.screen_x_offset * y
+        screen_y -= self.screen_y_offset * (2 * x + y)
 
         return [screen_x, screen_y]    
                     
@@ -128,7 +140,7 @@ class GraphicsEngine(Frame):
                 
             except:
                 print "Could not find object"    
-                
+            """    
             pos  = obj.components['position']
             rend = obj.components['render']
 
@@ -140,7 +152,7 @@ class GraphicsEngine(Frame):
 
             # Move the object
             self.win.coords( rend.renderID, *coordinates_placed  )
-
+"""
             
                   
         self.master.update_idletasks() # redraw
@@ -160,9 +172,9 @@ class TestGraphicsEngine(unittest.TestCase):
     def setUpClass(cls):
         "This method is called once, when starting the tests"
         cls.graphEng = GraphicsEngine(None)
-        cls.xOff = cos( radians(30) ) * cls.graphEng.hexRadius
-        cls.yOff = sin( radians(30) ) * cls.graphEng.hexRadius
-
+        cls.graphEng.size = [800, 600]
+        cls.centerScreenCoordinate = [ cls.graphEng.size[0]/2, cls.graphEng.size[1]/2]
+        
     @classmethod
     def tearDownClass(cls):
         "This method is called after finishing all tests"
@@ -179,6 +191,12 @@ class TestGraphicsEngine(unittest.TestCase):
         self.graphEng.objects = []
 
     #######################################################
+
+    def test_test_class_constants(self):
+        """ Assure the constants used by the test class are correct """
+
+        self.assertEqual( self.graphEng.size, [800, 600] )
+        self.assertEqual( self.centerScreenCoordinate, [400, 300] )
 
     def test_add_game_object_valid(self):
         """ Test if adding a valid object succeeds """
@@ -208,47 +226,54 @@ class TestGraphicsEngine(unittest.TestCase):
 
     def test_game_coordinates_to_screen_coordinates_center( self ):
         """ Test if setting game coordinate 0, 0, 0 ends in the center """
+
+        self.assertEqual( self.centerScreenCoordinate, [ 400, 300] )
         
         [x,y] = self.graphEng.game_coordinates_to_screen_coordinates( 0,0,0 )
   
-        self.assertEqual( [x,y], [self.graphEng.size[0]/2, self.graphEng.size[1]/2] )
+        self.assertEqual( [x,y], self.centerScreenCoordinate )
 
     def test_game_coordinates_to_screen_coordinates_1_0_m1( self ):
         """ Test if x1 y0 z-1 ends in the correct position """
 
         [x,y] = self.graphEng.game_coordinates_to_screen_coordinates( 1, 0, -1 )
 
-        expected = [self.graphEng.size[0]/2, self.graphEng.size[1]/2]
-        expected[1] +=  2 * self.yOff
+        expected = self.centerScreenCoordinate
+
+        expected[0] +=  0 * self.graphEng.screen_x_offset 
+        expected[1] += -1 * self.graphEng.screen_y_offset
 
         self.assertAlmostEqual( x, expected[0], 3 )
         self.assertAlmostEqual( y, expected[1], 3 )
 
     def test_game_coordinates_to_screen_coordinates_m2_2_0( self ):
+        """ Test known game to screen coordinates x -2 y 2 z 0"""
+        
+        [x,y] = self.graphEng.game_coordinates_to_screen_coordinates( -2, 2, 0 )
 
-        [x,y] =self.graphEng.game_coordinates_to_screen_coordinates( -2, 2, 0 )
+        expected = self.centerScreenCoordinate
 
-        expected = [self.graphEng.size[0]/2, self.graphEng.size[1]/2]
-
-        expected[0] +=  3 * self.graphEng.hexRadius
-        expected[1] +=  -4 * self.yOff
-
-        self.assertAlmostEqual( x, expected[0], 3 )
-        self.assertAlmostEqual( y, expected[1], 3 )
-
-    def test_game_coordinates_to_screen_coordinates_m2_3_1( self ):
-
-        [x,y] =self.graphEng.game_coordinates_to_screen_coordinates( -2, 3, 1 )
-
-        expected = [self.graphEng.size[0]/2, self.graphEng.size[1]/2]
-
-        expected[0] +=   9 * self.xOff
-        expected[1] +=  -4 * self.yOff
+        expected[0] +=  2 * self.graphEng.screen_x_offset
+        expected[1] +=  2 * self.graphEng.screen_y_offset
 
         self.assertAlmostEqual( x, expected[0], 3 )
         self.assertAlmostEqual( y, expected[1], 3 )
 
-    def test_get_game_object(self):
+    def test_game_coordinates_to_screen_coordinates_m2_3_m1( self ):
+        """ Test known game to screen coordinates x -2 y 3 z -1"""
+
+        [x,y] =self.graphEng.game_coordinates_to_screen_coordinates( -2, 3, -1 )
+
+        expected = self.centerScreenCoordinate
+
+        expected[0] +=   3 * self.graphEng.screen_x_offset
+        expected[1] +=   1 * self.graphEng.screen_y_offset
+
+        self.assertAlmostEqual( x, expected[0], 3 )
+        self.assertAlmostEqual( y, expected[1], 3 )
+
+    def test_get_game_object_call(self):
+        """ Test to verify the method can be overloaded by an other method, and is called """
 
         # Replace the method with the mock method
         gameEng = MagicMock()
@@ -264,7 +289,33 @@ class TestGraphicsEngine(unittest.TestCase):
 
         gameEng.get_game_object.assert_called_with( 123 )
               
-            
+    def test_get_game_object_missing_components(self):
+        """ Test to verify that the method updating the screen fails
+        when the render or position component are missing """
+
+        # Replace the method with the mock method
+        gameEng = MagicMock()
+        gameEng.get_game_object = MagicMock()
+
+        dummyGameObject = GameObject( None )
+        dummyGameObject.components['position'] = PositionComponent(None)
+        dummyGameObject.components['render'] = RenderComponent(None)
+
+        gameEng.get_game_object.return_value = dummyGameObject
+
+        
+
+        self.graphEng.get_game_object = gameEng.get_game_object
+        
+        # Add an object to the object list
+        self.graphEng.objects.append( 45 )
+        self.assertEqual( len( self.graphEng.objects), 1 )
+
+        # Trigger the function that should redraw
+        self.assertRaises( KeyError, self.graphEng.updateScreen() )
+
+        
+        
 
 if __name__ == '__main__':
-    unittest.main(verbosity=1)
+    unittest.main(verbosity=2)

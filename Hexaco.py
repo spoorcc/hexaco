@@ -10,7 +10,7 @@ hexRadius = 30
 
 gameEngine = GameEngine.GameEngine()
 graphicsEngine = GraphicsEngine.GraphicsEngine(master=root)
-graphicsEngine.hexRadius = hexRadius
+graphicsEngine.set_hex_radius( hexRadius )
 gameEngine.gameObjectFactory.hexRadius = hexRadius
 
 gameEngine.callback_for_new_object( graphicsEngine.add_component )
