@@ -96,25 +96,45 @@ class GameEngine(object):
     def update(self):
 
         for obj_id, obj in self.objects.iteritems():
+            self.update_ai( obj )
+            self.update_move( obj )
 
-            try:
-                # Execute move actions
-                if 'move' in obj.components:
+    def update_ai(self, obj ):
 
-                    move_comp = obj.components['move']
-                    pos_comp = obj.components['position']
+        try:
+            # Execute move actions
+            if 'ai' in obj.components:
 
-                    # Only do the move computations if there is a movement
-                    if move_comp.speed != 0.0:
-                        speed_mat = move_comp.get_xyz_speed( pos_comp.orientation )
-                        
-                        pos_comp.pos.x += speed_mat[0]
-                        pos_comp.pos.y += speed_mat[1]
-                        pos_comp.pos.z += speed_mat[2]                    
-            except:
-                print obj
+                pos_comp = obj.components['position']
 
+                print "x: %f y: %f z: %f" % (pos_comp.pos.x, pos_comp.pos.y, pos_comp.pos.z)
+                   
+                if pos_comp.center_of_tile():
+                    print "redirecting"
+                    pos_comp.orientation = (pos_comp.orientation + 1 ) % 6
                 
+                
+        except:
+            print "Error while trying to let objects think"                        
+
+    def update_move(self, obj ):
+
+        try:
+            # Execute move actions
+            if 'move' in obj.components:
+
+                move_comp = obj.components['move']
+                pos_comp = obj.components['position']
+
+                # Only do the move computations if there is a movement
+                if move_comp.speed != 0.0:
+                    speed_mat = move_comp.get_xyz_speed( pos_comp.orientation )
+                    
+                    pos_comp.pos.x += speed_mat[0]
+                    pos_comp.pos.y += speed_mat[1]
+                    pos_comp.pos.z += speed_mat[2]                    
+        except:
+            print "Error while trying to move objects"                
 
 ###################################################################
 #

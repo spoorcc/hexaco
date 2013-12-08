@@ -33,6 +33,7 @@ from GameObject import GameObject
 from RenderComponent import RenderComponent
 from MoveComponent import MoveComponent
 from PositionComponent import PositionComponent
+from AiComponent import AiComponent
 
 from math import sin, cos, radians
 
@@ -65,9 +66,13 @@ class GameObjectFactory(object):
         obj.components['render'].polygon = [0, -x, x, x, -x, x ]
         
         obj.components['position'] = PositionComponent(obj)
-
+        obj.components['position'].orientation = 3
+        
         obj.components['move'] = MoveComponent(obj)
-        obj.components['move'].speed = 0.001
+        obj.components['move'].speed = 0.1
+
+        obj.components['ai'] = AiComponent(obj)
+        
         
         return obj
 
