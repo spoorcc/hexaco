@@ -29,4 +29,4 @@ while 1:
 	graphicsEngine.setTurnText( i )
 	gameEngine.update()
 	graphicsEngine.updateScreen()
-	sleep( 0.5 )
+	sleep( 0. )

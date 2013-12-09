@@ -69,7 +69,7 @@ class GameObjectFactory(object):
         obj.components['position'].orientation = 3
         
         obj.components['move'] = MoveComponent(obj)
-        obj.components['move'].speed = 0.1
+        obj.components['move'].speed = 0.01
 
         obj.components['ai'] = AiComponent(obj)
         

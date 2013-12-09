@@ -32,7 +32,7 @@ import unittest
 from Component import Component
 from HexagonalPosition import HexagonalPosition
 
-from math import ceil
+from math import ceil, floor, fmod
 
 class PositionComponent( Component ):
     """A Move component has a position
@@ -47,10 +47,12 @@ class PositionComponent( Component ):
         return (self.is_float_int(self.pos.x) and self.is_float_int(self.pos.y) and self.is_float_int(self.pos.z) )
 
     def is_float_int(self, number ):
-        return ( self.round_float( number ) == float( int( number ) ) )
-
+		return ( abs(float('%.2f'%number)-float('%.f'%number) ) < 0.001 )
+        #return ( ceil(number) == number or floor(number) == number )
+        #return ( self.round_float( number ) == float( int( number ) ) )
+        
     def round_float(self, number):
-        return float('%.4f' % (number * 1e-4))    
+        return round( number, 3 )
            
 ###################################################################
 #
@@ -75,10 +77,10 @@ class TestPositionComponent(unittest.TestCase):
     #######################################################
 
     def setUp(self):
-        "This method is called befire each test case"
-        self.posComp.pos.x = 0
-        self.posComp.pos.y = 0
-        self.posComp.pos.z = 0
+        "This method is called before each test case"
+        self.posComp.pos.x = 0.0
+        self.posComp.pos.y = 0.0
+        self.posComp.pos.z = 0.0
 
     def tearDown(self):
         "This method is called after each test case"
@@ -88,15 +90,20 @@ class TestPositionComponent(unittest.TestCase):
 
     def test_defaultPosition(self):
 
-        self.assertEqual( self.posComp.pos.x, 0 )
-        self.assertEqual( self.posComp.pos.y, 0 )
-        self.assertEqual( self.posComp.pos.z, 0 )
+        self.assertEqual( self.posComp.pos.x, 0.0 )
+        self.assertEqual( self.posComp.pos.y, 0.0 )
+        self.assertEqual( self.posComp.pos.z, 0.0 )
 
     def test_defaultOrientation(self):
 
         self.assertEqual( self.posComp.orientation, 0 )
 
     def test_center_of_tile_valid( self ):
+
+        self.assertTrue( self.posComp.center_of_tile() )
+
+        self.posComp.pos.x = -1.0
+        self.posComp.pos.z = 1.0
 
         self.assertTrue( self.posComp.center_of_tile() )
 
@@ -109,15 +116,34 @@ class TestPositionComponent(unittest.TestCase):
     def test_center_of_tile_series( self ):
 
         counter = 0
+
+        self.posComp.pos.x = -1.0
+        self.posComp.pos.y = 1.0
         
-        for i in range( 55 ):
+        for i in range( 2555 ):
+        
             if self.posComp.center_of_tile():
                 counter += 1
 
-            self.posComp.pos.x += 0.1
-            self.posComp.pos.y -= 0.1
+            self.posComp.pos.x += 0.01
+            self.posComp.pos.y -= 0.01
 
-        self.assertEqual( counter, 2 )      
+        self.assertEqual( counter, 26 )
+
+    def test_is_float_int( self ):
+
+        self.assertTrue( self.posComp.is_float_int( -4.0 ) )
+        self.assertTrue( self.posComp.is_float_int(  0.0 ) )
+        self.assertTrue( self.posComp.is_float_int(  1.0 ) )
+        self.assertTrue( self.posComp.is_float_int(  -1.0 ) )
+        self.assertTrue( self.posComp.is_float_int(  0.0001 ) )
+        self.assertTrue( self.posComp.is_float_int(  -0.0009 ) )
+
+        self.assertFalse( self.posComp.is_float_int(  0.5 ) )
+        self.assertFalse( self.posComp.is_float_int(  1.1 ) )
+        self.assertFalse( self.posComp.is_float_int( -0.3 ) )
+        self.assertFalse( self.posComp.is_float_int( -0.5 ) )
+    
 
                 
 if __name__ == '__main__':

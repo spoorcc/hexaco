@@ -64,7 +64,7 @@ class GameEngine(object):
         self.create_map( 4 )
 
         ant = self.gameObjectFactory.create_ant()
-        ant.components['position'].pos.set_position_xyz( 3, -3, 0)
+        ant.components['position'].pos.set_position_xyz( 0, 0, 0)
         self.add_game_object( ant )
 
     def add_game_object(self, game_object):
