@@ -13,7 +13,7 @@ hexRadius = 45
 gameEngine = GameEngine.GameEngine()
 graphicsEngine = GraphicsEngine.GraphicsEngine(master=root)
 graphicsEngine.set_hex_radius( hexRadius )
-gameEngine.gameObjectFactory.hexRadius = hexRadius
+gameEngine.game_object_factory.hexRadius = hexRadius
 
 gameEngine.callback_for_new_object( graphicsEngine.add_component )
 graphicsEngine.get_game_object = gameEngine.get_game_object
