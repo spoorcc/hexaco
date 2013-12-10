@@ -43,6 +43,11 @@ class PositionComponent( Component ):
         self.pos = HexagonalPosition( self )
         self.orientation = 0
 
+    def xyz(self):
+		""" Returns the xyz position as list"""
+
+		return [self.pos.x, self.pos.y, self.pos.z]    
+
     def center_of_tile( self ):
         return (self.is_float_int(self.pos.x) and self.is_float_int(self.pos.y) and self.is_float_int(self.pos.z) )
 

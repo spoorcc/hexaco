@@ -107,7 +107,7 @@ class GameEngine(object):
 
                 pos_comp = obj.components['position']
 
-                print "x: %f y: %f z: %f" % (pos_comp.pos.x, pos_comp.pos.y, pos_comp.pos.z)
+                #print "x: %f y: %f z: %f" % (pos_comp.pos.x, pos_comp.pos.y, pos_comp.pos.z)
                    
                 if pos_comp.center_of_tile():
                     print "redirecting"
