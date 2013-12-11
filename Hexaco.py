@@ -57,7 +57,7 @@ print "Starting main game loop"
 while 1:
 
     i += 1
-    GRAPHICS_ENGINE.setTurnText(i)
+    GRAPHICS_ENGINE.set_turn_text(i)
     GAME_ENGINE.update()
     GRAPHICS_ENGINE.updateScreen()
     sleep(0.)
