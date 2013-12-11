@@ -17,46 +17,19 @@
 
 ########################################################################
 
- Main Hexaco 
-
+ AI Component Class
+ 
 ########################################################################
 
 Description
 -----------
-Creates all software components and manages the main game loop """
+Class for a Artificial Intelligence component """
 
-from Engine import GraphicsEngine
-from Engine import GameEngine
+from Engine.Components.Component import Component
 
-import Tkinter
+class AiComponent( Component ):
+    """An Ai component
+    """
 
-from time import sleep
-
-ROOT = Tkinter.Tk()
-
-HEX_RADIUS = 45
-
-# Create the engines
-GAME_ENGINE = GameEngine()
-GRAPHICS_ENGINE = GraphicsEngine(master=ROOT)
-
-# Set all constants
-GRAPHICS_ENGINE.set_hex_radius( HEX_RADIUS )
-GAME_ENGINE.set_hex_radius( HEX_RADIUS )
-
-GAME_ENGINE.callback_for_new_object( GRAPHICS_ENGINE.add_component )
-GRAPHICS_ENGINE.get_game_object = GAME_ENGINE.get_game_object
-
-# Initialize all engines
-GAME_ENGINE.initialize_objects()
-
-i = 0
-
-print "Starting main game loop"
-while 1:
-    
-    i += 1
-    GRAPHICS_ENGINE.setTurnText( i )
-    GAME_ENGINE.update()
-    GRAPHICS_ENGINE.updateScreen()
-    sleep( 0. )
+    def __init__(self, parent):
+        self.parent = parent

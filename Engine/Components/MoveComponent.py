@@ -17,46 +17,30 @@
 
 ########################################################################
 
- Main Hexaco 
+ Move Component Class
 
 ########################################################################
 
 Description
 -----------
-Creates all software components and manages the main game loop """
+Base class for a move component """
 
-from Engine import GraphicsEngine
-from Engine import GameEngine
+from Component import Component
 
-import Tkinter
+class MoveComponent( Component ):
+    """A Move component 
+    """
 
-from time import sleep
+    def __init__(self, parent):
+        self.parent = parent
+        self.speed = 0.0
 
-ROOT = Tkinter.Tk()
+        
 
-HEX_RADIUS = 45
+    def get_xyz_speed(self, orientation):
 
-# Create the engines
-GAME_ENGINE = GameEngine()
-GRAPHICS_ENGINE = GraphicsEngine(master=ROOT)
+        speed_mat = [ [1,-1,0], [1,0,-1], [0,1,-1], [-1,1,0], [-1,0,1], [0,-1,1] ]
 
-# Set all constants
-GRAPHICS_ENGINE.set_hex_radius( HEX_RADIUS )
-GAME_ENGINE.set_hex_radius( HEX_RADIUS )
+        xyz_speed = speed_mat[ orientation ]
 
-GAME_ENGINE.callback_for_new_object( GRAPHICS_ENGINE.add_component )
-GRAPHICS_ENGINE.get_game_object = GAME_ENGINE.get_game_object
-
-# Initialize all engines
-GAME_ENGINE.initialize_objects()
-
-i = 0
-
-print "Starting main game loop"
-while 1:
-    
-    i += 1
-    GRAPHICS_ENGINE.setTurnText( i )
-    GAME_ENGINE.update()
-    GRAPHICS_ENGINE.updateScreen()
-    sleep( 0. )
+        return [x*self.speed for x in xyz_speed] 

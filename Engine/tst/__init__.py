@@ -17,8 +17,6 @@
     along with HexACO.  If not, see <http://www.gnu.org/licenses/>.
 
 ########################################################################
-
- Engine module init script
  
  
 ########################################################################
@@ -27,8 +25,4 @@ Description
 -----------
 Needed for importing classes in the module """
 
-from GameEngine import GameEngine
-from GraphicsEngine import GraphicsEngine
-
-from GameObject import GameObject
-from GameObjectFactory import GameObjectFactory
+from . import *

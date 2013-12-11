@@ -17,7 +17,7 @@
 
 ########################################################################
 
- Position Component Class
+ Position Component test Class
  including Unit test class
 
  * Run file separate to run unit tests
@@ -29,41 +29,7 @@ Description
 Class for a position component """
 
 import unittest
-from Component import Component
-from HexagonalPosition import HexagonalPosition
-
-from math import ceil, floor, fmod
-
-class PositionComponent( Component ):
-    """A Move component has a position
-    """
-
-    def __init__(self, parent):
-        self.parent = parent
-        self.pos = HexagonalPosition( self )
-        self.orientation = 0
-
-    def xyz(self):
-		""" Returns the xyz position as list"""
-
-		return [self.pos.x, self.pos.y, self.pos.z]    
-
-    def center_of_tile( self ):
-        return (self.is_float_int(self.pos.x) and self.is_float_int(self.pos.y) and self.is_float_int(self.pos.z) )
-
-    def is_float_int(self, number ):
-		return ( abs(float('%.2f'%number)-float('%.f'%number) ) < 0.001 )
-        #return ( ceil(number) == number or floor(number) == number )
-        #return ( self.round_float( number ) == float( int( number ) ) )
-        
-    def round_float(self, number):
-        return round( number, 3 )
-           
-###################################################################
-#
-# Test Code
-#
-###################################################################
+from .. import PositionComponent
 
 class TestPositionComponent(unittest.TestCase):
 

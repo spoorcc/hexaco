@@ -27,8 +27,11 @@ Description
 -----------
 Needed for importing classes in the module """
 
-from GameEngine import GameEngine
-from GraphicsEngine import GraphicsEngine
+from Component import Component
 
-from GameObject import GameObject
-from GameObjectFactory import GameObjectFactory
+from AiComponent import AiComponent
+from MoveComponent import MoveComponent
+from PheromoneComponent import PheromoneComponent
+from PheromoneSenseComponent import PheromoneSenseComponent
+from RenderComponent import RenderComponent
+from PositionComponent import PositionComponent

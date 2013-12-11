@@ -17,37 +17,16 @@
 
 ########################################################################
 
- Move Component Class
- including Unit test class
-
- * Run file separate to run unit tests
+ Move Component Test Class
 
 ########################################################################
 
 Description
 -----------
-Base class for a move component """
+ """
 
 import unittest
-from Component import Component
-
-class MoveComponent( Component ):
-    """A Move component 
-    """
-
-    def __init__(self, parent):
-        self.parent = parent
-        self.speed = 0.0
-
-        
-
-    def get_xyz_speed(self, orientation):
-
-        speed_mat = [ [1,-1,0], [1,0,-1], [0,1,-1], [-1,1,0], [-1,0,1], [0,-1,1] ]
-
-        xyz_speed = speed_mat[ orientation ]
-
-        return [x*self.speed for x in xyz_speed] 
+from  ..MoveComponent import MoveComponent
 
 ###################################################################
 #

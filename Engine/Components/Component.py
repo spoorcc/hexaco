@@ -18,17 +18,12 @@
 ########################################################################
 
  Component Class
- including Unit test class
-
- * Run file separate to run unit tests
 
 ########################################################################
 
 Description
 -----------
 Base class for a component """
-
-import unittest
 
 class Component(object):
     """A component is a base class for features of gameobjects 
@@ -37,41 +32,3 @@ class Component(object):
     def __init__(self, parent):
         self.parent = parent
 
-###################################################################
-#
-# Test Code
-#
-###################################################################
-
-class TestComponent(unittest.TestCase):
-
-    ######################################################
-
-    @classmethod
-    def setUpClass(cls):
-        "This method is called once, when starting the tests"
-        cls.comp = Component(None)
-
-    @classmethod
-    def tearDownClass(cls):
-        "This method is called after finishing all tests"
-        pass
-
-    #######################################################
-
-    def setUp(self):
-        "This method is called befire each test case"
-        pass
-
-    def tearDown(self):
-        "This method is called after each test case"
-        pass
-
-    #######################################################
-
-    def test_defaultName(self):
-
-        self.assertEqual( type( self.comp), Component )
-
-if __name__ == '__main__':
-    unittest.main(verbosity=2)

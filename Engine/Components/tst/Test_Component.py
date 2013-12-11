@@ -17,41 +17,31 @@
 
 ########################################################################
 
- AI Component Class
- including Unit test class
-
- * Run file separate to run unit tests
-
+ Component Test Class
+ 
 ########################################################################
 
 Description
 -----------
-Class for a Artificial Intelligence component """
+ """
 
 import unittest
-from Component import Component
+from ..Component import Component
 
-class AiComponent( Component ):
-    """An Ai component
-    """
-
-    def __init__(self, parent):
-        self.parent = parent
-        
 ###################################################################
 #
 # Test Code
 #
 ###################################################################
 
-class TestAiComponent(unittest.TestCase):
+class TestComponent(unittest.TestCase):
 
     ######################################################
 
     @classmethod
     def setUpClass(cls):
         "This method is called once, when starting the tests"
-        cls.aiComp = AiComponent(None)
+        cls.comp = Component(None)
 
     @classmethod
     def tearDownClass(cls):
@@ -70,9 +60,9 @@ class TestAiComponent(unittest.TestCase):
 
     #######################################################
 
-    def test_defaultParent(self):
+    def test_defaultName(self):
 
-        self.assertEqual( self.aiComp.parent, None )
-                
+        self.assertEqual( type( self.comp), Component )
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

@@ -29,13 +29,14 @@ Description
 Class for constructing Game Objects """
 
 import unittest
-from GameObject import GameObject
-from RenderComponent import RenderComponent
-from MoveComponent import MoveComponent
-from PositionComponent import PositionComponent
-from AiComponent import AiComponent
-
 from math import sin, cos, radians
+
+from GameObject import GameObject
+
+from Components import RenderComponent
+from Components import MoveComponent
+from Components import PositionComponent
+from Components import AiComponent
 
 class GameObjectFactory(object):
     """The ObjectFactory which construcs game objects

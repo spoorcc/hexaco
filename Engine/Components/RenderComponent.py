@@ -28,7 +28,6 @@ Description
 -----------
 Base class for a Render component """
 
-import unittest
 from Component import Component
 
 class RenderComponent( Component ):
@@ -43,47 +42,4 @@ class RenderComponent( Component ):
         self.width = 0.5
         self.polygon = [ 0, 0, 10, 0, 10, 10, 0, 10 ]
         self.renderID = -1
-        
-
-###################################################################
-#
-# Test Code
-#
-###################################################################
-
-class TestRenderComponent(unittest.TestCase):
-
-    ######################################################
-
-    @classmethod
-    def setUpClass(cls):
-        "This method is called once, when starting the tests"
-        cls.rndrComp = RenderComponent(None)
-
-    @classmethod
-    def tearDownClass(cls):
-        "This method is called after finishing all tests"
-        pass
-
-    #######################################################
-
-    def setUp(self):
-        "This method is called befire each test case"
-        pass
-
-    def tearDown(self):
-        "This method is called after each test case"
-        pass
-
-    #######################################################
-
-    def test_defaultVisibility(self):
-
-        self.assertTrue( self.rndrComp.visible )
-
-    def test_defaultPolygon(self):
-
-		self.assertEqual( self.rndrComp.polygon,  [0,0,10,0,10,10,0,10] )
-        
-if __name__ == '__main__':
-    unittest.main(verbosity=2)
+      

@@ -31,8 +31,8 @@ Class for a Pheromone Engine """
 import unittest
 
 from GameObject import GameObject
-from PheromoneSenseComponent import PheromoneSenseComponent
-from PheromoneComponent import PheromoneComponent
+from Components import PheromoneSenseComponent
+from Components import PheromoneComponent
 
 class PheromoneEngine(object):
     """The engine managing all pheromones on the map
