@@ -17,7 +17,7 @@
 
 ########################################################################
 
- Main Hexaco 
+ Main Hexaco
 
 ########################################################################
 
@@ -41,10 +41,10 @@ GAME_ENGINE = GameEngine()
 GRAPHICS_ENGINE = GraphicsEngine(master=ROOT)
 
 # Set all constants
-GRAPHICS_ENGINE.set_hex_radius( HEX_RADIUS )
-GAME_ENGINE.set_hex_radius( HEX_RADIUS )
+GRAPHICS_ENGINE.set_hex_radius(HEX_RADIUS)
+GAME_ENGINE.set_hex_radius(HEX_RADIUS)
 
-GAME_ENGINE.callback_for_new_object( GRAPHICS_ENGINE.add_component )
+GAME_ENGINE.callback_for_new_object(GRAPHICS_ENGINE.add_component)
 GRAPHICS_ENGINE.get_game_object = GAME_ENGINE.get_game_object
 
 # Initialize all engines
@@ -53,10 +53,11 @@ GAME_ENGINE.initialize_objects()
 i = 0
 
 print "Starting main game loop"
+
 while 1:
-    
+
     i += 1
-    GRAPHICS_ENGINE.setTurnText( i )
+    GRAPHICS_ENGINE.setTurnText(i)
     GAME_ENGINE.update()
     GRAPHICS_ENGINE.updateScreen()
-    sleep( 0. )
+    sleep(0.)

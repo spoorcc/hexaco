@@ -34,32 +34,35 @@ from Components import MoveComponent
 from Components import PositionComponent
 from Components import AiComponent
 
+
 class GameObjectFactory(object):
     """The ObjectFactory which construcs game objects
     """
 
     def __init__(self, parent):
         self.parent = parent
-        self.hexRadius = 20
+        self.hex_radius = 20
         self.nextObjectId = 0
 
     def create_game_object(self):
+        """ Creates an emty object with an unique object_id"""
 
-		obj = GameObject(None)
-		obj.objectID = self.nextObjectId
+        obj = GameObject(None)
+        obj.objectID = self.nextObjectId
 
-		self.nextObjectId += 1
+        self.nextObjectId += 1
 
-		return obj
+        return obj
 
     def create_ant(self):
+        """ Returns a newly created ant with an unique object_id"""
 
         obj = self.create_game_object()
         obj.components['render'] = RenderComponent(obj)
         obj.components['render'].color = "#880000"
         obj.components['render'].fill = "#001100"
 
-        x = 0.4 * self.hexRadius
+        x = 0.4 * self.hex_radius 
         obj.components['render'].polygon = [0, -x, x, x, -x, x ]
         
         obj.components['position'] = PositionComponent(obj)
@@ -69,30 +72,34 @@ class GameObjectFactory(object):
         obj.components['move'].speed = 0.01
 
         obj.components['ai'] = AiComponent(obj)
-        
-        
+
         return obj
 
     def create_tile(self):
+        """ Returns a newly created tile """
 
         obj = self.create_game_object()
         obj.components['render'] = RenderComponent(obj)
         obj.components['render'].color = "#005500"
         obj.components['render'].fill = "#220000"
-        obj.components['render'].polygon = self.create_hexagon( self.hexRadius )
+        obj.components['render'].polygon = self.create_hexagon( self.hex_radius)
         
         obj.components['position'] = PositionComponent(obj)
         
         return obj
 
-    def give_point_on_circle(self, degrees, radius ):
-        return [ radius * cos( radians(degrees) ), radius * sin( radians(degrees) )]
+    def give_point_on_circle(self, degrees, radius):
+        """ Returns the x,y coordinates of a point on a circle with its center
+        at 0,0 and with the given radius """
+        return [radius * cos(radians(degrees)), radius * sin(radians(degrees))]
         
-    def create_hexagon(self, radius ):
+    def create_hexagon(self, radius):
+        """ Returns the coordinates of a hexagon where the furthest points lay
+        on a circle with its center at 0,0 and with the given radius"""
 
         coordinates = []
-        for i in range(0,6):
-            coordinates = coordinates + self.give_point_on_circle( i * 60, radius )
+        for i in range(0, 6):
+            coordinates += self.give_point_on_circle(i * 60, radius)
 
         return coordinates
         
