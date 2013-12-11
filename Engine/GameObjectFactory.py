@@ -18,9 +18,6 @@
 ########################################################################
 
  Game Object Factory Class
- including Unit test class
-
- * Run file separate to run unit tests
 
 ########################################################################
 
@@ -28,7 +25,6 @@ Description
 -----------
 Class for constructing Game Objects """
 
-import unittest
 from math import sin, cos, radians
 
 from GameObject import GameObject
@@ -100,73 +96,3 @@ class GameObjectFactory(object):
 
         return coordinates
         
-###################################################################
-#
-# Test Code
-#
-###################################################################
-
-class TestGameObjectFactory(unittest.TestCase):
-    """Test object for GameObjectFactory"""
-
-    @classmethod
-    def setUpClass(cls):
-        "This method is called once, when starting the tests"
-        cls.gameObjFact = GameObjectFactory(None)
-
-    @classmethod
-    def tearDownClass(cls):
-        "This method is called after finishing all tests"
-        pass
-
-    #######################################################
-
-    def setUp(self):
-        "This method is called befire each test case"
-        pass
-
-    def tearDown(self):
-        "This method is called after each test case"
-        pass
-
-    #######################################################
-
-    def test_create_game_object_returns_object(self):
-        """ Simple test"""
-
-        obj = self.gameObjFact.create_game_object()
-        self.assertEqual( type(obj), GameObject )
-
-    def test_give_point_on_circle(self):
-
-        coordinates = self.gameObjFact.give_point_on_circle( 30, 1 )
-
-        self.assertAlmostEqual( coordinates[0], 0.866, 3 )
-        self.assertAlmostEqual( coordinates[1], 0.5, 3 )
-
-    def test_create_hexagon_radius_one(self):
-
-        hexagon = self.gameObjFact.create_hexagon( 1 )
-        expected = [ 1.0, 0.0, 0.5, 0.866, -0.5, 0.866, -1.0, 0.0, -0.5, -0.866, 0.5, -0.866]
-
-        for i in range( len(hexagon) ):
-            self.assertAlmostEqual( hexagon[i], expected[i] , 3, "%.3f != %.3f @ %d" % (hexagon[i], expected[i], i) )
-
-
-    def test_create_hexagon_radius_twenty(self):
-
-        hexagon = self.gameObjFact.create_hexagon( 20 )
-        expected = [ 20.0, 0.0, 10.0, 17.321, -10.0, 17.321, -20.0, 0.0, -10.0, -17.321, 10.0, -17.321]
-
-        for i in range( len(hexagon) ):
-            self.assertAlmostEqual( hexagon[i], expected[i] , 3, "%.3f != %.3f @ %d" % (hexagon[i], expected[i], i) )
-
-    def test_create_game_object_unique_ids(self):
-
-		 obj1 = self.gameObjFact.create_game_object()
-		 obj2 = self.gameObjFact.create_game_object()
-
-		 self.assertNotEqual( obj1.objectID, obj2.objectID )       
-
-if __name__ == '__main__':
-    unittest.main(verbosity=1)
