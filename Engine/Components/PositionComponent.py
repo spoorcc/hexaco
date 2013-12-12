@@ -25,33 +25,34 @@ Description
 -----------
 Class for a position component """
 
-import unittest
-from math import ceil, floor, fmod
-
-from Component import Component
+from Engine.Components.Component import Component
 from ..HexagonalPosition import HexagonalPosition
 
-class PositionComponent( Component ):
+
+class PositionComponent(Component):
     """A Move component has a position
     """
 
     def __init__(self, parent):
+        super(PositionComponent, self).__init__(parent)
         self.parent = parent
-        self.pos = HexagonalPosition( self )
+        self.pos = HexagonalPosition(self)
         self.orientation = 0
 
     def xyz(self):
-		""" Returns the xyz position as list"""
+        """ Returns the xyz position as list"""
 
-		return [self.pos.x, self.pos.y, self.pos.z]    
+        return [self.pos.x, self.pos.y, self.pos.z]
 
-    def center_of_tile( self ):
-        return (self.is_float_int(self.pos.x) and self.is_float_int(self.pos.y) and self.is_float_int(self.pos.z) )
+    def center_of_tile(self):
+        """ Returns a boolean which indicates if the current coordinate
+        is in the center of a tile"""
+        return (self.is_float_int(self.pos.x) and
+                self.is_float_int(self.pos.y) and
+                self.is_float_int(self.pos.z))
 
-    def is_float_int(self, number ):
-		return ( abs(float('%.2f'%number)-float('%.f'%number) ) < 0.001 )
+    def is_float_int(self, number):
+        """ Returns a boolean which indicates if a float is an integer"""
+        return (abs(float('%.2f' % number)-float('%.f' % number)) < 0.001)
         #return ( ceil(number) == number or floor(number) == number )
-        #return ( self.round_float( number ) == float( int( number ) ) )
-        
-    def round_float(self, number):
-        return round( number, 3 )
+        #return ( self.round_float( number, 3 ) == float( int( number)))

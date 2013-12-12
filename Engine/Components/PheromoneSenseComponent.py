@@ -18,9 +18,6 @@
 ########################################################################
 
  Pheromone Component Class
- including Unit test class
-
- * Run file separate to run unit tests
 
 ########################################################################
 
@@ -28,57 +25,13 @@ Description
 -----------
 Class for a Pheromone component """
 
-import unittest
 from Component import Component
 
-class PheromoneSenseComponent( Component ):
+
+class PheromoneSenseComponent(Component):
     """An Pheromone component
     """
 
     def __init__(self, parent):
         self.parent = parent
         self.neighbour_levels = [0, 0, 0, 0, 0, 0]
-        
-###################################################################
-#
-# Test Code
-#
-###################################################################
-
-class TestPheromoneSenseComponent(unittest.TestCase):
-
-    ######################################################
-
-    @classmethod
-    def setUpClass(cls):
-        "This method is called once, when starting the tests"
-        cls.phComp = PheromoneSenseComponent(None)
-
-    @classmethod
-    def tearDownClass(cls):
-        "This method is called after finishing all tests"
-        pass
-
-    #######################################################
-
-    def setUp(self):
-        "This method is called befire each test case"
-        pass
-
-    def tearDown(self):
-        "This method is called after each test case"
-        pass
-
-    #######################################################
-
-    def test_defaultParent(self):
-
-        self.assertEqual( self.phComp.parent, None )
-
-    def test_default_neighbour_Levels(self):
-
-        for i in range( 6 ):
-			self.assertEqual( self.phComp.neighbour_levels[i], 0 )    
-                
-if __name__ == '__main__':
-    unittest.main(verbosity=2)

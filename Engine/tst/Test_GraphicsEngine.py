@@ -49,7 +49,7 @@ class TestGraphicsEngine(unittest.TestCase):
     def setUpClass(cls):
         "This method is called once, when starting the tests"
         cls.graph_eng = GraphicsEngine(None)
-        cls.graph_eng.set_window_size( 800, 600 )
+        cls.graph_eng.set_window_size(800, 600)
 
     @classmethod
     def tearDownClass(cls):
@@ -67,18 +67,24 @@ class TestGraphicsEngine(unittest.TestCase):
         self.dummy_game_object.components['position'] = PositionComponent(None)
         self.dummy_game_object.components['render'] = RenderComponent(None)
 
-
     def tearDown(self):
         "This method is called after each test case"
         self.graph_eng.objects = []
 
     #######################################################
 
+    def test_singleton_property(self):
+        """ Test if the singleton pattern is hold """
+        graph_eng_1 = GraphicsEngine(None)
+        graph_eng_2 = GraphicsEngine(None)
+
+        self.assertEqual(id(graph_eng_1), id(graph_eng_2))
+
     def test_test_class_constants(self):
         """ Assure the constants used by the test class are correct """
 
-        self.assertEqual( self.graph_eng.size, [800, 600] )
-        self.assertEqual( self.graph_eng.center_screen_coordinate, [400, 300] )
+        self.assertEqual(self.graph_eng.size, [800, 600])
+        self.assertEqual(self.graph_eng.center_screen_coordinate, [400, 300])
 
     def test_set_window_size(self):
         """ Assure setting window size succeeds """
@@ -125,106 +131,115 @@ class TestGraphicsEngine(unittest.TestCase):
         different x,y coordinates """
 
         coordinates = [100, 100, 50, 50]
-        actual = self.graph_eng.move_object( coordinates, 10, 5 )
+        actual = self.graph_eng.move_object(coordinates, 10, 5)
 
-        self.assertEqual(actual, [110, 105, 60, 55] )
+        self.assertEqual(actual, [110, 105, 60, 55])
 
-    def test_game_to_screen_coordinates_center( self ):
+    def test_game_to_screen_coordinates_center(self):
         """ Test if setting game coordinate 0, 0, 0 ends in the center """
 
         self.assertEqual(self.graph_eng.center_screen_coordinate,
                          [400, 300])
 
-        [x,y] = self.graph_eng.game_to_screen_coordinates(0,0,0)
+        [x, y] = self.graph_eng.game_to_screen_coordinates(0, 0, 0)
 
         self.assertEqual([x, y], self.graph_eng.center_screen_coordinate)
 
-    def test_game_to_screen_coordinates_1_0_m1( self ):
+    def test_game_to_screen_coordinates_1_0_m1(self):
         """ Test if x1 y0 z-1 ends in the correct position """
 
-        [x,y] = self.graph_eng.game_to_screen_coordinates( 1, 0, -1 )
+        [x, y] = self.graph_eng.game_to_screen_coordinates(1, 0, -1)
 
         expected = self.graph_eng.center_screen_coordinate
 
-        expected[0] +=  0 * self.graph_eng.screen_x_offset
+        expected[0] += 0 * self.graph_eng.screen_x_offset
         expected[1] += -2 * self.graph_eng.screen_y_offset
 
-        self.assertAlmostEqual( x, expected[0], 3 )
-        self.assertAlmostEqual( y, expected[1], 3 )
+        self.assertAlmostEqual(x, expected[0], 3)
+        self.assertAlmostEqual(y, expected[1], 3)
 
-    def test_game_to_screen_coordinates_m2_2_0( self ):
+    def test_game_to_screen_coordinates_m2_2_0(self):
         """ Test known game to screen coordinates x -2 y 2 z 0"""
 
-        [x,y] = self.graph_eng.game_to_screen_coordinates( -2, 2, 0 )
+        [x, y] = self.graph_eng.game_to_screen_coordinates(-2, 2, 0)
 
         expected = self.graph_eng.center_screen_coordinate
 
-        expected[0] +=  2 * self.graph_eng.screen_x_offset
-        expected[1] +=  2 * self.graph_eng.screen_y_offset
+        expected[0] += 2 * self.graph_eng.screen_x_offset
+        expected[1] += 2 * self.graph_eng.screen_y_offset
 
-        self.assertAlmostEqual( x, expected[0], 3 )
-        self.assertAlmostEqual( y, expected[1], 3 )
+        self.assertAlmostEqual(x, expected[0], 3)
+        self.assertAlmostEqual(y, expected[1], 3)
 
-    def test_game_to_screen_coordinates_m2_3_m1( self ):
+    def test_game_to_screen_coordinates_m2_3_m1(self):
         """ Test known game to screen coordinates x -2 y 3 z -1"""
 
-        [x,y] =self.graph_eng.game_to_screen_coordinates( -2, 3, -1 )
+        [x, y] = self.graph_eng.game_to_screen_coordinates(-2, 3, -1)
 
         expected = self.graph_eng.center_screen_coordinate
 
-        expected[0] +=   3 * self.graph_eng.screen_x_offset
-        expected[1] +=   1 * self.graph_eng.screen_y_offset
+        expected[0] += 3 * self.graph_eng.screen_x_offset
+        expected[1] += 1 * self.graph_eng.screen_y_offset
 
-        self.assertAlmostEqual( x, expected[0], 3 )
-        self.assertAlmostEqual( y, expected[1], 3 )
+        self.assertAlmostEqual(x, expected[0], 3)
+        self.assertAlmostEqual(y, expected[1], 3)
 
     def test_get_game_object_call(self):
         """ Test to verify the method can be overloaded by an other method, and is called """
 
         # Replace the method with the mock method
-        gameEng = MagicMock()
-        gameEng.get_game_object = MagicMock()
-        self.graph_eng.get_game_object = gameEng.get_game_object
+        game_eng = MagicMock()
+        game_eng.get_game_object = MagicMock()
+        self.graph_eng.get_game_object = game_eng.get_game_object
 
         # Add an object to the object list
-        self.graph_eng.objects.append( 123 )
-        self.assertEqual( len( self.graph_eng.objects), 1 )
+        self.graph_eng.objects.append(123)
+        self.assertEqual(len(self.graph_eng.objects), 1)
 
         # Trigger the function that should call get_game_object
         self.graph_eng.updateScreen()
 
-        gameEng.get_game_object.assert_called_with( 123 )
+        game_eng.get_game_object.assert_called_with(123)
 
     def test_get_game_object_missing_components(self):
         """ Test to verify that the method updating the screen fails
         when the render or position component are missing """
 
         # Replace the method with the mock method
-        gameEng = MagicMock()
-        gameEng.get_game_object = MagicMock()
+        game_eng = MagicMock()
+        game_eng.get_game_object = MagicMock()
 
-        gameEng.get_game_object.return_value = self.dummy_game_object
+        game_eng.get_game_object.return_value = self.dummy_game_object
 
         # Set the function to call
-        self.graph_eng.get_game_object = gameEng.get_game_object
+        self.graph_eng.get_game_object = game_eng.get_game_object
 
         # Add an object to the object list
-        self.graph_eng.objects.append( 45 )
-        self.assertEqual( len( self.graph_eng.objects), 1 )
+        self.graph_eng.objects.append(45)
+        self.assertEqual(len(self.graph_eng.objects), 1)
 
         # Trigger the function that should redraw
-        self.assertRaises( KeyError, self.graph_eng.updateScreen() )
+        self.assertRaises(KeyError, self.graph_eng.updateScreen())
 
     def test_render_component_not_affected_by_drawing(self):
         """  """
 
         polygon = self.dummy_game_object.components['render'].polygon
-        polygon_copy = deepcopy( polygon )
-        self.graph_eng.add_component( self.dummy_game_object )
+        polygon_copy = deepcopy(polygon)
+        self.graph_eng.add_component(self.dummy_game_object)
 
-        self.assertEqual( self.dummy_game_object.components['render'].polygon, polygon_copy )
+        rend_comp = self.dummy_game_object.components['render']
+        self.assertEqual( rend_comp.polygon, polygon_copy)
 
+    def test_set_turn_text(self):
+        """ Test if the turn text is set """
+        self.graph_eng.win = MagicMock()
+        self.graph_eng.win.itemconfigure = MagicMock()
 
+        self.graph_eng.set_turn_text("Some text")
+
+        mthd = self.graph_eng.win.itemconfigure
+        mthd.assert_called_with(self.graph_eng.turn_text, text="Some text")
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)

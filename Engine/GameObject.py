@@ -37,6 +37,4 @@ class GameObject(object):
         self.object_id = -1
         self.components = {}
 
-    def update(self):
-        """ Is called after each turn to let the object perform an action """
-        pass
+

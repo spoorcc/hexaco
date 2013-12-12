@@ -119,17 +119,21 @@ class GameEngine(object):
                     print "redirecting"
                     pos_comp.orientation = (pos_comp.orientation + 1) % 6
 
-
+        except KeyError:
+            print "Object has no position component"
+            return False
         except:
             print "Error while trying to let objects think"
+            return False
 
-    def update_move(self, obj ):
+        return True
+
+    def update_move(self, obj):
         """ Update all objects with a move component """
 
         try:
             # Execute move actions
             if 'move' in obj.components:
-
                 move_comp = obj.components['move']
                 pos_comp = obj.components['position']
 
@@ -140,5 +144,12 @@ class GameEngine(object):
                     pos_comp.pos.x += speed_mat[0]
                     pos_comp.pos.y += speed_mat[1]
                     pos_comp.pos.z += speed_mat[2]
+
+        except KeyError:
+            print "Object has no position component"
+            return False
         except:
             print "Error while trying to move objects"
+            return False
+
+        return True

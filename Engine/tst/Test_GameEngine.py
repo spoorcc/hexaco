@@ -30,30 +30,49 @@ from mock import MagicMock
 
 from ..GameObject import GameObject
 from ..GameEngine import GameEngine
+from Engine.Components.AiComponent import AiComponent
+from Engine.Components.MoveComponent import MoveComponent
+from Engine.Components.PositionComponent import PositionComponent
 
-# pylint: disable=R0904
-class TestGameEngine(unittest.TestCase):
-    """Test object for GameEngine"""
+
+class Testgame_engine(unittest.TestCase):  # pylint: disable=R0904
+    """Test object for game_engine"""
 
     @classmethod
-    def setUpClass(cls): # pylint: disable=C0103
+    def setUpClass(cls):  # pylint: disable=C0103
         "This method is called once, when starting the tests"
-        cls.gameEng = GameEngine()
+        cls.game_eng = GameEngine()
+
+        cls.dummyObj = cls.game_eng.game_object_factory.create_game_object()
+
+        cls.dummyMovObj = GameObject(None)
+        cls.dummyMovObj.components['move'] = MoveComponent(None)
+
+        cls.dummyMovPosObj = GameObject(None)
+        cls.dummyMovPosObj.components['move'] = MoveComponent(None)
+        cls.dummyMovPosObj.components['position'] = PositionComponent(None)
+
+        cls.dummyAiObj = GameObject(None)
+        cls.dummyAiObj.components['ai'] = AiComponent(None)
+
+        cls.dummyAiPosObj = GameObject(None)
+        cls.dummyAiPosObj.components['ai'] = AiComponent(None)
+        cls.dummyAiPosObj.components['position'] = PositionComponent(None)
 
     @classmethod
-    def tearDownClass(cls): # pylint: disable=C0103
+    def tearDownClass(cls):  # pylint: disable=C0103
         "This method is called after finishing all tests"
         pass
 
     #######################################################
 
-    def setUp(self): # pylint: disable=C0103
+    def setUp(self):  # pylint: disable=C0103
         "This method is called before each test case"
-        pass
+        self.game_eng = GameEngine()
 
-    def tearDown(self): # pylint: disable=C0103
+    def tearDown(self):  # pylint: disable=C0103
         "This method is called after each test case"
-        self.gameEng.objects = {}
+        self.game_eng.objects = {}
 
     #######################################################
 
@@ -61,25 +80,25 @@ class TestGameEngine(unittest.TestCase):
         """ Test if adding a valid game object succeeds """
 
         obj = GameObject(self)
-        self.gameEng.add_game_object(obj)
+        self.game_eng.add_game_object(obj)
 
-        self.assertEqual( len(self.gameEng.objects ), 1 )
+        self.assertEqual(len(self.game_eng.objects), 1)
 
     def test_add_game_obj_mult_val_objs(self):
         """ Test if adding multiple valid game objects succeeds """
 
-        for i in range( 5 ):
-            obj = self.gameEng.game_object_factory.create_tile()
-            self.gameEng.add_game_object(obj)
+        for i in range(5):
+            obj = self.game_eng.game_object_factory.create_tile()
+            self.game_eng.add_game_object(obj)
 
-        self.assertEqual( len(self.gameEng.objects ), 5 )
+        self.assertEqual(len(self.game_eng.objects), 5)
 
     def test_add_game_object_invalid(self):
         """ Test if a invalid game object is not added """
 
-        self.gameEng.add_game_object( "not an object" )
+        self.game_eng.add_game_object("not an object")
 
-        self.assertEqual( len(self.gameEng.objects ), 0 )
+        self.assertEqual(len(self.game_eng.objects), 0)
 
     def test_add_game_object_callback(self):
         """ Test if callbacks are called """
@@ -89,56 +108,134 @@ class TestGameEngine(unittest.TestCase):
 
         obj = GameObject(self)
 
-        self.gameEng.callback_for_new_object( my_mock.foo )
-        self.gameEng.add_game_object(obj)
+        self.game_eng.callback_for_new_object(my_mock.foo)
+        self.game_eng.add_game_object(obj)
 
-        my_mock.foo.assert_called_with( obj )
+        my_mock.foo.assert_called_with(obj)
 
     def test_create_map_one_tile(self):
         """ Test if a map is created of 1 tile when ring 1 is selected """
 
-        tile = self.gameEng.game_object_factory.create_tile()
+        tile = self.game_eng.game_object_factory.create_tile()
 
-        self.gameEng.game_object_factory.create_tile = MagicMock()
-        self.gameEng.game_object_factory.create_tile.return_value = tile
+        self.game_eng.game_object_factory.create_tile = MagicMock()
+        self.game_eng.game_object_factory.create_tile.return_value = tile
 
-        self.gameEng.create_map( 1 )
+        self.game_eng.create_map(1)
 
-        calls = len(self.gameEng.game_object_factory.create_tile.mock_calls)
-        self.assertEqual( calls , 1 )
+        calls = len(self.game_eng.game_object_factory.create_tile.mock_calls)
+        self.assertEqual(calls, 1)
 
     def test_create_map_seven_tiles(self):
         """ Test if a map is created of 7 tile when ring 2 is selected """
 
-        tile = self.gameEng.game_object_factory.create_tile()
+        tile = self.game_eng.game_object_factory.create_tile()
 
-        self.gameEng.game_object_factory.create_tile = MagicMock()
-        self.gameEng.game_object_factory.create_tile.return_value = tile
+        self.game_eng.game_object_factory.create_tile = MagicMock()
+        self.game_eng.game_object_factory.create_tile.return_value = tile
 
-        self.gameEng.create_map( 2 )
+        self.game_eng.create_map(2)
 
-        calls = len(self.gameEng.game_object_factory.create_tile.mock_calls)
-        self.assertEqual( calls , 7 )
+        calls = len(self.game_eng.game_object_factory.create_tile.mock_calls)
+        self.assertEqual(calls, 7)
 
     def test_get_game_object_call(self):
         """ Test if getting the game object returns an object """
 
-        obj = self.gameEng.game_object_factory.create_game_object()
+        obj = self.game_eng.game_object_factory.create_game_object()
 
-        self.gameEng.add_game_object( obj )
+        self.game_eng.add_game_object(obj)
 
-        fetched_obj = self.gameEng.get_game_object( obj.object_id )
+        fetched_obj = self.game_eng.get_game_object(obj.object_id)
 
-        self.assertEqual( fetched_obj, obj )
+        self.assertEqual(fetched_obj, obj)
 
     def test_update(self):
         """ Test the update call """
 
-        obj = self.gameEng.game_object_factory.create_ant()
+        obj = self.game_eng.game_object_factory.create_ant()
 
-        self.gameEng.add_game_object( obj )
+        self.game_eng.add_game_object(obj)
 
+    def test_initialize_objects(self):
+        """ Test if any objects are created """
 
+        self.game_eng.initialize_objects()
+
+        self.assertTrue(len(self.game_eng.objects) > 0)
+
+    @unittest.skip("Test ruins the singleton class because of mocks, \
+                   needs fixing")
+    def test_update_method_calls(self):
+        """ Test if all update methods get called"""
+        game_eng = GameEngine()
+        game_eng.update_ai = MagicMock()
+        game_eng.update_move = MagicMock()
+
+        game_eng.add_game_object(self.dummyObj)
+
+        game_eng.update()
+
+        game_eng.update_ai.assert_called_with(self.dummyObj)
+        game_eng.update_move.assert_called_with(self.dummyObj)
+
+    def test_update_move(self):
+        """ Test that if a object has non-zero speed,
+         the position is updated """
+
+        obj = self.dummyMovPosObj
+        obj.components['move'].speed = 1.0
+
+        result = self.game_eng.update_move(obj)
+
+        pos = obj.components['position'].xyz()
+        self.assertEqual(pos, [1.0, -1.0, 0.0])
+        self.assertTrue(result)
+
+    def test_update_move_no_pos_comp(self):
+        """ Test that if a object has non-zero speed,
+         the position is updated """
+
+        obj = self.dummyMovObj
+
+        result = self.game_eng.update_move(obj)
+
+        self.assertFalse(result)
+
+    def test_update_move_inv_obj(self):
+        """ Test that if a object has non-zero speed,
+         the position is updated """
+
+        result = self.game_eng.update_move("not an obj")
+
+        self.assertFalse(result)
+
+    def test_update_ai(self):
+        """ Test that the ai is updated """
+
+        obj = self.dummyAiPosObj
+
+        result = self.game_eng.update_ai(obj)
+
+        self.assertTrue(result)
+
+    def test_update_ai_no_pos_comp(self):
+        """ Test that if a object has non-zero speed,
+         the position is updated """
+
+        obj = self.dummyAiObj
+
+        result = self.game_eng.update_ai(obj)
+
+        self.assertFalse(result)
+
+    def test_update_ai_inv_obj(self):
+        """ Test that if a object has non-zero speed,
+         the position is updated """
+
+        result = self.game_eng.update_ai("not an obj")
+
+        self.assertFalse(result)
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)

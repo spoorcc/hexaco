@@ -18,9 +18,6 @@
 ########################################################################
 
  Pheromone Component Class
- including Unit test class
-
- * Run file separate to run unit tests
 
 ########################################################################
 
@@ -28,10 +25,10 @@ Description
 -----------
 Class for a Pheromone component """
 
-import unittest
 from Component import Component
 
-class PheromoneComponent( Component ):
+
+class PheromoneComponent(Component):
     """An Pheromone component
     """
 
@@ -42,48 +39,5 @@ class PheromoneComponent( Component ):
 
     def update(self):
 
-		if self.level > 0.0:
-			self.level -= self.decay    
-        
-###################################################################
-#
-# Test Code
-#
-###################################################################
-
-class TestPheromoneComponent(unittest.TestCase):
-
-    ######################################################
-
-    @classmethod
-    def setUpClass(cls):
-        "This method is called once, when starting the tests"
-        cls.phComp = PheromoneComponent(None)
-
-    @classmethod
-    def tearDownClass(cls):
-        "This method is called after finishing all tests"
-        pass
-
-    #######################################################
-
-    def setUp(self):
-        "This method is called befire each test case"
-        pass
-
-    def tearDown(self):
-        "This method is called after each test case"
-        pass
-
-    #######################################################
-
-    def test_defaultParent(self):
-
-        self.assertEqual( self.phComp.parent, None )
-
-    def test_default_neighbour_Levels(self):
-        
-        self.assertEqual( self.phComp.level, 0 )
-                
-if __name__ == '__main__':
-    unittest.main(verbosity=2)
+        if self.level > 0.0:
+            self.level -= self.decay

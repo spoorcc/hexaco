@@ -32,15 +32,18 @@ from math import sqrt
 from copy import deepcopy
 
 
-class GraphicsEngine(Frame):
+class GraphicsEngine(object, Frame):
     """The engine managing all drawing to screen
     """
 
     _instance = None
+
     def __new__(cls, *args, **kwargs):
+        """ There shoud only be one GraphicsEngine, so return
+        the existing instance if a new one is requested """
         if not cls._instance:
             cls._instance = super(GraphicsEngine, cls).__new__(
-                                cls, *args, **kwargs)
+                                  cls, *args, **kwargs)
         return cls._instance
 
     def __init__(self, master=None):

@@ -63,7 +63,7 @@ class TestGameObject(unittest.TestCase):
     def test_defaultName(self):
         """ The object must have "Default" as default name"""
 
-        self.assertEqual( self.gameObj.name, "Default" )    
+        self.assertEqual( self.gameObj.name, "Default" )
 
 
 if __name__ == '__main__':

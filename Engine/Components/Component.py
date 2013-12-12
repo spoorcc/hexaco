@@ -26,7 +26,7 @@ Description
 Base class for a component """
 
 class Component(object):
-    """A component is a base class for features of gameobjects 
+    """A component is a base class for features of gameobjects
     """
 
     def __init__(self, parent):
