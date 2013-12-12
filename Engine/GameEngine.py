@@ -73,7 +73,7 @@ class GameEngine(object):
             to this event with the game_obj handle """
 
         if type(game_object) is GameObject:
-            self.objects[str(game_object.objectID)] = game_object
+            self.objects[str(game_object.object_id)] = game_object
 
             for method in self.callbacks_for_new_object:
                 method(game_object)

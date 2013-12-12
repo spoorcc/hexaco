@@ -25,7 +25,6 @@ Description
 -----------
 Base class for a game object """
 
-from HexagonalPosition import HexagonalPosition
 
 class GameObject(object):
     """A single Gameobject on a hexagonal field
@@ -35,9 +34,9 @@ class GameObject(object):
     def __init__(self, parent):
         self.parent = parent
         self.name = "Default"
-        self.objectID = -1
+        self.object_id = -1
         self.components = {}
 
-    def update():
+    def update(self):
         """ Is called after each turn to let the object perform an action """
         pass

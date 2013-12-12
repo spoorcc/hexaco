@@ -109,7 +109,7 @@ class GraphicsEngine(Frame):
         """Set the text of the turn field"""
         self.win.itemconfigure(self.turn_text, text=turn_text)
 
-    def get_game_object(self, objectID):
+    def get_game_object(self, object_id):
         """ This method gets called by the graphics engine to get an
         gameobject by ID, it must be replaced by the correct method """
         raise Exception("get_game_object method should be \
@@ -136,7 +136,7 @@ class GraphicsEngine(Frame):
                                                     fill=rend.fill,
                                                     tag=gameObject.name)
 
-            self.objects.append(gameObject.objectID)
+            self.objects.append(gameObject.object_id)
 
         except AttributeError:
             print "Render/Position component of has wrong attributes"
@@ -185,7 +185,9 @@ class GraphicsEngine(Frame):
                                                          pos_comp.pos.z)
 
             # Find out what to draw there
-            coordinates_placed = self.move_object(deepcopy(rend_comp.polygon),
+            polygon = deepcopy(rend_comp.polygon)
+
+            coordinates_placed = self.move_object(polygon,
                                                   s_x, s_y)
 
             # Move the object

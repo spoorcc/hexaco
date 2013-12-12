@@ -27,12 +27,12 @@ Class for constructing Game Objects """
 
 from math import sin, cos, radians
 
-from GameObject import GameObject
+from Engine.GameObject import GameObject
 
-from Components import RenderComponent
-from Components import MoveComponent
-from Components import PositionComponent
-from Components import AiComponent
+from Engine.Components import RenderComponent
+from Engine.Components import MoveComponent
+from Engine.Components import PositionComponent
+from Engine.Components import AiComponent
 
 
 class GameObjectFactory(object):
@@ -42,15 +42,15 @@ class GameObjectFactory(object):
     def __init__(self, parent):
         self.parent = parent
         self.hex_radius = 20
-        self.nextObjectId = 0
+        self.next_object_id = 0
 
     def create_game_object(self):
         """ Creates an emty object with an unique object_id"""
 
         obj = GameObject(None)
-        obj.objectID = self.nextObjectId
+        obj.object_id = self.next_object_id
 
-        self.nextObjectId += 1
+        self.next_object_id += 1
 
         return obj
 
@@ -62,12 +62,15 @@ class GameObjectFactory(object):
         obj.components['render'].color = "#880000"
         obj.components['render'].fill = "#001100"
 
-        x = 0.4 * self.hex_radius 
-        obj.components['render'].polygon = [0, -x, x, x, -x, x ]
-        
+        # Effectivly returns a triangle
+        size = 0.4 * self.hex_radius
+        obj.components['render'].polygon = [0, -size,
+                                            size, size,
+                                            -size, size]
+
         obj.components['position'] = PositionComponent(obj)
         obj.components['position'].orientation = 3
-        
+
         obj.components['move'] = MoveComponent(obj)
         obj.components['move'].speed = 0.01
 
@@ -82,24 +85,24 @@ class GameObjectFactory(object):
         obj.components['render'] = RenderComponent(obj)
         obj.components['render'].color = "#005500"
         obj.components['render'].fill = "#220000"
-        obj.components['render'].polygon = self.create_hexagon( self.hex_radius)
-        
+        obj.components['render'].polygon = self.create_hexagon(self.hex_radius)
+
         obj.components['position'] = PositionComponent(obj)
-        
+
         return obj
 
     def give_point_on_circle(self, degrees, radius):
         """ Returns the x,y coordinates of a point on a circle with its center
         at 0,0 and with the given radius """
         return [radius * cos(radians(degrees)), radius * sin(radians(degrees))]
-        
+
     def create_hexagon(self, radius):
         """ Returns the coordinates of a hexagon where the furthest points lay
-        on a circle with its center at 0,0 and with the given radius"""
+        on a circle with its center at 0,0 and with the given radius.
+        The coordinates are formatted as [ x0, y0, x1, y1, ... xN, yN ]"""
 
         coordinates = []
         for i in range(0, 6):
             coordinates += self.give_point_on_circle(i * 60, radius)
 
         return coordinates
-        

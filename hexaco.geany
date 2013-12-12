@@ -23,23 +23,14 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=15
-FILE_NAME_0=940;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FHexaco.py;0;4
-FILE_NAME_1=1029;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FGameEngine.py;0;4
-FILE_NAME_2=1085;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FPheromoneEngine.py;0;4
-FILE_NAME_3=1221;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FGameObjectFactory.py;0;4
-FILE_NAME_4=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FGameObject.py;0;4
-FILE_NAME_5=1141;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FGraphicsEngine.py;0;4
-FILE_NAME_6=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2FAiComponent.py;0;4
-FILE_NAME_7=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2FComponent.py;0;4
-FILE_NAME_8=766;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2Ftst%2F__init__.py;0;4
-FILE_NAME_9=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2FMoveComponent.py;0;4
-FILE_NAME_10=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2FPheromoneComponent.py;0;4
-FILE_NAME_11=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2FPheromoneSenseComponent.py;0;4
-FILE_NAME_12=1005;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2Ftst%2FTest_PositionComponent.py;0;4
-FILE_NAME_13=770;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2Ftst%2FTest_RenderComponent.py;0;4
-FILE_NAME_14=1120;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2FPositionComponent.py;0;4
-FILE_NAME_15=976;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2FRenderComponent.py;0;4
+current_page=1
+FILE_NAME_0=1404;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FHexaco.py;0;4
+FILE_NAME_1=1085;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FPheromoneEngine.py;0;4
+FILE_NAME_2=873;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2Ftst%2FTest_AiComponent.py;0;4
+FILE_NAME_3=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2FPheromoneComponent.py;0;4
+FILE_NAME_4=0;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2FPheromoneSenseComponent.py;0;4
+FILE_NAME_5=1094;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2FComponents%2FAiComponent.py;0;4
+FILE_NAME_6=4047;Python;0;EUTF-8;1;1;0;%2Fhome%2Fben%2FPublic%2Fhexaco%2FEngine%2Ftst%2FTest_HexagonalPosition.py;0;4
 
 [VTE]
 last_dir=/home/ben/Public/hexaco

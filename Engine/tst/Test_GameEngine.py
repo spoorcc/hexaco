@@ -18,7 +18,7 @@
 ########################################################################
 
  Game Engine Test Class
- 
+
 ########################################################################
 
 Description
@@ -127,7 +127,7 @@ class TestGameEngine(unittest.TestCase):
 
         self.gameEng.add_game_object( obj )
 
-        fetched_obj = self.gameEng.get_game_object( obj.objectID )
+        fetched_obj = self.gameEng.get_game_object( obj.object_id )
 
         self.assertEqual( fetched_obj, obj )
 

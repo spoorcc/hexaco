@@ -104,12 +104,15 @@ class TestGraphicsEngine(unittest.TestCase):
 
         obj = MagicMock()
         obj.components = {}
+        obj.object_id = 115
         obj.components['render'] = RenderComponent(obj)
         obj.components['position'] = PositionComponent(obj)
 
         self.graph_eng.add_component(obj)
 
-        self.assertEqual(len(self.graph_eng.objects), 1)
+        obj_id = self.graph_eng.objects[0]
+
+        self.assertEqual(obj_id, 115)
 
     def test_add_game_object_invalid(self):
         """ Test if adding an invalid object fails """
