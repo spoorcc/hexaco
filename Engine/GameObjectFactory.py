@@ -25,7 +25,7 @@ Description
 -----------
 Class for constructing Game Objects """
 
-from math import sin, cos, radians
+from Engine.LibPolygons import create_triangle, create_hexagon
 
 from Engine.GameObject import GameObject
 
@@ -64,9 +64,7 @@ class GameObjectFactory(object):
 
         # Effectivly returns a triangle
         size = 0.4 * self.hex_radius
-        obj.components['render'].polygon = [0, -size,
-                                            size, size,
-                                            -size, size]
+        obj.components['render'].polygon = create_triangle(size)
 
         obj.components['position'] = PositionComponent(obj)
         obj.components['position'].orientation = 3
@@ -85,24 +83,8 @@ class GameObjectFactory(object):
         obj.components['render'] = RenderComponent(obj)
         obj.components['render'].color = "#005500"
         obj.components['render'].fill = "#220000"
-        obj.components['render'].polygon = self.create_hexagon(self.hex_radius)
+        obj.components['render'].polygon = create_hexagon(self.hex_radius)
 
         obj.components['position'] = PositionComponent(obj)
 
         return obj
-
-    def give_point_on_circle(self, degrees, radius):
-        """ Returns the x,y coordinates of a point on a circle with its center
-        at 0,0 and with the given radius """
-        return [radius * cos(radians(degrees)), radius * sin(radians(degrees))]
-
-    def create_hexagon(self, radius):
-        """ Returns the coordinates of a hexagon where the furthest points lay
-        on a circle with its center at 0,0 and with the given radius.
-        The coordinates are formatted as [ x0, y0, x1, y1, ... xN, yN ]"""
-
-        coordinates = []
-        for i in range(0, 6):
-            coordinates += self.give_point_on_circle(i * 60, radius)
-
-        return coordinates

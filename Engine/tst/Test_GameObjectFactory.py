@@ -62,52 +62,6 @@ class TestGameObjectFactory(unittest.TestCase):
         obj = self.gameObjFact.create_game_object()
         self.assertEqual(type(obj), GameObject)
 
-    def test_give_point_on_circle(self):
-        """ Test if the correct coordinates are returned
-            input angle 30 degrees and radius of 1 """
-
-        coordinates = self.gameObjFact.give_point_on_circle(30, 1)
-
-        self.assertAlmostEqual(coordinates[0], 0.866, 3)
-        self.assertAlmostEqual(coordinates[1], 0.5, 3)
-
-    def test_create_hexagon_radius_one(self):
-        """ Test if the correct x,y coordinates are returned
-        when asking for a hexagon of radius 1 """
-
-        hexagon = self.gameObjFact.create_hexagon(1)
-        # Coordinates [ x0, y0, x1, y1, ... xN, yN ]
-        expected = [1.0,  0.0,
-                    0.5,  0.866,
-                    -0.5,  0.866,
-                    -1.0,  0.0,
-                    -0.5, -0.866,
-                    0.5, -0.866]
-
-        for i in range(len(hexagon)):
-            self.assertAlmostEqual(hexagon[i], expected[i], 3,
-                                   "%.3f != %.3f @ %d" % (hexagon[i],
-                                                          expected[i], i))
-
-    def test_create_hexagon_radius_20(self):
-        """ Test if the correct x,y coordinates are returned
-        when asking for a hexagon of radius 20 """
-
-        hexagon = self.gameObjFact.create_hexagon(20)
-
-        # Coordinates [ x0, y0, x1, y1, ... xN, yN ]
-        expected = [20.0,   0.0,
-                    10.0,  17.321,
-                    -10.0,  17.321,
-                    -20.0,   0.0,
-                    -10.0, -17.321,
-                    10.0, -17.321]
-
-        for i in range(len(hexagon)):
-            self.assertAlmostEqual(hexagon[i], expected[i], 3,
-                                   "%.3f != %.3f @ %d" % (hexagon[i],
-                                                          expected[i], i))
-
     def test_create_game_obj_unique_ids(self):
         """ Two objects created should never have the same object_id"""
 
