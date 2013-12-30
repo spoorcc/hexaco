@@ -25,22 +25,28 @@ Description
 -----------
 Base class for a move component """
 
-from Component import Component
+from Engine.Components.Component import Component
 
-class MoveComponent( Component ):
-    """A Move component 
+
+class MoveComponent(Component):
+    """A Move component
     """
 
     def __init__(self, parent):
+        super(MoveComponent, self).__init__(parent)
         self.parent = parent
         self.speed = 0.0
 
-        
-
     def get_xyz_speed(self, orientation):
+        """ Get the speed in x y z coordinates """
 
-        speed_mat = [ [1,-1,0], [1,0,-1], [0,1,-1], [-1,1,0], [-1,0,1], [0,-1,1] ]
+        speed_mat = [[1, -1, 0],  # Top-left
+                     [1, 0, -1],  # Top
+                     [0, 1, -1],  # Top-right
+                     [-1, 1, 0],  # Bottom-right
+                     [-1, 0, 1],  # Bottom
+                     [0, -1, 1]]  # Bottom-left
 
-        xyz_speed = speed_mat[ orientation ]
+        xyz_speed = speed_mat[orientation]
 
-        return [x*self.speed for x in xyz_speed] 
+        return [x*self.speed for x in xyz_speed]

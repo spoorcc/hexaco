@@ -33,6 +33,8 @@ from Engine.Components import RenderComponent
 from Engine.Components import MoveComponent
 from Engine.Components import PositionComponent
 from Engine.Components import AiComponent
+from Engine.Components import PheromoneComponent
+from Engine.Components import PheromoneSenseComponent
 
 
 class GameObjectFactory(object):
@@ -62,7 +64,6 @@ class GameObjectFactory(object):
         obj.components['render'].color = "#880000"
         obj.components['render'].fill = "#001100"
 
-        # Effectivly returns a triangle
         size = 0.4 * self.hex_radius
         obj.components['render'].polygon = create_triangle(size)
 
@@ -73,6 +74,8 @@ class GameObjectFactory(object):
         obj.components['move'].speed = 0.01
 
         obj.components['ai'] = AiComponent(obj)
+
+        obj.components['pheromone_actor'] = PheromoneSenseComponent(obj)
 
         return obj
 
@@ -86,5 +89,7 @@ class GameObjectFactory(object):
         obj.components['render'].polygon = create_hexagon(self.hex_radius)
 
         obj.components['position'] = PositionComponent(obj)
+
+        obj.components['pheromone_holder'] = PheromoneComponent(obj)
 
         return obj

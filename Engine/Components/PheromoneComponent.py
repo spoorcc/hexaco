@@ -23,7 +23,8 @@
 
 Description
 -----------
-Class for a Pheromone component """
+Class for a Pheromone component.
+Pheromone component gives game_objects the ability to have a pherome level """
 
 from Component import Component
 
@@ -33,11 +34,15 @@ class PheromoneComponent(Component):
     """
 
     def __init__(self, parent):
+        super(PheromoneComponent, self).__init__(parent)
         self.parent = parent
         self.level = 0.0
         self.decay = 0.0001
 
     def update(self):
+        """ This will update the level of this holder """
 
         if self.level > 0.0:
             self.level -= self.decay
+        else:
+            self.level = 0.0

@@ -18,9 +18,6 @@
 ########################################################################
 
  Pheromone Engine Class
- including Unit test class
-
- * Run file separate to run unit tests
 
 ########################################################################
 
@@ -28,17 +25,13 @@ Description
 -----------
 Class for a Pheromone Engine """
 
-import unittest
-
-from GameObject import GameObject
-from Components import PheromoneSenseComponent
-from Components import PheromoneComponent
 
 class PheromoneEngine(object):
     """The engine managing all pheromones on the map
     """
 
     _instance = None
+
     def __new__(cls, *args, **kwargs):
         """ Called when creating new instance, return existing instance
         otherwise create new one, singleton pattern """
@@ -48,102 +41,45 @@ class PheromoneEngine(object):
         return cls._instance
 
     def __init__(self):
-        
-        self.pheromone_objects = []
-        self.pheromone_sense_objects = []
-    
-    def add_component(self, game_object ):
+
+        self.holders = []
+        self.actors = []
+
+    def add_component(self, game_object):
         """ If a object has a pheromone and a position component it is added
         to the list of objects to update """
 
-        if 'pheromone' in game_object.components:
-            self.pheromone_objects.append( game_object.objectID )
+        try:
+            if 'pheromone_holder' in game_object.components:
+                self.holders.append(game_object.object_id)
 
-        if 'pheromone_sense' in game_object.components:
-            self.pheromone_sense_objects.append( game_object.objectID )
+            if 'pheromone_actor' in game_object.components:
+                self.actors.append(game_object.object_id)
+        except AttributeError:
+            pass
 
-    def get_game_object(self, objectID ):
+    def get_game_object(self, object_id):
         """ This method should be overloaded """
-        print "Whooops " 
+        print "Whooops "
 
-    def get_levels_xyz( self, xyz ):
+    def get_levels_xyz(self, xyz):
         """ Returns all levels of the adjacent tiles of position x, y ,z """
 
-        for object_id in self.pheromone_sense_objects:
+        for object_id in self.holders:
             print object_id
-        
+
     def update_map(self):
         """ Update the objects that need pheromone data """
 
-        for object_id in self.pheromone_objects:
+        for object_id in self.holders:
 
             try:
-                obj = self.get_game_object( object_id )
-                
+                holder = self.get_game_object(object_id)
+
             except:
                 print "Could not find object"
-                
-            ph_comp  = obj.components['pheromone_sense']
-            pos_comp = obj.components['position']
 
-            ph_comp.neighbour_levels = self.get_levels_xyz( pos_comp.xyz )
-          
+            ph_comp  = holder.components['pheromone_holder']
+            pos_comp = holder.components['position']
 
-###################################################################
-#
-# Test Code
-#
-###################################################################
-
-class TestPheromoneEngine(unittest.TestCase):
-    """Test object for PheromoneEngine"""
-
-    @classmethod
-    def setUpClass(cls):
-        "This method is called once, when starting the tests"
-        cls.pher_eng = PheromoneEngine(None)
-                        
-    @classmethod
-    def tearDownClass(cls):
-        "This method is called after finishing all tests"
-        pass
-
-    #######################################################
-
-    def setUp(self):
-        "This method is called befire each test case"
-        self.pher_eng = PheromoneEngine(None)
-        
-        self.dummy_pher_container = GameObject( None )
-        self.dummy_pher_container.components['pheromone'] = PheromoneComponent(None)
-
-        self.dummy_pher_sensor = GameObject( None )
-        self.dummy_pher_sensor.components['pheromone_sense'] = PheromoneSenseComponent( None )
-
-
-    def tearDown(self):
-        "This method is called after each test case"
-        self.pher_eng.pheromone_objects = []
-        self.pher_eng.pheromone_sense_objects = []
-        
-
-    #######################################################
-    
-    def test_add_game_object_valid(self):
-        """ Test if adding a valid object succeeds """
-                
-        self.pher_eng.add_component( self.dummy_pher_container )        
-        self.assertEqual( len(self.pher_eng.pheromone_objects ), 1 )
-
-        self.pher_eng.add_component( self.dummy_pher_sensor )        
-        self.assertEqual( len(self.pher_eng.pheromone_sense_objects ), 1 )
-
-    def test_add_game_object_invalid(self):
-        """ Test if adding an invalid object fails """
-        
-        self.pher_eng.add_component( "not an object" )
-        self.assertEqual( len(self.pher_eng.pheromone_objects ), 0 )
-        
-
-if __name__ == '__main__':
-    unittest.main(verbosity=1)
+            ph_comp.neighbour_levels = self.get_levels_xyz(pos_comp.xyz)

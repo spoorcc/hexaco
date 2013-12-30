@@ -17,21 +17,31 @@
 
 ########################################################################
 
- Pheromone Component Class
+ Pheromone Sense Component Class
 
 ########################################################################
 
 Description
 -----------
-Class for a Pheromone component """
+Class for a Pheromone sense component
+Gives gameobject the ability to sense pheromone levels around it and to deposit pheromones """
 
 from Component import Component
 
 
 class PheromoneSenseComponent(Component):
-    """An Pheromone component
+    """An Pheromone sense component
     """
 
     def __init__(self, parent):
+        super(PheromoneSenseComponent, self).__init__(parent)
         self.parent = parent
-        self.neighbour_levels = [0, 0, 0, 0, 0, 0]
+
+        # Orientation same as in hexagonal position
+        self.neighbour_levels = [0.0,
+                                 0.0,
+                                 0.0,
+                                 0.0,
+                                 0.0,
+                                 0.0]
+        self.deposit = 0.0
