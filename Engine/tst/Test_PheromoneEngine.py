@@ -28,6 +28,8 @@ Description
 import unittest
 from mock import MagicMock
 
+from Engine.LibHexagonalPosition import get_neighbour_xyz
+
 from ..PheromoneEngine import PheromoneEngine
 from Engine.GameObject import GameObject
 from Engine.Components import PositionComponent
@@ -78,8 +80,7 @@ class TestPheromoneEngine(unittest.TestCase):
 
     def tearDown(self):
         "This method is called after each test case"
-        self.phero_eng.holders = []
-        self.phero_eng.actors = []
+        self.phero_eng.__init__()
 
     #######################################################
 
@@ -93,30 +94,41 @@ class TestPheromoneEngine(unittest.TestCase):
     def test_add_holder_valid(self):
         """ Test if adding a valid object succeeds """
 
-        obj = MagicMock()
-        obj.components = {}
-        obj.object_id = 115
-        obj.components['pheromone_holder'] = PheromoneHolderComponent(obj)
+        holder = self.dummy_phero_holder()
+        self.phero_eng.add_component(holder)
 
-        self.phero_eng.add_component(obj)
+        self.assertEqual(len(set(self.phero_eng.holders)), 1)
 
-        obj_id = self.phero_eng.holders[0]
+    def test_add_multiple_holders_valid(self):
+        """ Test if adding multiple valid object succeeds """
 
-        self.assertEqual(obj_id, 115)
+        count = 6
+
+        for i in range(count):
+            holder = self.dummy_phero_holder()
+            holder.components['position'].set_position_xyz(i, -i, 0)
+            self.phero_eng.add_component(holder)
+
+        self.assertEqual(len(set(self.phero_eng.holders)), count)
 
     def test_add_actor_valid(self):
         """ Test if adding a valid object succeeds """
 
-        obj = MagicMock()
-        obj.components = {}
-        obj.object_id = 115
-        obj.components['pheromone_actor'] = PheromoneActorComponent(obj)
+        actor = self.dummy_phero_actor()
+        self.phero_eng.add_component(actor)
 
-        self.phero_eng.add_component(obj)
+        self.assertEqual(len(set(self.phero_eng.actors)), 1)
 
-        obj_id = self.phero_eng.actors[0]
+    def test_add_multiple_actors_valid(self):
+        """ Test if adding multiple valid object succeeds """
 
-        self.assertEqual(obj_id, 115)
+        count = 50
+
+        for i in range(count):
+            actor = self.dummy_phero_actor()
+            self.phero_eng.add_component(actor)
+
+        self.assertEqual(len(self.phero_eng.actors), count)
 
     def test_add_game_object_invalid(self):
         """ Test if adding an invalid object fails """
@@ -141,7 +153,7 @@ class TestPheromoneEngine(unittest.TestCase):
 
         levels = self.phero_eng.get_levels_xyz((0, 0, 0))
 
-        self.assertListEqual(levels, (3.0, None, None, None, None, None))
+        self.assertListEqual(levels, [3.0, None, None, None, None, None])
 
     def test_get_levels_xyz_2_neigbours(self):
         """ Test if the pherome levels of all available neighbours are got """
@@ -163,7 +175,7 @@ class TestPheromoneEngine(unittest.TestCase):
 
         levels = self.phero_eng.get_levels_xyz((0, 0, 0))
 
-        self.assertListEqual(levels, (3.0, 4.0, None, None, None, None))
+        self.assertListEqual(levels, [3.0, 4.0, None, None, None, None])
 
     def test_get_levels_xyz_6_neigbours(self):
         """ Test if the pherome levels of all available neighbours are got """
@@ -177,22 +189,20 @@ class TestPheromoneEngine(unittest.TestCase):
         for i in range(6):
             tile = self.dummy_phero_holder()
 
-            tile.components['position'].pos = \
-                center_pos.get_neighbour(direction=i)
+            neighbour = get_neighbour_xyz(center_pos.xyz, direction=i)
+            tile.components['position'].set_position_xyz(*neighbour)
 
             tile.components['pheromone_holder'].level = float(i)
             self.phero_eng.add_component(tile)
 
         levels = self.phero_eng.get_levels_xyz(center_pos.xyz)
 
-        self.assertListEqual(levels, (0.0, 1.0, 2.0, 3.0, 4.0, 5.0))
+        self.assertListEqual(levels, [0.0, 1.0, 2.0, 3.0, 4.0, 5.0])
 
+    @unittest.expectedFailure
     def test_deposit_pheromone(self):
         """ Test if an object can deposit pheromones on a
         pheromone holder """
-
-        unittest.expectedFailure("Tested behaviour a \
-                                 long way from being done")
 
         self.phero_eng.add_component(self.dummy_phero_actor)
         self.phero_eng.add_component(self.dummy_phero_holder)

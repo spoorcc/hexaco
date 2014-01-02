@@ -42,7 +42,7 @@ class PheromoneEngine(object):
 
     def __init__(self):
 
-        self.holders = []
+        self.holders = dict()
         self.actors = []
 
     def add_component(self, game_object):
@@ -50,10 +50,14 @@ class PheromoneEngine(object):
         to the list of objects to update """
 
         try:
-            if 'pheromone_holder' in game_object.components:
-                self.holders.append(game_object.object_id)
+            if 'pheromone_holder' in game_object.components and \
+                    'position' in game_object.components:
+                xyz = game_object.components['position'].xyz()
+                key = "%d%d%d" % (xyz[0], xyz[1], xyz[2])
+                self.holders[key] = game_object.object_id
 
-            if 'pheromone_actor' in game_object.components:
+            if 'pheromone_actor' in game_object.components and \
+                    'position' in game_object.components:
                 self.actors.append(game_object.object_id)
         except AttributeError:
             pass
@@ -65,8 +69,13 @@ class PheromoneEngine(object):
     def get_levels_xyz(self, xyz):
         """ Returns all levels of the adjacent tiles of position x, y ,z """
 
-        for object_id in self.holders:
-            print object_id
+        levels = []
+
+        for idx in range(6):
+
+            levels.append(None)
+
+        return levels
 
     def update_map(self):
         """ Update the objects that need pheromone data """
@@ -79,7 +88,7 @@ class PheromoneEngine(object):
             except:
                 print "Could not find object"
 
-            ph_comp  = holder.components['pheromone_holder']
+            ph_comp = holder.components['pheromone_holder']
             pos_comp = holder.components['position']
 
             ph_comp.neighbour_levels = self.get_levels_xyz(pos_comp.xyz)
