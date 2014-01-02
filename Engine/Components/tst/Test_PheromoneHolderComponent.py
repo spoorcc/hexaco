@@ -17,7 +17,7 @@
 
 ########################################################################
 
- Pheromone Component Test Class
+ Pheromone Holder Component Test Class
 
 ########################################################################
 
@@ -26,17 +26,17 @@ Description
  """
 
 import unittest
-from Engine.Components.PheromoneComponent import PheromoneComponent
+from Engine.Components.PheromoneHolderComponent import PheromoneHolderComponent
 
 
-class TestPheromoneComponent(unittest.TestCase):
+class TestPheromoneHolderComponent(unittest.TestCase):
 
     ######################################################
 
     @classmethod
     def setUpClass(cls):
         "This method is called once, when starting the tests"
-        cls.ph_comp = PheromoneComponent(None)
+        cls.ph_comp = PheromoneHolderComponent(None)
 
     @classmethod
     def tearDownClass(cls):

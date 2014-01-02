@@ -17,31 +17,32 @@
 
 ########################################################################
 
- Pheromone Sense Component Class
+ Pheromone Holder Component Class
 
 ########################################################################
 
 Description
 -----------
-Class for a Pheromone sense component
-Gives gameobject the ability to sense pheromone levels around it and to deposit pheromones """
+Class for a Pheromone Holder component.
+Pheromone component gives game_objects the ability to have a pherome level """
 
 from Component import Component
 
 
-class PheromoneSenseComponent(Component):
-    """An Pheromone sense component
+class PheromoneHolderComponent(Component):
+    """An Pheromone component
     """
 
     def __init__(self, parent):
-        super(PheromoneSenseComponent, self).__init__(parent)
+        super(PheromoneHolderComponent, self).__init__(parent)
         self.parent = parent
+        self.level = 0.0
+        self.decay = 0.0001
 
-        # Orientation same as in hexagonal position
-        self.neighbour_levels = [0.0,
-                                 0.0,
-                                 0.0,
-                                 0.0,
-                                 0.0,
-                                 0.0]
-        self.deposit = 0.0
+    def update(self):
+        """ This will update the level of this holder """
+
+        if self.level > 0.0:
+            self.level -= self.decay
+        else:
+            self.level = 0.0

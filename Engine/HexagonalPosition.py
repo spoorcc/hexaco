@@ -66,6 +66,8 @@ class HexagonalPosition(object):
         self.y = 0 # pylint: disable=C0103
         self.z = 0 # pylint: disable=C0103
 
+        self.xyz = (0, 0, 0)
+
         self.ring = 0
         self.side = 0
         self.tile = 0
@@ -85,11 +87,12 @@ class HexagonalPosition(object):
         # The sum must be zero to be a valid coordinate
         if( (x + y + z) == 0):
             self.x, self.y, self.z = x, y, z # pylint: disable=C0103
+            self.xyz = (x, y, z)
             self.calc_ring_side_tile()
             return True
         else:
             return False
-            
+
     def set_position_rst(self, ring, side, tile):
         """Sets the position in Ring Side Tile coordinates,
         Updates the x, y and z variables
@@ -109,9 +112,10 @@ class HexagonalPosition(object):
             return False
 
         [self.x, self.y, self.z] = self.calc_xyz_from_rst( ring, side, tile )
-        return True    
+        self.xyz = (self.x, self.y, self.z)
+        return True
 
-    def calc_xyz_from_rst( self, ring, side, tile ):
+    def calc_xyz_from_rst(self, ring, side, tile):
 
         if ring == 0:
             x = 0
@@ -136,7 +140,7 @@ class HexagonalPosition(object):
         elif side == 4:
             x = -ring + tile
             y =  -tile
-            z =  ring            
+            z =  ring
         else:
             x =  tile
             y = -ring
@@ -173,7 +177,7 @@ class HexagonalPosition(object):
         d_y = y - self.y
         d_z = z - self.z
 
-        if ( abs(d_x) > abs(d_y)) and (abs(d_x) > abs(d_z)):
+        if (abs(d_x) > abs(d_y)) and (abs(d_x) > abs(d_z)):
             distance = abs(d_x)
         else:
 

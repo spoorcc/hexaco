@@ -26,17 +26,17 @@ Description
 component """
 
 import unittest
-from Engine.Components.PheromoneSenseComponent import PheromoneSenseComponent
+from Engine.Components.PheromoneActorComponent import PheromoneActorComponent
 
 
-class TestPheromoneSenseComponent(unittest.TestCase):
+class TestPheromoneActorComponent(unittest.TestCase):
 
     ######################################################
 
     @classmethod
     def setUpClass(cls):
         "This method is called once, when starting the tests"
-        cls.phComp = PheromoneSenseComponent(None)
+        cls.phComp = PheromoneActorComponent(None)
 
     @classmethod
     def tearDownClass(cls):

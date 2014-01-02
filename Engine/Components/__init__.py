@@ -1,4 +1,4 @@
- 
+
 """
 
     This file is part of HexACO.
@@ -19,8 +19,8 @@
 ########################################################################
 
  Engine module init script
- 
- 
+
+
 ########################################################################
 
 Description
@@ -31,7 +31,7 @@ from Component import Component
 
 from AiComponent import AiComponent
 from MoveComponent import MoveComponent
-from PheromoneComponent import PheromoneComponent
-from PheromoneSenseComponent import PheromoneSenseComponent
+from PheromoneHolderComponent import PheromoneHolderComponent
+from PheromoneActorComponent import PheromoneActorComponent
 from RenderComponent import RenderComponent
 from PositionComponent import PositionComponent

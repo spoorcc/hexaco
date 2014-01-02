@@ -30,9 +30,9 @@ from mock import MagicMock
 
 from ..PheromoneEngine import PheromoneEngine
 from Engine.GameObject import GameObject
-from Engine.Components.PositionComponent import PositionComponent
-from Engine.Components.PheromoneSenseComponent import PheromoneSenseComponent
-from Engine.Components.PheromoneComponent import PheromoneComponent
+from Engine.Components import PositionComponent
+from Engine.Components import PheromoneHolderComponent
+from Engine.Components import PheromoneActorComponent
 
 class TestPheromoneEngine(unittest.TestCase):
     """Test object for PheromoneEngine"""
@@ -54,7 +54,7 @@ class TestPheromoneEngine(unittest.TestCase):
         """Returns a dummy pheromone holder"""
         obj = GameObject(self)
         obj.object_id = self.obj_id
-        obj.components['pheromone_holder'] = PheromoneComponent(obj)
+        obj.components['pheromone_holder'] = PheromoneHolderComponent(obj)
         obj.components['position'] = PositionComponent(obj)
 
         self.obj_id += 1
@@ -65,7 +65,7 @@ class TestPheromoneEngine(unittest.TestCase):
         """Returns a dummy pheromone actor"""
         obj = GameObject(self)
         obj.object_id = self.obj_id
-        obj.components['pheromone_actor'] = PheromoneSenseComponent(obj)
+        obj.components['pheromone_actor'] = PheromoneActorComponent(obj)
         obj.components['position'] = PositionComponent(obj)
 
         self.obj_id += 1
@@ -96,7 +96,7 @@ class TestPheromoneEngine(unittest.TestCase):
         obj = MagicMock()
         obj.components = {}
         obj.object_id = 115
-        obj.components['pheromone_holder'] = PheromoneComponent(obj)
+        obj.components['pheromone_holder'] = PheromoneHolderComponent(obj)
 
         self.phero_eng.add_component(obj)
 
@@ -110,7 +110,7 @@ class TestPheromoneEngine(unittest.TestCase):
         obj = MagicMock()
         obj.components = {}
         obj.object_id = 115
-        obj.components['pheromone_actor'] = PheromoneSenseComponent(obj)
+        obj.components['pheromone_actor'] = PheromoneActorComponent(obj)
 
         self.phero_eng.add_component(obj)
 
@@ -183,7 +183,7 @@ class TestPheromoneEngine(unittest.TestCase):
             tile.components['pheromone_holder'].level = float(i)
             self.phero_eng.add_component(tile)
 
-        levels = self.phero_eng.get_levels_xyz(center_pos.xyz())
+        levels = self.phero_eng.get_levels_xyz(center_pos.xyz)
 
         self.assertListEqual(levels, (0.0, 1.0, 2.0, 3.0, 4.0, 5.0))
 

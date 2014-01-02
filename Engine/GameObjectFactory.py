@@ -33,8 +33,8 @@ from Engine.Components import RenderComponent
 from Engine.Components import MoveComponent
 from Engine.Components import PositionComponent
 from Engine.Components import AiComponent
-from Engine.Components import PheromoneComponent
-from Engine.Components import PheromoneSenseComponent
+from Engine.Components import PheromoneActorComponent
+from Engine.Components import PheromoneHolderComponent
 
 
 class GameObjectFactory(object):
@@ -75,7 +75,7 @@ class GameObjectFactory(object):
 
         obj.components['ai'] = AiComponent(obj)
 
-        obj.components['pheromone_actor'] = PheromoneSenseComponent(obj)
+        obj.components['pheromone_actor'] = PheromoneActorComponent(obj)
 
         return obj
 
@@ -90,6 +90,6 @@ class GameObjectFactory(object):
 
         obj.components['position'] = PositionComponent(obj)
 
-        obj.components['pheromone_holder'] = PheromoneComponent(obj)
+        obj.components['pheromone_holder'] = PheromoneHolderComponent(obj)
 
         return obj
