@@ -164,13 +164,20 @@ class Testgame_engine(unittest.TestCase):  # pylint: disable=R0904
 
         self.assertTrue(len(self.game_eng.objects) > 0)
 
+    def test_set_hex_radius(self):
+        """ Test if the gameobject factory hex radius is set """
+
+        game_eng = GameEngine()
+        game_eng.game_object_factory.hex_radius = 0
+        game_eng.set_hex_radius(100)
+
+        self.assertEqual( game_eng.game_object_factory.hex_radius, 100)
+
     @patch.object(GameEngine, 'update_ai')
     @patch.object(GameEngine, 'update_move')
     def test_update_method_calls(self, mock_update_ai, mock_update_move):
         """ Test if all update methods get called"""
         game_eng = GameEngine()
-        #game_eng.update_ai = MagicMock()
-        #game_eng.update_move = MagicMock()
 
         game_eng.add_game_object(self.dummyObj)
 
