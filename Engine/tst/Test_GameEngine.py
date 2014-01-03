@@ -171,7 +171,7 @@ class Testgame_engine(unittest.TestCase):  # pylint: disable=R0904
         game_eng.game_object_factory.hex_radius = 0
         game_eng.set_hex_radius(100)
 
-        self.assertEqual( game_eng.game_object_factory.hex_radius, 100)
+        self.assertEqual(game_eng.game_object_factory.hex_radius, 100)
 
     @patch.object(GameEngine, 'update_ai')
     @patch.object(GameEngine, 'update_move')

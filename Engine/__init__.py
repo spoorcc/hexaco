@@ -29,6 +29,7 @@ Needed for importing classes in the module """
 
 from GameEngine import GameEngine
 from GraphicsEngine import GraphicsEngine
+from PheromoneEngine import PheromoneEngine
 
 from GameObject import GameObject
 from GameObjectFactory import GameObjectFactory

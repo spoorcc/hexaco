@@ -25,6 +25,8 @@ Description
 -----------
 Class for a Pheromone Engine """
 
+from Engine.LibHexagonalPosition import get_neighbour_xyz
+
 
 class PheromoneEngine(object):
     """The engine managing all pheromones on the map
@@ -64,31 +66,40 @@ class PheromoneEngine(object):
 
     def get_game_object(self, object_id):
         """ This method should be overloaded """
-        print "Whooops "
+        raise NotImplementedError
 
     def get_levels_xyz(self, xyz):
         """ Returns all levels of the adjacent tiles of position x, y ,z """
 
         levels = []
 
-        for idx in range(6):
+        for direction in range(6):
 
-            levels.append(None)
+            nghbr_xyz = get_neighbour_xyz(xyz, direction)
+            key = "%d%d%d" % (nghbr_xyz[0], nghbr_xyz[1], nghbr_xyz[2])
+
+            try:
+                obj_id = self.holders[key]
+                obj = self.get_game_object(obj_id)
+                level = obj.components['pheromone_holder'].level
+                levels.append(level)
+            except KeyError:
+                levels.append(None)
 
         return levels
 
     def update_map(self):
         """ Update the objects that need pheromone data """
 
-        for object_id in self.holders:
+        for object_id in self.actors:
 
             try:
-                holder = self.get_game_object(object_id)
+                actor = self.get_game_object(object_id)
 
             except:
                 print "Could not find object"
 
-            ph_comp = holder.components['pheromone_holder']
-            pos_comp = holder.components['position']
+            ph_comp = actor.components['pheromone_actor']
+            pos_comp = actor.components['position']
 
             ph_comp.neighbour_levels = self.get_levels_xyz(pos_comp.xyz)

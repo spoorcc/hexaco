@@ -36,6 +36,7 @@ from Engine.Components import PositionComponent
 from Engine.Components import PheromoneHolderComponent
 from Engine.Components import PheromoneActorComponent
 
+
 class TestPheromoneEngine(unittest.TestCase):
     """Test object for PheromoneEngine"""
 

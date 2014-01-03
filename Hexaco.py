@@ -27,6 +27,7 @@ Creates all software components and manages the main game loop """
 
 from Engine import GraphicsEngine
 from Engine import GameEngine
+from Engine import PheromoneEngine
 
 import Tkinter
 
@@ -39,13 +40,17 @@ HEX_RADIUS = 45
 # Create the engines
 GAME_ENGINE = GameEngine()
 GRAPHICS_ENGINE = GraphicsEngine(master=ROOT)
+PHEROMONE_ENGINE = PheromoneEngine()
 
 # Set all constants
 GRAPHICS_ENGINE.set_hex_radius(HEX_RADIUS)
 GAME_ENGINE.set_hex_radius(HEX_RADIUS)
 
 GAME_ENGINE.callback_for_new_object(GRAPHICS_ENGINE.add_component)
+GAME_ENGINE.callback_for_new_object(PHEROMONE_ENGINE.add_component)
+
 GRAPHICS_ENGINE.get_game_object = GAME_ENGINE.get_game_object
+PHEROMONE_ENGINE.get_game_object = GAME_ENGINE.get_game_object
 
 # Initialize all engines
 GAME_ENGINE.initialize_objects()
@@ -59,5 +64,6 @@ while 1:
     i += 1
     GRAPHICS_ENGINE.set_turn_text(i)
     GAME_ENGINE.update()
+    PHEROMONE_ENGINE.update_map()
     GRAPHICS_ENGINE.updateScreen()
     sleep(0.)
