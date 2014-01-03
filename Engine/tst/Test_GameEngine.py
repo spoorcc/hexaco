@@ -26,7 +26,7 @@ Description
  """
 
 import unittest
-from mock import MagicMock
+from mock import MagicMock, patch
 
 from ..GameObject import GameObject
 from ..GameEngine import GameEngine
@@ -164,20 +164,20 @@ class Testgame_engine(unittest.TestCase):  # pylint: disable=R0904
 
         self.assertTrue(len(self.game_eng.objects) > 0)
 
-    @unittest.skip("Test ruins the singleton class because of mocks, \
-                   needs fixing")
-    def test_update_method_calls(self):
+    @patch.object(GameEngine, 'update_ai')
+    @patch.object(GameEngine, 'update_move')
+    def test_update_method_calls(self, mock_update_ai, mock_update_move):
         """ Test if all update methods get called"""
         game_eng = GameEngine()
-        game_eng.update_ai = MagicMock()
-        game_eng.update_move = MagicMock()
+        #game_eng.update_ai = MagicMock()
+        #game_eng.update_move = MagicMock()
 
         game_eng.add_game_object(self.dummyObj)
 
         game_eng.update()
 
-        game_eng.update_ai.assert_called_with(self.dummyObj)
-        game_eng.update_move.assert_called_with(self.dummyObj)
+        mock_update_ai.assert_called_with(self.dummyObj)
+        mock_update_move.assert_called_with(self.dummyObj)
 
     def test_update_move(self):
         """ Test that if a object has non-zero speed,
