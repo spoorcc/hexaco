@@ -71,11 +71,13 @@ class GameObjectFactory(object):
         obj.components['position'].orientation = 3
 
         obj.components['move'] = MoveComponent(obj)
-        obj.components['move'].speed = 0.01
+        obj.components['move'].speed = 0.1
 
         obj.components['ai'] = AiComponent(obj)
 
         obj.components['pheromone_actor'] = PheromoneActorComponent(obj)
+        obj.components['pheromone_actor'].deposit["food"] = 10
+        obj.components['pheromone_actor'].deposit["home"] = 10
 
         return obj
 
@@ -91,5 +93,6 @@ class GameObjectFactory(object):
         obj.components['position'] = PositionComponent(obj)
 
         obj.components['pheromone_holder'] = PheromoneHolderComponent(obj)
+        obj.components['pheromone_holder'].decay = 0.0
 
         return obj

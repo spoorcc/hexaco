@@ -62,10 +62,14 @@ class GameEngine(object):
     def initialize_objects(self):
         """ All objects in the world will be initialized here """
 
-        self.create_map(4)
+        self.create_map(12)
 
         ant = self.game_object_factory.create_ant()
         ant.components['position'].pos.set_position_xyz(0, 0, 0)
+        self.add_game_object(ant)
+
+        ant = self.game_object_factory.create_ant()
+        ant.components['position'].pos.set_position_xyz(3, -3, 0)
         self.add_game_object(ant)
 
     def add_game_object(self, game_object):
@@ -103,7 +107,13 @@ class GameEngine(object):
         """ Updates all the components in the proper order
         , called as part of the main game loop """
         for obj_id, obj in self.objects.iteritems():
+
+            # Update all sensors
+
+            # Update all decisions
             self.update_ai(obj)
+
+            # Update all actions
             self.update_move(obj)
 
     def update_ai(self, obj):

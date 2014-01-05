@@ -59,18 +59,25 @@ class TestPheromoneHolderComponent(unittest.TestCase):
 
         self.assertEqual(self.ph_comp.parent, None)
 
-    def test_default_level(self):
+    def test_default_food_level(self):
 
-        self.assertEqual(self.ph_comp.level, 0)
+        self.assertEqual(self.ph_comp.levels["food"], 0.0)
+
+
+    def test_default_home_level(self):
+
+        self.assertEqual(self.ph_comp.levels["home"], 0.0)
 
     def test_update(self):
 
         self.ph_comp.decay = 1.0
-        self.ph_comp.level = 1.0
+        self.ph_comp.levels["food"] = 1.0
+        self.ph_comp.levels["home"] = 1.0
 
         self.ph_comp.update()
 
-        self.assertEqual(self.ph_comp.level, 0.0)
+        self.assertEqual(self.ph_comp.levels["food"], 0.0)
+        self.assertEqual(self.ph_comp.levels["home"], 0.0)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

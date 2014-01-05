@@ -25,6 +25,7 @@ Description
 -----------
 Class for a Pheromone Engine """
 
+from math import sqrt
 from Engine.LibHexagonalPosition import get_neighbour_xyz
 
 
@@ -55,8 +56,9 @@ class PheromoneEngine(object):
             if 'pheromone_holder' in game_object.components and \
                     'position' in game_object.components:
                 xyz = game_object.components['position'].xyz()
-                key = "%d%d%d" % (xyz[0], xyz[1], xyz[2])
+                key = "%+.0f%+.0f%+.0f" % (xyz[0], xyz[1], xyz[2])
                 self.holders[key] = game_object.object_id
+                print "Added holder @ %s" % key
 
             if 'pheromone_actor' in game_object.components and \
                     'position' in game_object.components:
@@ -64,31 +66,47 @@ class PheromoneEngine(object):
         except AttributeError:
             pass
 
+    def pheromone_levels_to_color(self, levels):
+        """ Returns a TKinter rgb color string """
+
+        red = sqrt(levels["home"])
+        green = 10
+        blue = sqrt(levels["food"])
+        return "#%02x%02x%02x" % (red, green, blue)
+
     def get_game_object(self, object_id):
         """ This method should be overloaded """
         raise NotImplementedError
 
+    def get_holder(self, xyz):
+        """ Get a pheromone holder using the coordinate """
+        key = "%+.0f%+.0f%+.0f" % (xyz[0], xyz[1], xyz[2])
+        key = key.replace("-0", "+0")
+        obj_id = self.holders[key]
+        holder = self.get_game_object(obj_id)
+        return holder.components['pheromone_holder']
+
     def get_levels_xyz(self, xyz):
         """ Returns all levels of the adjacent tiles of position x, y ,z """
 
-        levels = []
+        pheromone_levels = {"food": [], "home": []}
 
         for direction in range(6):
 
             nghbr_xyz = get_neighbour_xyz(xyz, direction)
-            key = "%d%d%d" % (nghbr_xyz[0], nghbr_xyz[1], nghbr_xyz[2])
 
             try:
-                obj_id = self.holders[key]
-                obj = self.get_game_object(obj_id)
-                level = obj.components['pheromone_holder'].level
-                levels.append(level)
+                holder = self.get_holder(nghbr_xyz)
+                levels = holder.levels
+                pheromone_levels["food"].append(levels["food"])
+                pheromone_levels["home"].append(levels["home"])
             except KeyError:
-                levels.append(None)
+                pheromone_levels["food"].append(None)
+                pheromone_levels["home"].append(None)
 
-        return levels
+        return pheromone_levels
 
-    def update_map(self):
+    def update_actors(self):
         """ Update the objects that need pheromone data """
 
         for object_id in self.actors:
@@ -96,10 +114,67 @@ class PheromoneEngine(object):
             try:
                 actor = self.get_game_object(object_id)
 
-            except:
-                print "Could not find object"
+            except NotImplementedError:
+                print "get_game_object method must be overloaded"
 
-            ph_comp = actor.components['pheromone_actor']
+            except KeyError:
+                del self.actors[object_id]
+                print """Could not find pheromone_actor,
+                       removed from update list of PheromoneEngine """
+
             pos_comp = actor.components['position']
 
-            ph_comp.neighbour_levels = self.get_levels_xyz(pos_comp.xyz)
+            if pos_comp.center_of_tile():
+                ph_comp = actor.components['pheromone_actor']
+                ph_comp.neighbour_levels = self.get_levels_xyz(pos_comp.xyz())
+
+    def update_holders(self):
+        """ Update the objects that take pheromones """
+
+        for hold_pos in self.holders:
+
+            try:
+                object_id = self.holders[hold_pos]
+                holder = self.get_game_object(object_id)
+                ph_hold_comp = holder.components['pheromone_holder']
+                ph_hold_comp.update()
+
+                color = self.pheromone_levels_to_color(ph_hold_comp.levels)
+                holder.components['render'].fill = color
+
+            except NotImplementedError:
+                print "get_game_object method must be overloaded"
+
+            except KeyError:
+                del self.holders[object_id]
+                print """Could not find pheromone_actor,
+                       removed from update list of PheromoneEngine """
+
+        for object_id in self.actors:
+
+            try:
+                actor = self.get_game_object(object_id)
+                xyz = actor.components['position'].xyz()
+
+            except NotImplementedError:
+                print "get_game_object method must be overloaded"
+
+            except KeyError:
+                del self.actors[object_id]
+                print """Could not find pheromone_actor,
+                       removed from update list of PheromoneEngine """
+
+            pos_comp = actor.components['position']
+
+            if pos_comp.center_of_tile():
+                ph_deposit = actor.components['pheromone_actor'].deposit
+
+                xyz = pos_comp.xyz()
+                holder = self.get_holder(xyz)
+
+                for ph_dep in ph_deposit:
+
+                    try:
+                        holder.levels[ph_dep] += ph_deposit[ph_dep]
+                    except KeyError:
+                        print "Holder has no %s level" % ph_dep

@@ -18,7 +18,6 @@
 ########################################################################
 
  Position Component test Class
- including Unit test class
 
  * Run file separate to run unit tests
 
@@ -31,7 +30,9 @@ Class for a position component """
 import unittest
 from .. import PositionComponent
 
+
 class TestPositionComponent(unittest.TestCase):
+    """ Tests the position component """
 
     ######################################################
 
@@ -59,63 +60,82 @@ class TestPositionComponent(unittest.TestCase):
 
     #######################################################
 
-    def test_defaultPosition(self):
+    def test_default_position(self):
+        """ Test if default position of position component is in at 0,0,0"""
 
-        self.assertEqual( self.posComp.pos.x, 0.0 )
-        self.assertEqual( self.posComp.pos.y, 0.0 )
-        self.assertEqual( self.posComp.pos.z, 0.0 )
+        self.assertEqual(self.posComp.pos.x, 0.0)
+        self.assertEqual(self.posComp.pos.y, 0.0)
+        self.assertEqual(self.posComp.pos.z, 0.0)
 
-    def test_defaultOrientation(self):
+    def test_default_orientation(self):
+        """ Test that default orientation is in 0 direction """
 
-        self.assertEqual( self.posComp.orientation, 0 )
+        self.assertEqual(self.posComp.orientation, 0)
 
-    def test_center_of_tile_valid( self ):
+    def test_center_of_tile_valid(self):
+        """ Test if for valid center of tile position
+        the value true is returned """
 
-        self.assertTrue( self.posComp.center_of_tile() )
+        self.assertTrue(self.posComp.center_of_tile())
 
         self.posComp.pos.x = -1.0
         self.posComp.pos.z = 1.0
 
-        self.assertTrue( self.posComp.center_of_tile() )
+        self.assertTrue(self.posComp.center_of_tile())
 
-    def test_center_of_tile_invalid( self ):
+    def test_center_of_tile_invalid(self):
+        """ Test if for invalid center of tile position
+        the value false is returned """
 
         self.posComp.pos.x =  0.01
         self.posComp.pos.y = -0.01
-        self.assertFalse( self.posComp.center_of_tile() )
+        self.assertFalse(self.posComp.center_of_tile())
 
-    def test_center_of_tile_series( self ):
+    def test_center_of_tile_series(self):
+        """ Test for large series of center of tiles
+        if the expected amount of trues is returned """
 
         counter = 0
 
         self.posComp.pos.x = -1.0
         self.posComp.pos.y = 1.0
-        
-        for i in range( 2555 ):
-        
+
+        for i in range(2555):
+
             if self.posComp.center_of_tile():
                 counter += 1
 
             self.posComp.pos.x += 0.01
             self.posComp.pos.y -= 0.01
 
-        self.assertEqual( counter, 26 )
+        self.assertEqual(counter, 26)
 
-    def test_is_float_int( self ):
+    def test_is_float_int_using_floats(self):
+        """ Test for number of floats if the they are
+        correctly considered as ints """
 
-        self.assertTrue( self.posComp.is_float_int( -4.0 ) )
-        self.assertTrue( self.posComp.is_float_int(  0.0 ) )
-        self.assertTrue( self.posComp.is_float_int(  1.0 ) )
-        self.assertTrue( self.posComp.is_float_int(  -1.0 ) )
-        self.assertTrue( self.posComp.is_float_int(  0.0001 ) )
-        self.assertTrue( self.posComp.is_float_int(  -0.0009 ) )
+        self.assertTrue(self.posComp.is_float_int(-4.0))
+        self.assertTrue(self.posComp.is_float_int(0.0))
+        self.assertTrue(self.posComp.is_float_int(1.0))
+        self.assertTrue(self.posComp.is_float_int(-1.0))
+        self.assertTrue(self.posComp.is_float_int(0.0001))
+        self.assertTrue(self.posComp.is_float_int(-0.0009))
 
-        self.assertFalse( self.posComp.is_float_int(  0.5 ) )
-        self.assertFalse( self.posComp.is_float_int(  1.1 ) )
-        self.assertFalse( self.posComp.is_float_int( -0.3 ) )
-        self.assertFalse( self.posComp.is_float_int( -0.5 ) )
-    
+    def test_is_float_int_using_non_floats(self):
+        """ Test for number of floats if the they are
+        correctly considered as non-ints """
 
-                
+        self.assertFalse(self.posComp.is_float_int(0.5))
+        self.assertFalse(self.posComp.is_float_int(1.1))
+        self.assertFalse(self.posComp.is_float_int(-0.3))
+        self.assertFalse(self.posComp.is_float_int(-0.5))
+
+    def test_set_position_xyz(self):
+        """ Test if setting the position is propagated to the position """
+
+        self.posComp.set_position_xyz((3, -3, 0))
+
+        self.assertEqual(self.posComp.pos.xyz, (3, -3, 0))
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

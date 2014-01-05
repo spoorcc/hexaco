@@ -59,10 +59,16 @@ class TestPheromoneActorComponent(unittest.TestCase):
 
         self.assertEqual(self.phComp.parent, None)
 
+    def test_default_deposit_levels(self):
+
+        self.assertEqual(self.phComp.deposit["food"], 0.0)
+        self.assertEqual(self.phComp.deposit["home"], 0.0)
+
     def test_default_neighbour_Levels(self):
 
         for i in range(6):
-            self.assertEqual(self.phComp.neighbour_levels[i], 0)
+            self.assertEqual(self.phComp.neighbour_levels["food"][i], 0)
+            self.assertEqual(self.phComp.neighbour_levels["home"][i], 0)
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

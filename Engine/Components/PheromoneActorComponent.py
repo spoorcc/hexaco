@@ -24,7 +24,8 @@
 Description
 -----------
 Class for a Pheromone Actor component
-Gives gameobject the ability to sense pheromone levels around it and to deposit pheromones """
+Gives gameobject the ability to sense pheromone levels around
+it and to deposit pheromones """
 
 from Component import Component
 
@@ -38,10 +39,6 @@ class PheromoneActorComponent(Component):
         self.parent = parent
 
         # Orientation same as in hexagonal position
-        self.neighbour_levels = [0.0,
-                                 0.0,
-                                 0.0,
-                                 0.0,
-                                 0.0,
-                                 0.0]
-        self.deposit = 0.0
+        self.neighbour_levels = {"food": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+                                 "home": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
+        self.deposit = {"food": 0.0, "home": 0.0}

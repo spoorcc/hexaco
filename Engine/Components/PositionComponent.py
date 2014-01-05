@@ -44,10 +44,10 @@ class PositionComponent(Component):
 
         return [self.pos.x, self.pos.y, self.pos.z]
 
-    def set_position_xyz(self, xpos, ypos, zpos):
+    def set_position_xyz(self, xyz_pos):
         """ Sets the xyz position """
 
-        return self.pos.set_position_xyz(xpos, ypos, zpos)
+        return self.pos.set_position_xyz(xyz_pos[0], xyz_pos[1], xyz_pos[2])
 
     def center_of_tile(self):
         """ Returns a boolean which indicates if the current coordinate

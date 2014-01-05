@@ -196,6 +196,8 @@ class GraphicsEngine(object, Frame):
             # Move the object
             self.win.coords(rend_comp.renderID, *coordinates_placed)
 
+            self.win.itemconfig(rend_comp.renderID, fill=rend_comp.fill)
+
         self.master.update_idletasks()  # redraw
         #self.master.update() # process events
 

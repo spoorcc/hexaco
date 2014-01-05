@@ -36,13 +36,15 @@ class PheromoneHolderComponent(Component):
     def __init__(self, parent):
         super(PheromoneHolderComponent, self).__init__(parent)
         self.parent = parent
-        self.level = 0.0
+
+        self.levels = {"food": 0.0, "home": 0.0}
         self.decay = 0.0001
 
     def update(self):
         """ This will update the level of this holder """
 
-        if self.level > 0.0:
-            self.level -= self.decay
-        else:
-            self.level = 0.0
+        for phero_type in self.levels:
+            if self.levels[phero_type] > 0.0:
+                self.levels[phero_type] -= self.decay
+            else:
+                self.levels[phero_type] = 0.0

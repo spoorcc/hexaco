@@ -18,7 +18,7 @@
 ########################################################################
 
  AI Component Class
- 
+
 ########################################################################
 
 Description
@@ -27,9 +27,12 @@ Class for a Artificial Intelligence component """
 
 from Engine.Components.Component import Component
 
-class AiComponent( Component ):
+
+class AiComponent(Component):
     """An Ai component
     """
 
     def __init__(self, parent):
         self.parent = parent
+
+

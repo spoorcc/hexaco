@@ -35,7 +35,7 @@ from time import sleep
 
 ROOT = Tkinter.Tk()
 
-HEX_RADIUS = 45
+HEX_RADIUS = 12
 
 # Create the engines
 GAME_ENGINE = GameEngine()
@@ -46,6 +46,7 @@ PHEROMONE_ENGINE = PheromoneEngine()
 GRAPHICS_ENGINE.set_hex_radius(HEX_RADIUS)
 GAME_ENGINE.set_hex_radius(HEX_RADIUS)
 
+# Alert other engines when a new game_object is added
 GAME_ENGINE.callback_for_new_object(GRAPHICS_ENGINE.add_component)
 GAME_ENGINE.callback_for_new_object(PHEROMONE_ENGINE.add_component)
 
@@ -63,7 +64,8 @@ while 1:
 
     i += 1
     GRAPHICS_ENGINE.set_turn_text(i)
+    PHEROMONE_ENGINE.update_actors()
     GAME_ENGINE.update()
-    PHEROMONE_ENGINE.update_map()
+    PHEROMONE_ENGINE.update_holders()
     GRAPHICS_ENGINE.updateScreen()
     sleep(0.)
