@@ -35,16 +35,13 @@ from time import sleep
 
 ROOT = Tkinter.Tk()
 
-HEX_RADIUS = 12
-
 # Create the engines
 GAME_ENGINE = GameEngine()
 GRAPHICS_ENGINE = GraphicsEngine(master=ROOT)
 PHEROMONE_ENGINE = PheromoneEngine()
 
 # Set all constants
-GRAPHICS_ENGINE.set_hex_radius(HEX_RADIUS)
-GAME_ENGINE.set_hex_radius(HEX_RADIUS)
+GRAPHICS_ENGINE.set_hex_radius()
 
 # Alert other engines when a new game_object is added
 GAME_ENGINE.callback_for_new_object(GRAPHICS_ENGINE.add_component)

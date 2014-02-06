@@ -31,6 +31,8 @@ import Tkinter
 from math import sqrt
 from copy import deepcopy
 
+from Engine.GameSettings import HEX_RADIUS
+
 
 class GraphicsEngine(object, Frame):
     """The engine managing all drawing to screen
@@ -53,7 +55,7 @@ class GraphicsEngine(object, Frame):
         self.win = None
         self.turn_text = None
 
-        self.hex_radius = 10
+        self.hex_radius = HEX_RADIUS
 
         self.hex_width = None
         self.screen_x_offset = None
@@ -64,7 +66,7 @@ class GraphicsEngine(object, Frame):
         self.center_screen_coordinate = None
 
         self.set_window_size(800, 600)
-        self.set_hex_radius(self.hex_radius)
+        self.set_hex_radius(HEX_RADIUS)
         self.setup_window()
 
         assert(self.size[0] == 800)
@@ -90,7 +92,7 @@ class GraphicsEngine(object, Frame):
                                               fill="#ff0000")
         self.win.pack(fill=BOTH, expand=1)
 
-    def set_hex_radius(self, hex_radius):
+    def set_hex_radius(self, hex_radius=HEX_RADIUS):
         """ Sets the hex_radius and calculates the offsets
         needed for rendering"""
 

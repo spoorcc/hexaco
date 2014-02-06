@@ -36,6 +36,8 @@ from Engine.Components import AiComponent
 from Engine.Components import PheromoneActorComponent
 from Engine.Components import PheromoneHolderComponent
 
+from Engine.GameSettings import HEX_RADIUS
+
 
 class GameObjectFactory(object):
     """The ObjectFactory which construcs game objects
@@ -43,7 +45,7 @@ class GameObjectFactory(object):
 
     def __init__(self, parent):
         self.parent = parent
-        self.hex_radius = 20
+        self.hex_radius = HEX_RADIUS
         self.next_object_id = 0
 
     def create_game_object(self):
@@ -70,14 +72,12 @@ class GameObjectFactory(object):
         obj.components['position'] = PositionComponent(obj)
         obj.components['position'].orientation = 3
 
-        obj.components['move'] = MoveComponent(obj)
-        obj.components['move'].speed = 0.1
-
-        obj.components['ai'] = AiComponent(obj)
+        obj.add_component('move', MoveComponent(parent=obj, speed=0.1))
+        obj.add_component('ai', AiComponent(obj))
 
         obj.components['pheromone_actor'] = PheromoneActorComponent(obj)
-        obj.components['pheromone_actor'].deposit["food"] = 10
-        obj.components['pheromone_actor'].deposit["home"] = 10
+        obj.components['pheromone_actor'].deposit["food"] = 100
+        obj.components['pheromone_actor'].deposit["home"] = 100
 
         return obj
 
@@ -93,6 +93,6 @@ class GameObjectFactory(object):
         obj.components['position'] = PositionComponent(obj)
 
         obj.components['pheromone_holder'] = PheromoneHolderComponent(obj)
-        obj.components['pheromone_holder'].decay = 0.0
+        obj.components['pheromone_holder'].decay = 0.5
 
         return obj

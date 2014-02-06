@@ -26,6 +26,8 @@ Description
 Class for a Artificial Intelligence component """
 
 from Engine.Components.Component import Component
+from Engine.Components.PheromoneActorComponent import PheromoneActorComponent
+from random import random, randint
 
 
 class AiComponent(Component):
@@ -34,5 +36,26 @@ class AiComponent(Component):
 
     def __init__(self, parent):
         self.parent = parent
+        self.interested_in = "food"
+
+        self.chances = {"listen_to_pheromone": 0.50,
+                        "listen_to_random": 0.05}
+
+    def update(self):
+        """ Takes the information and updates the actions """
+        pos_comp = self.components['position']
+
+        if pos_comp.center_of_tile():
+
+            if random() <= self.chances["listen_to_pheromone"]:
+                pos_comp.orientation = \
+                               self.get_direction_using_pheromone()
+            else:
+                pos_comp.orientation = randint(0, 5)
+
+    def get_direction_using_pheromone(self):
+
+        pher_act_comp = self.components['pheromone_actor']
+        return pher_act_comp.direction_of_highest()[self.interested_in]
 
 

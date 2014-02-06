@@ -26,13 +26,15 @@ Description
  """
 
 import unittest
-from  ..MoveComponent import MoveComponent
+from ..MoveComponent import MoveComponent
+from ..PositionComponent import PositionComponent
 
 ###################################################################
 #
 # Test Code
 #
 ###################################################################
+
 
 class TestMoveComponent(unittest.TestCase):
 
@@ -51,7 +53,7 @@ class TestMoveComponent(unittest.TestCase):
     #######################################################
 
     def setUp(self):
-        "This method is called befire each test case"
+        "This method is called before each test case"
         self.movComp.speed = 0.0
 
     def tearDown(self):
@@ -62,49 +64,65 @@ class TestMoveComponent(unittest.TestCase):
 
     def test_defaultSpeed(self):
 
-        self.assertEqual( self.movComp.speed, 0.0 )
+        self.assertEqual(self.movComp.speed, 0.0)
 
     def test_xyz_speed_or0(self):
 
         self.movComp.speed = 2.0
-        xyz_speed = self.movComp.get_xyz_speed( 0 )
+        xyz_speed = self.movComp.get_xyz_speed(0)
 
-        self.assertEqual( xyz_speed, [ 2.0, -2.0, 0.0 ]  )
+        self.assertEqual(xyz_speed, [2.0, -2.0, 0.0])
 
     def test_xyz_speed_or1(self):
 
         self.movComp.speed = 2.0
-        xyz_speed = self.movComp.get_xyz_speed( 1 )
+        xyz_speed = self.movComp.get_xyz_speed(1)
 
-        self.assertEqual( xyz_speed, [ 2.0, 0.0, -2.0 ]  )
+        self.assertEqual(xyz_speed, [2.0, 0.0, -2.0])
 
     def test_xyz_speed_or2(self):
 
         self.movComp.speed = 2.0
-        xyz_speed = self.movComp.get_xyz_speed( 2 )
+        xyz_speed = self.movComp.get_xyz_speed(2)
 
-        self.assertEqual( xyz_speed, [ 0.0, 2.0, -2.0 ]  )
+        self.assertEqual(xyz_speed, [0.0, 2.0, -2.0])
 
     def test_xyz_speed_or3(self):
 
         self.movComp.speed = 2.0
-        xyz_speed = self.movComp.get_xyz_speed( 3 )
+        xyz_speed = self.movComp.get_xyz_speed(3)
 
-        self.assertEqual( xyz_speed, [ -2.0, 2.0, 0.0 ]  )
+        self.assertEqual(xyz_speed, [-2.0, 2.0, 0.0])
 
     def test_xyz_speed_or4(self):
 
         self.movComp.speed = 2.0
-        xyz_speed = self.movComp.get_xyz_speed( 4 )
+        xyz_speed = self.movComp.get_xyz_speed(4)
 
-        self.assertEqual( xyz_speed, [ -2.0, 0.0, 2.0 ]  )                      
-        
+        self.assertEqual(xyz_speed, [-2.0, 0.0, 2.0])
+
     def test_xyz_speed_or5(self):
 
         self.movComp.speed = 2.0
-        xyz_speed = self.movComp.get_xyz_speed( 5 )
+        xyz_speed = self.movComp.get_xyz_speed(5)
 
-        self.assertEqual( xyz_speed, [ 0.0, -2.0, 2.0 ]  )
-                        
+        self.assertEqual(xyz_speed, [0.0, -2.0, 2.0])
+
+    def test_update(self):
+
+        self.movComp.speed = 5.0
+
+        pos = [-2.0, 0.0, 2.0]
+        pos_comp = PositionComponent(None)
+        pos_comp.set_position_xyz(pos)
+
+        self.movComp.components['position'] = pos_comp
+
+        deltas = self.movComp.get_xyz_speed(pos_comp.orientation)
+
+        expected = [pos[i] + deltas[i] for i in range(3)]
+
+        self.assertEqual(expected, pos_comp.xyz())
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

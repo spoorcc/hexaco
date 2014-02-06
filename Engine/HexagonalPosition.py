@@ -73,19 +73,16 @@ class HexagonalPosition(object):
 
     ####################################################################
 
-    def set_position_xyz(self, x, y, z): # pylint: disable=C0103
+    def set_position_xyz(self, x, y, z):  # pylint: disable=C0103
         """Sets the position in X Y Z coordinates,
         Updates the ring, side and tile variables
         Returns a boolean if it was a valid position
         """
 
-        if not( type(x) == type(y) == type(z) is int):
-            return False
-
         # See file header for explanation of coordinate system
         # The sum must be zero to be a valid coordinate
-        if( (x + y + z) == 0):
-            self.x, self.y, self.z = x, y, z # pylint: disable=C0103
+        if((x + y + z) == 0):
+            self.x, self.y, self.z = x, y, z  # pylint: disable=C0103
             self.xyz = (x, y, z)
             (self.ring, self.side, self.tile) = \
                 calc_ring_side_tile_from_xyz(self.xyz)

@@ -28,6 +28,8 @@ Base class for a game Engine """
 from Engine.GameObject import GameObject
 from Engine.GameObjectFactory import GameObjectFactory
 
+from Engine.GameSettings import MAPSIZE
+
 
 class GameEngine(object):
     """The engine containing all gameobjects and tiles
@@ -47,6 +49,7 @@ class GameEngine(object):
         self.objects = dict()
         self.game_object_factory = GameObjectFactory(self)
         self.callbacks_for_new_object = []
+        self.max_ring = MAPSIZE
 
     def callback_for_new_object(self, method_to_call):
         """ Methods registered here will be called
@@ -55,14 +58,10 @@ class GameEngine(object):
         if callable(method_to_call):
             self.callbacks_for_new_object.append(method_to_call)
 
-    def set_hex_radius(self, hex_radius):
-        """ Set the hex radius """
-        self.game_object_factory.hex_radius = hex_radius
-
     def initialize_objects(self):
         """ All objects in the world will be initialized here """
 
-        self.create_map(12)
+        self.create_map(self.max_ring)
 
         ant = self.game_object_factory.create_ant()
         ant.components['position'].pos.set_position_xyz(0, 0, 0)
@@ -111,55 +110,8 @@ class GameEngine(object):
             # Update all sensors
 
             # Update all decisions
-            self.update_ai(obj)
-
-            # Update all actions
-            self.update_move(obj)
-
-    def update_ai(self, obj):
-        """ Update all the think actions of each game_object"""
-
-        try:
-            # Execute move actions
             if 'ai' in obj.components:
+                obj.components['ai'].update()
 
-                pos_comp = obj.components['position']
-
-                if pos_comp.center_of_tile():
-                    print "redirecting"
-                    pos_comp.orientation = (pos_comp.orientation + 1) % 6
-
-        except KeyError:
-            print "Object has no position component"
-            return False
-        except:
-            print "Error while trying to let objects think"
-            return False
-
-        return True
-
-    def update_move(self, obj):
-        """ Update all objects with a move component """
-
-        try:
-            # Execute move actions
             if 'move' in obj.components:
-                move_comp = obj.components['move']
-                pos_comp = obj.components['position']
-
-                # Only do the move computations if there is a movement
-                if move_comp.speed != 0.0:
-                    speed_mat = move_comp.get_xyz_speed(pos_comp.orientation)
-
-                    pos_comp.pos.x += speed_mat[0]
-                    pos_comp.pos.y += speed_mat[1]
-                    pos_comp.pos.z += speed_mat[2]
-
-        except KeyError:
-            print "Object has no position component"
-            return False
-        except:
-            print "Error while trying to move objects"
-            return False
-
-        return True
+                obj.components['move'].update()

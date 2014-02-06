@@ -33,3 +33,7 @@ from PheromoneEngine import PheromoneEngine
 
 from GameObject import GameObject
 from GameObjectFactory import GameObjectFactory
+
+from GameSettings import *
+
+from LibCommon import *

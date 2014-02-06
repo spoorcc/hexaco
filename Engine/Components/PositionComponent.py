@@ -28,6 +28,8 @@ Class for a position component """
 from Engine.Components.Component import Component
 from ..HexagonalPosition import HexagonalPosition
 
+from Engine.LibCommon import is_float_int
+
 
 class PositionComponent(Component):
     """A Move component has a position
@@ -47,17 +49,13 @@ class PositionComponent(Component):
     def set_position_xyz(self, xyz_pos):
         """ Sets the xyz position """
 
-        return self.pos.set_position_xyz(xyz_pos[0], xyz_pos[1], xyz_pos[2])
+        return self.pos.set_position_xyz(xyz_pos[0],
+                                         xyz_pos[1],
+                                         xyz_pos[2])
 
     def center_of_tile(self):
         """ Returns a boolean which indicates if the current coordinate
         is in the center of a tile"""
-        return (self.is_float_int(self.pos.x) and
-                self.is_float_int(self.pos.y) and
-                self.is_float_int(self.pos.z))
-
-    def is_float_int(self, number):
-        """ Returns a boolean which indicates if a float is an integer"""
-        return (abs(float('%.2f' % number)-float('%.f' % number)) < 0.001)
-        #return ( ceil(number) == number or floor(number) == number )
-        #return ( self.round_float( number, 3 ) == float( int( number)))
+        return (is_float_int(self.pos.x) and
+                is_float_int(self.pos.y) and
+                is_float_int(self.pos.z))

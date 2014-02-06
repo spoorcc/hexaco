@@ -27,15 +27,17 @@ Base class for a move component """
 
 from Engine.Components.Component import Component
 
+from Engine.LibCommon import add_delta_to_pos_if_valid
+
 
 class MoveComponent(Component):
     """A Move component
     """
 
-    def __init__(self, parent):
+    def __init__(self, parent, speed=0.0):
         super(MoveComponent, self).__init__(parent)
         self.parent = parent
-        self.speed = 0.0
+        self.speed = speed
 
     def get_xyz_speed(self, orientation):
         """ Get the speed in x y z coordinates """
@@ -50,3 +52,17 @@ class MoveComponent(Component):
         xyz_speed = speed_mat[orientation]
 
         return [x*self.speed for x in xyz_speed]
+
+    def update(self):
+        """ Update all objects with a move component """
+
+        pos_comp = self.components['position']
+
+        # Only do the move computations if there is a movement
+        if self.speed != 0.0:
+
+            deltas = self.get_xyz_speed(pos_comp.orientation)
+            cur_pos = pos_comp.xyz()
+            xyz = add_delta_to_pos_if_valid(cur_pos, deltas)
+
+            pos_comp.set_position_xyz(xyz)

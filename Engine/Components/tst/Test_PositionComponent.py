@@ -110,32 +110,28 @@ class TestPositionComponent(unittest.TestCase):
 
         self.assertEqual(counter, 26)
 
-    def test_is_float_int_using_floats(self):
-        """ Test for number of floats if the they are
-        correctly considered as ints """
-
-        self.assertTrue(self.posComp.is_float_int(-4.0))
-        self.assertTrue(self.posComp.is_float_int(0.0))
-        self.assertTrue(self.posComp.is_float_int(1.0))
-        self.assertTrue(self.posComp.is_float_int(-1.0))
-        self.assertTrue(self.posComp.is_float_int(0.0001))
-        self.assertTrue(self.posComp.is_float_int(-0.0009))
-
-    def test_is_float_int_using_non_floats(self):
-        """ Test for number of floats if the they are
-        correctly considered as non-ints """
-
-        self.assertFalse(self.posComp.is_float_int(0.5))
-        self.assertFalse(self.posComp.is_float_int(1.1))
-        self.assertFalse(self.posComp.is_float_int(-0.3))
-        self.assertFalse(self.posComp.is_float_int(-0.5))
-
     def test_set_position_xyz(self):
         """ Test if setting the position is propagated to the position """
 
         self.posComp.set_position_xyz((3, -3, 0))
 
         self.assertEqual(self.posComp.pos.xyz, (3, -3, 0))
+
+    def test_set_position_xyz(self):
+        """ Test if setting the position is propagated to the position """
+
+        self.posComp.set_position_xyz((-2.0, 0.0, 2.0))
+
+        self.assertEqual(self.posComp.pos.xyz, (-2.0, 0.0, 2.0))
+
+    def test_xyz(self):
+        """ Test if getting position through
+        xyz returns the expected result """
+
+        xyz = [1, -2, 1]
+        self.posComp.set_position_xyz(xyz)
+
+        self.assertEqual(xyz, self.posComp.xyz())
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

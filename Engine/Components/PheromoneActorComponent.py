@@ -27,7 +27,8 @@ Class for a Pheromone Actor component
 Gives gameobject the ability to sense pheromone levels around
 it and to deposit pheromones """
 
-from Component import Component
+from Engine.Components.Component import Component
+from Engine.LibCommon import highest_in_list
 
 
 class PheromoneActorComponent(Component):
@@ -42,3 +43,13 @@ class PheromoneActorComponent(Component):
         self.neighbour_levels = {"food": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
                                  "home": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}
         self.deposit = {"food": 0.0, "home": 0.0}
+
+    def direction_of_highest(self):
+        """ Returns a dict with the indices of the highest levels """
+
+        directions = {}
+
+        for key in self.neighbour_levels.keys():
+            directions[key] = highest_in_list(self.neighbour_levels[key])
+
+        return directions

@@ -25,6 +25,8 @@ Description
 -----------
 Base class for a game object """
 
+from Engine.Components.Component import Component
+
 
 class GameObject(object):
     """A single Gameobject on a hexagonal field
@@ -37,4 +39,13 @@ class GameObject(object):
         self.object_id = -1
         self.components = {}
 
+    def add_component(self, id, component):
+        """ Adds a component to the component list """
+
+        if isinstance(component, Component):
+            self.components[id] = component
+            component.components = self.components
+
+        else:
+            raise TypeError("Should be a component!")
 

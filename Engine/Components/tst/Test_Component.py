@@ -18,7 +18,7 @@
 ########################################################################
 
  Component Test Class
- 
+
 ########################################################################
 
 Description
@@ -28,13 +28,9 @@ Description
 import unittest
 from ..Component import Component
 
-###################################################################
-#
-# Test Code
-#
-###################################################################
 
 class TestComponent(unittest.TestCase):
+    """ Tests the Component class """
 
     ######################################################
 
@@ -60,9 +56,18 @@ class TestComponent(unittest.TestCase):
 
     #######################################################
 
-    def test_defaultName(self):
+    def test_default_type(self):
 
-        self.assertEqual( type( self.comp), Component )
+        self.assertTrue(isinstance(self.comp, Component))
+
+    def test_call_components(self):
+        """ Assert that component handle can be added """
+
+        components = {"a": "comp_a", "b": "comp_b"}
+        com = Component(None, components)
+
+        self.assertEqual(com.components, components)
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)

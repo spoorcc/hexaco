@@ -30,7 +30,7 @@ import unittest
 from ..LibPolygons import *
 
 
-class TestGameObjectFactory(unittest.TestCase):
+class TestLibPolygons(unittest.TestCase):
     """Test object for GameObjectFactory"""
 
     def test_give_point_on_circle(self):

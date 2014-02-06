@@ -27,6 +27,7 @@ Description
 
 import unittest
 from ..GameObject import GameObject
+from ..Components.Component import Component
 
 
 ###################################################################
@@ -63,8 +64,34 @@ class TestGameObject(unittest.TestCase):
     def test_defaultName(self):
         """ The object must have "Default" as default name"""
 
-        self.assertEqual( self.gameObj.name, "Default" )
+        self.assertEqual(self.gameObj.name, "Default")
 
+    def test_addComponent_default(self):
+        """ Adding a component should be handled by the object """
+
+        comp = Component(None)
+        self.gameObj.add_component('some_comp', comp)
+
+        self.assertEqual(self.gameObj.components['some_comp'], comp)
+
+    def test_addComponent_non_valid(self):
+        """ Adding a component should be handled by the object """
+
+        with self.assertRaises(TypeError):
+            self.gameObj.add_component('some_comp', 'not a component')
+
+    def test_add_component_adds_components_handle(self):
+        """ Components should be able to call other components
+            within the same object """
+
+        comp_a = Component(None)
+        comp_b = Component(None)
+
+        self.gameObj.add_component('a', comp_a)
+        self.gameObj.add_component('b', comp_b)
+
+        self.assertEqual(comp_a.components['b'], comp_b)
+        self.assertEqual(comp_b.components['a'], comp_a)
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)
