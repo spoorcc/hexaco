@@ -69,9 +69,9 @@ class PheromoneEngine(object):
     def pheromone_levels_to_color(self, levels):
         """ Returns a TKinter rgb color string """
 
-        red = sqrt(levels["home"])
+        red = min(sqrt(levels["home"]), 255)
         green = 10
-        blue = sqrt(levels["food"])
+        blue = min(sqrt(levels["food"]), 255)
         return "#%02x%02x%02x" % (red, green, blue)
 
     def get_game_object(self, object_id):
@@ -170,6 +170,7 @@ class PheromoneEngine(object):
                 ph_deposit = actor.components['pheromone_actor'].deposit
 
                 xyz = pos_comp.xyz()
+
                 holder = self.get_holder(xyz)
 
                 for ph_dep in ph_deposit:

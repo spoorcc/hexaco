@@ -355,10 +355,10 @@ class TestPheromoneEngine(unittest.TestCase):
         levels = actor.components["pheromone_actor"].neighbour_levels
 
         self.assertListEqual(levels["food"],
-                             [0.0, 1.0, 2.0, 3.0, 4.0, 5.0])
+                             [0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
         self.assertListEqual(levels["home"],
-                             [0.0, 10.0, 20.0, 30.0, 40.0, 50.0])
+                             [0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)

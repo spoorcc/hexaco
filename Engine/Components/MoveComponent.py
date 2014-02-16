@@ -29,6 +29,8 @@ from Engine.Components.Component import Component
 
 from Engine.LibCommon import add_delta_to_pos_if_valid
 
+from Engine.GameSettings import EPSILON
+
 
 class MoveComponent(Component):
     """A Move component
@@ -42,12 +44,12 @@ class MoveComponent(Component):
     def get_xyz_speed(self, orientation):
         """ Get the speed in x y z coordinates """
 
-        speed_mat = [[1, -1, 0],  # Top-left
-                     [1, 0, -1],  # Top
-                     [0, 1, -1],  # Top-right
-                     [-1, 1, 0],  # Bottom-right
-                     [-1, 0, 1],  # Bottom
-                     [0, -1, 1]]  # Bottom-left
+        speed_mat = [[1.0, -1.0, 0.0],  # Top-left
+                     [1.0, 0.0, -1.0],  # Top
+                     [0.0, 1.0, -1.0],  # Top-right
+                     [-1.0, 1.0, 0.0],  # Bottom-right
+                     [-1.0, 0.0, 1.0],  # Bottom
+                     [0.0, -1.0, 1.0]]  # Bottom-left
 
         xyz_speed = speed_mat[orientation]
 
@@ -59,10 +61,16 @@ class MoveComponent(Component):
         pos_comp = self.components['position']
 
         # Only do the move computations if there is a movement
-        if self.speed != 0.0:
+        if self.speed >= EPSILON:
 
             deltas = self.get_xyz_speed(pos_comp.orientation)
             cur_pos = pos_comp.xyz()
-            xyz = add_delta_to_pos_if_valid(cur_pos, deltas)
+
+            try:
+                xyz = add_delta_to_pos_if_valid(cur_pos, deltas)
+            except ValueError:
+                # Turn around if trying to walk off map
+                pos_comp.orientation = (pos_comp.orientation + 3) % 6
+                xyz = cur_pos
 
             pos_comp.set_position_xyz(xyz)

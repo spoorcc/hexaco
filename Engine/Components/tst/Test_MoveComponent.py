@@ -110,18 +110,22 @@ class TestMoveComponent(unittest.TestCase):
 
     def test_update(self):
 
+        # Setup
         self.movComp.speed = 5.0
-
         pos = [-2.0, 0.0, 2.0]
+
         pos_comp = PositionComponent(None)
         pos_comp.set_position_xyz(pos)
 
-        self.movComp.components['position'] = pos_comp
-
         deltas = self.movComp.get_xyz_speed(pos_comp.orientation)
-
         expected = [pos[i] + deltas[i] for i in range(3)]
 
+        self.movComp.components['position'] = pos_comp
+
+        # Exercise
+        self.movComp.update()
+
+        # Verify
         self.assertEqual(expected, pos_comp.xyz())
 
 if __name__ == '__main__':

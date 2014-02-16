@@ -50,6 +50,7 @@ r2 s5 t1  /        \ r0 s0 t0  /       \            /        \
 """
 
 from Engine.LibHexagonalPosition import *
+from Engine.GameSettings import MAPSIZE
 
 
 class HexagonalPosition(object):
@@ -73,7 +74,7 @@ class HexagonalPosition(object):
 
     ####################################################################
 
-    def set_position_xyz(self, x, y, z):  # pylint: disable=C0103
+    def set_position_xyz(self, x, y, z, max_coord=MAPSIZE):  # pylint: disable=C0103
         """Sets the position in X Y Z coordinates,
         Updates the ring, side and tile variables
         Returns a boolean if it was a valid position

@@ -25,7 +25,7 @@ Description
 -----------
 Module that contains common functionality """
 
-from Engine.GameSettings import MAPSIZE
+from Engine.GameSettings import MAPSIZE, EPSILON
 
 
 def highest_in_list(seq):
@@ -46,22 +46,38 @@ def highest_in_list(seq):
 
 def is_float_int(number):
     """ Returns a boolean which indicates if a float is an integer"""
-    return (abs(float('%.2f' % number)-float('%.f' % number)) < 0.001)
+    return (abs(float('%.2f' % number)-float('%.f' % number)) < EPSILON)
     #return ( ceil(number) == number or floor(number) == number )
     #return ( self.round_float( number, 3 ) == float( int( number)))
 
 
-def add_delta_to_pos_if_valid(xyz, deltas, max_coord=MAPSIZE):
+def add_delta_to_pos_if_valid(xyz, deltas, max_coord=MAPSIZE-1.0):
     """ Update position with deltas """
 
-    if sum(deltas) != 0.0:
+    if sum(deltas) >= EPSILON:
+        print "Sum of deltas not equal to zero x:%f y:%f z:%f" % (deltas[0],
+                                                                  deltas[1],
+                                                                  deltas[2])
         return xyz
 
     new_xyz = []
+
     for index, delta in enumerate(deltas):
 
         new_xyz.append(xyz[index] + delta)
-        if abs(new_xyz[index]) >= max_coord:
-            return xyz
+
+        if abs(new_xyz[index]) >= max_coord - EPSILON:
+            raise ValueError("""Trying to walk out of bounds %d :
+                                           trying: %f
+                                           max: %f""" % (index,
+                                                         new_xyz[index],
+                                                         max_coord))
 
     return new_xyz
+
+
+def negate_list(lst):
+    """ Returns the negatet list """
+
+    lst = set(lst)
+    return [i for i in lst if -1*i in lst]

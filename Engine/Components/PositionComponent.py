@@ -56,6 +56,7 @@ class PositionComponent(Component):
     def center_of_tile(self):
         """ Returns a boolean which indicates if the current coordinate
         is in the center of a tile"""
+
         return (is_float_int(self.pos.x) and
                 is_float_int(self.pos.y) and
                 is_float_int(self.pos.z))

@@ -76,7 +76,7 @@ class GameObjectFactory(object):
         obj.add_component('ai', AiComponent(obj))
 
         obj.components['pheromone_actor'] = PheromoneActorComponent(obj)
-        obj.components['pheromone_actor'].deposit["food"] = 100
+        obj.components['pheromone_actor'].deposit["food"] = 0
         obj.components['pheromone_actor'].deposit["home"] = 100
 
         return obj

@@ -25,5 +25,11 @@ Description
 -----------
 Module that contains all global settings """
 
+# The size of a tile, which also infuences the size of the other objects
 HEX_RADIUS = 15
+
+# The number of rings of which the map is constructed
 MAPSIZE = 10
+
+# The precision used when comparing ints and floats
+EPSILON = 1.0e-3
