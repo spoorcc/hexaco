@@ -25,7 +25,8 @@ Description
 -----------
 Class for constructing Game Objects """
 
-from Engine.LibPolygons import create_triangle, create_hexagon
+
+from Engine.LibPolygons import create_triangle, create_hexagon, create_octagon
 
 from Engine.GameObject import GameObject
 
@@ -36,7 +37,7 @@ from Engine.Components import AiComponent
 from Engine.Components import PheromoneActorComponent
 from Engine.Components import PheromoneHolderComponent
 
-from Engine.GameSettings import HEX_RADIUS
+from Engine.GameSettings import HEX_RADIUS, ANT_DEFAULTS
 
 
 class GameObjectFactory(object):
@@ -72,12 +73,15 @@ class GameObjectFactory(object):
         obj.components['position'] = PositionComponent(obj)
         obj.components['position'].orientation = 3
 
-        obj.add_component('move', MoveComponent(parent=obj, speed=0.1))
+        obj.add_component('move', MoveComponent(parent=obj,
+                                                speed=ANT_DEFAULTS['SPEED']))
         obj.add_component('ai', AiComponent(obj))
 
         obj.components['pheromone_actor'] = PheromoneActorComponent(obj)
-        obj.components['pheromone_actor'].deposit["food"] = 0
-        obj.components['pheromone_actor'].deposit["home"] = 100
+        obj.components['pheromone_actor'].deposit["food"] \
+                                        = ANT_DEFAULTS['DEPOSIT_FOOD']
+        obj.components['pheromone_actor'].deposit["home"] \
+                                        = ANT_DEFAULTS['DEPOSIT_HOME']
 
         return obj
 
@@ -93,6 +97,6 @@ class GameObjectFactory(object):
         obj.components['position'] = PositionComponent(obj)
 
         obj.components['pheromone_holder'] = PheromoneHolderComponent(obj)
-        obj.components['pheromone_holder'].decay = 0.5
+        obj.components['pheromone_holder'].decay = 0.8
 
         return obj

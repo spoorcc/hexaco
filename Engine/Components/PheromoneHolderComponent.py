@@ -45,6 +45,7 @@ class PheromoneHolderComponent(Component):
 
         for phero_type in self.levels:
             if self.levels[phero_type] > 0.0:
-                self.levels[phero_type] -= self.decay
+                self.levels[phero_type] = \
+                            max(self.levels[phero_type] - self.decay, 0.0)
             else:
                 self.levels[phero_type] = 0.0

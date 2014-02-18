@@ -54,3 +54,15 @@ def create_hexagon(radius):
         coordinates += give_point_on_circle(i * 60, radius)
 
     return coordinates
+
+
+def create_octagon(radius):
+    """ Returns the coordinates of an octagon where the furthest points lay
+    on a circle with its center at 0,0 and with the given radius.
+    The coordinates are formatted as [ x0, y0, x1, y1, ... xN, yN ]"""
+
+    coordinates = []
+    for i in range(0, 8):
+        coordinates += give_point_on_circle(i * 45, radius)
+
+    return coordinates

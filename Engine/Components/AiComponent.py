@@ -38,7 +38,7 @@ class AiComponent(Component):
         self.parent = parent
         self.interested_in = "food"
 
-        self.chances = {"listen_to_pheromone": 0.5,
+        self.chances = {"listen_to_pheromone": 0.45,
                         "listen_to_random": 0.05}
 
     def update(self):
@@ -54,8 +54,6 @@ class AiComponent(Component):
                                self.get_direction_using_pheromone()
             else:
                 pos_comp.orientation = randint(0, 5)
-
-                print "New orientation %d" % pos_comp.orientation
 
     def get_direction_using_pheromone(self):
 

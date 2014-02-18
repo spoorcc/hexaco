@@ -28,7 +28,9 @@ Base class for a game Engine """
 from Engine.GameObject import GameObject
 from Engine.GameObjectFactory import GameObjectFactory
 
-from Engine.GameSettings import MAPSIZE
+from Engine.LibHexagonalPosition import random_coordinate_center_of_tile
+
+from Engine.GameSettings import MAPSIZE, NUMBER_OF_ANTS
 
 
 class GameEngine(object):
@@ -63,9 +65,10 @@ class GameEngine(object):
 
         self.create_map(self.max_ring)
 
-        for i in range(8):
+        for i in range(NUMBER_OF_ANTS):
             ant = self.game_object_factory.create_ant()
-            ant.components['position'].pos.set_position_xyz(i, -i, 0)
+            pos = random_coordinate_center_of_tile()
+            ant.components['position'].pos.set_position_xyz(pos[0], pos[1], pos[2])
             self.add_game_object(ant)
 
     def add_game_object(self, game_object):

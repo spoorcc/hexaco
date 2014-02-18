@@ -26,6 +26,7 @@ Description
 Module that contains common functionality """
 
 from Engine.GameSettings import MAPSIZE, EPSILON
+from random import randint
 
 
 def highest_in_list(seq):
@@ -33,15 +34,23 @@ def highest_in_list(seq):
         value in an iterable item"""
 
     max_value = seq[0]
-    max_index = 0
+    max_index = []
 
     for index, value in enumerate(seq):
 
         if value > max_value:
             max_value = value
-            max_index = index
+            max_index = [index]
+        if value == max_value:
 
-    return max_index
+            max_index.append(index)
+
+    nr_of_solutions = len(max_index)
+
+    if nr_of_solutions > 1:
+        max_index[0] = max_index[randint(0, nr_of_solutions-1)]
+
+    return max_index[0]
 
 
 def is_float_int(number):

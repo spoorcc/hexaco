@@ -72,6 +72,5 @@ class MoveComponent(Component):
             except ValueError:
                 # Turn around if trying to walk off map
                 pos_comp.orientation = (pos_comp.orientation + 3) % 6
-                print "Turning"
 
             pos_comp.set_position_xyz(xyz)

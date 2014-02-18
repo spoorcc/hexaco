@@ -49,6 +49,9 @@ r2 s5 t1  /        \ r0 s0 t0  /       \            /        \
         \            /       \ r2  s3 t1 /        \            /
 """
 
+from random import random, randint
+from Engine.GameSettings import MAPSIZE
+
 
 TOPLEFT, TOP, TOPRIGHT, BOTTOMRIGHT, BOTTOM, BOTTOMLEFT = range(6)
 
@@ -253,3 +256,29 @@ def calc_ring_side_tile_from_xyz(xyz):
     tile = calc_tile_from_xyz(xyz, ring, side)
 
     return (ring, side, tile)
+
+
+def random_coordinate(max_coord=MAPSIZE):
+    """ Returns random coordinate within max_coord """
+    a = (2.0 * random() - 0.5) * max_coord
+    b = (2.0 * random() - 0.5) * max_coord
+    c = -(a + b)
+
+    return [a, b, c]
+
+
+def random_coordinate_center_of_tile(max_coord=MAPSIZE-1):
+    """ Returns random coordinate within max_coord that
+     is on center of a tile """
+
+    xyz = [0, 0, 0]
+    index = randint(0, 2)
+
+    xyz[index] = randint(-max_coord, max_coord)
+
+    max_coord = max_coord - abs(xyz[index])
+
+    xyz[(index + 1) % 3] = randint(-max_coord, max_coord)
+    xyz[(index + 2) % 3] = -xyz[index] - xyz[(index + 1) % 3]
+
+    return xyz
