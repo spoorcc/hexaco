@@ -64,13 +64,14 @@ class MoveComponent(Component):
         if self.speed >= EPSILON:
 
             deltas = self.get_xyz_speed(pos_comp.orientation)
-            cur_pos = pos_comp.xyz()
+            xyz = pos_comp.xyz()
 
             try:
-                xyz = add_delta_to_pos_if_valid(cur_pos, deltas)
+                xyz = add_delta_to_pos_if_valid(xyz, deltas)
+
             except ValueError:
                 # Turn around if trying to walk off map
                 pos_comp.orientation = (pos_comp.orientation + 3) % 6
-                xyz = cur_pos
+                print "Turning"
 
             pos_comp.set_position_xyz(xyz)

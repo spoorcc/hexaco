@@ -50,7 +50,7 @@ r2 s5 t1  /        \ r0 s0 t0  /       \            /        \
 """
 
 from Engine.LibHexagonalPosition import *
-from Engine.GameSettings import MAPSIZE
+from Engine.GameSettings import MAPSIZE, EPSILON
 
 
 class HexagonalPosition(object):
@@ -82,7 +82,12 @@ class HexagonalPosition(object):
 
         # See file header for explanation of coordinate system
         # The sum must be zero to be a valid coordinate
-        if((x + y + z) == 0):
+        if((abs(x) + abs(y) + abs(z)) >= EPSILON
+              or
+               (abs(x) < EPSILON and
+                abs(y) < EPSILON and
+                abs(z) < EPSILON )):
+
             self.x, self.y, self.z = x, y, z  # pylint: disable=C0103
             self.xyz = (x, y, z)
             (self.ring, self.side, self.tile) = \

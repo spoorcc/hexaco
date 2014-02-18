@@ -38,7 +38,7 @@ class AiComponent(Component):
         self.parent = parent
         self.interested_in = "food"
 
-        self.chances = {"listen_to_pheromone": 0.0,
+        self.chances = {"listen_to_pheromone": 0.5,
                         "listen_to_random": 0.05}
 
     def update(self):
@@ -47,7 +47,9 @@ class AiComponent(Component):
 
         if pos_comp.center_of_tile():
 
-            if random() <= self.chances["listen_to_pheromone"]:
+            dice = random()
+
+            if dice <= self.chances["listen_to_pheromone"]:
                 pos_comp.orientation = \
                                self.get_direction_using_pheromone()
             else:

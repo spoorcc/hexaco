@@ -66,7 +66,8 @@ def add_delta_to_pos_if_valid(xyz, deltas, max_coord=MAPSIZE-1.0):
 
         new_xyz.append(xyz[index] + delta)
 
-        if abs(new_xyz[index]) >= max_coord - EPSILON:
+        if abs(new_xyz[index]) >= max_coord + EPSILON:
+            new_xyz = xyz
             raise ValueError("""Trying to walk out of bounds %d :
                                            trying: %f
                                            max: %f""" % (index,
