@@ -63,13 +63,10 @@ class GameEngine(object):
 
         self.create_map(self.max_ring)
 
-        ant = self.game_object_factory.create_ant()
-        ant.components['position'].pos.set_position_xyz(0, 0, 0)
-        self.add_game_object(ant)
-
-        ant = self.game_object_factory.create_ant()
-        ant.components['position'].pos.set_position_xyz(3, -3, 0)
-        self.add_game_object(ant)
+        for i in range(8):
+            ant = self.game_object_factory.create_ant()
+            ant.components['position'].pos.set_position_xyz(i, -i, 0)
+            self.add_game_object(ant)
 
     def add_game_object(self, game_object):
         """ Add a game object and call all the methods registered
