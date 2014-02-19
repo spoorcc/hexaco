@@ -27,7 +27,7 @@ Class for a Collision component.
 Collision component gives game_objects the ability
 to collide with other colliding objects """
 
-from Component import Component
+from Engine.Components.Component import Component
 
 
 class CollisionComponent(Component):
@@ -38,4 +38,4 @@ class CollisionComponent(Component):
         super(CollisionComponent, self).__init__(parent)
         self.parent = parent
 
-        self.bounding_box = [0, 0, 0, 0]
+        self.objects_collided_with = []

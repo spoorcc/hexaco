@@ -31,7 +31,7 @@ import Tkinter
 from math import sqrt
 from copy import deepcopy
 
-from Engine.GameSettings import HEX_RADIUS
+from Engine.GameSettings import HEX_RADIUS, MAPSIZE
 
 
 class GraphicsEngine(object, Frame):
@@ -198,7 +198,14 @@ class GraphicsEngine(object, Frame):
             # Move the object
             self.win.coords(rend_comp.renderID, *coordinates_placed)
 
-            self.win.itemconfig(rend_comp.renderID, fill=rend_comp.fill)
+            if rend_comp.visible:
+                self.win.itemconfig(rend_comp.renderID,
+                                    fill=rend_comp.fill,
+                                    state=DISABLED)
+            else:
+                self.win.itemconfig(rend_comp.renderID,
+                                    fill=rend_comp.fill,
+                                    state=HIDDEN)
 
         self.master.update_idletasks()  # redraw
         #self.master.update() # process events

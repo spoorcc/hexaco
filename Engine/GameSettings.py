@@ -26,16 +26,16 @@ Description
 Module that contains all global settings """
 
 # The size of a tile, which also infuences the size of the other objects
-HEX_RADIUS = 10
+HEX_RADIUS = 8
 
 # The number of rings of which the map is constructed
-MAPSIZE = 16
+MAPSIZE = 20
 
 # The precision used when comparing ints and floats
 EPSILON = 1.0e-3
 
 # Ants
 NUMBER_OF_ANTS = 50
+PIECES_OF_FOOD = 15
 
-
-ANT_DEFAULTS = {'SPEED':0.2, 'DEPOSIT_FOOD':50, 'DEPOSIT_HOME':0}
+ANT_DEFAULTS = {'SPEED':0.25, 'DEPOSIT_FOOD':75, 'DEPOSIT_HOME':25}

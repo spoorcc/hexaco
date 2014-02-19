@@ -27,6 +27,8 @@ Class for a Food component.
 Food component gives game_objects the ability to hold food """
 
 from Component import Component
+from Engine.LibHexagonalPosition import random_coordinate_center_of_tile
+from random import randint
 
 
 class FoodComponent(Component):
@@ -38,3 +40,21 @@ class FoodComponent(Component):
         self.parent = parent
 
         self.amount = 0
+
+    def take_food(self, amount):
+
+        self.amount -= amount
+
+        if self.amount >= 0:
+            return amount
+        else:
+            amount_left = abs(self.amount)
+            self.reset()
+            return amount_left
+
+    def reset(self):
+
+        pos = random_coordinate_center_of_tile()
+        self.components['position'].pos.set_position_xyz(pos[0], pos[1], pos[2])
+
+        self.amount = randint(50,500)

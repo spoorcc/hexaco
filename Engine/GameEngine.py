@@ -28,9 +28,13 @@ Base class for a game Engine """
 from Engine.GameObject import GameObject
 from Engine.GameObjectFactory import GameObjectFactory
 
+from Engine.CollisionEngine import CollisionEngine
+
 from Engine.LibHexagonalPosition import random_coordinate_center_of_tile
 
-from Engine.GameSettings import MAPSIZE, NUMBER_OF_ANTS
+from Engine.GameSettings import MAPSIZE, NUMBER_OF_ANTS, PIECES_OF_FOOD
+
+from random import randint
 
 
 class GameEngine(object):
@@ -50,8 +54,43 @@ class GameEngine(object):
         """ Initializes all the member variables """
         self.objects = dict()
         self.game_object_factory = GameObjectFactory(self)
+        self.collision_engine = CollisionEngine()
         self.callbacks_for_new_object = []
-        self.max_ring = MAPSIZE
+
+    def initialize(self):
+        """ Perform all initializations """
+
+        self.initialize_engines()
+        self.initialize_objects()
+
+    def initialize_engines(self):
+        """ Setup all the engines """
+
+        self.callback_for_new_object(self.collision_engine.add_component)
+
+    def initialize_objects(self):
+        """ All objects in the world will be initialized here """
+
+        self.create_map(MAPSIZE)
+
+        nest = self.game_object_factory.create_nest()
+        nest_pos = random_coordinate_center_of_tile(max_coord=3)
+        nest.components['position'].pos.set_position_xyz(nest_pos[0],
+                                                         nest_pos[1],
+                                                         nest_pos[2])
+        self.add_game_object(nest)
+
+        for i in range(NUMBER_OF_ANTS):
+            ant = self.game_object_factory.create_ant()
+            ant.components['position'].pos.set_position_xyz(nest_pos[0], nest_pos[1], nest_pos[2])
+            self.add_game_object(ant)
+
+        for i in range(PIECES_OF_FOOD):
+            food = self.game_object_factory.create_food()
+            food.components['food'].amount = randint(50, 500)
+            pos = random_coordinate_center_of_tile()
+            food.components['position'].pos.set_position_xyz(pos[0], pos[1], pos[2])
+            self.add_game_object(food)
 
     def callback_for_new_object(self, method_to_call):
         """ Methods registered here will be called
@@ -59,17 +98,6 @@ class GameEngine(object):
 
         if callable(method_to_call):
             self.callbacks_for_new_object.append(method_to_call)
-
-    def initialize_objects(self):
-        """ All objects in the world will be initialized here """
-
-        self.create_map(self.max_ring)
-
-        for i in range(NUMBER_OF_ANTS):
-            ant = self.game_object_factory.create_ant()
-            pos = random_coordinate_center_of_tile()
-            ant.components['position'].pos.set_position_xyz(pos[0], pos[1], pos[2])
-            self.add_game_object(ant)
 
     def add_game_object(self, game_object):
         """ Add a game object and call all the methods registered
@@ -105,6 +133,9 @@ class GameEngine(object):
     def update(self):
         """ Updates all the components in the proper order
         , called as part of the main game loop """
+
+        self.collision_engine.update()
+
         for obj_id, obj in self.objects.iteritems():
 
             # Update all sensors

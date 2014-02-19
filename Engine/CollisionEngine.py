@@ -51,13 +51,9 @@ class CollisionEngine(object):
         try:
             if 'collision' in game_object.components and \
                     'position' in game_object.components:
-                self.colliders.append(game_object.object_id)
+                self.colliders.append(game_object)
         except AttributeError:
             pass
-
-    def get_game_object(self, object_id):
-        """ This method should be overloaded """
-        raise NotImplementedError
 
     def update(self):
         """ Check for collisions """
@@ -65,22 +61,26 @@ class CollisionEngine(object):
         collide = dict()
         collisions = []
 
-        for object_id in self.colliders:
+        for obj in self.colliders:
 
-            xyz = get_game_object(object_id).components['position'].xyz()
+            xyz = obj.components['position'].xyz()
             key = "%+.1f%+.1f%+.1f" % (xyz[0], xyz[1], xyz[2])
 
+            obj.components['collision'].objects_collided_with = []
+
             if key in collide:
-                collide[key].append(object_id)
+                collide[key].append(obj)
                 collisions.append(key)
             else:
-                collide[key] = [object_id]
+                collide[key] = [obj]
 
         for key in collisions:
 
-            inform_collided(collide[key])
+            self.inform_collided(collide[key])
 
     def inform_collided(self, collided):
         """ Informs the objects that have collided """
 
-        pass
+        for obj in collided:
+            collided_with = [col for col in collided if col is not obj]
+            obj.components['collision'].objects_collided_with = collided_with

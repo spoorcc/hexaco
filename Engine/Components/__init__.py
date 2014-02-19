@@ -35,3 +35,6 @@ from PheromoneHolderComponent import PheromoneHolderComponent
 from PheromoneActorComponent import PheromoneActorComponent
 from RenderComponent import RenderComponent
 from PositionComponent import PositionComponent
+from FoodComponent import FoodComponent
+from CollisionComponent import CollisionComponent
+from NestComponent import NestComponent

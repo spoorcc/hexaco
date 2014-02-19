@@ -36,6 +36,9 @@ from Engine.Components import PositionComponent
 from Engine.Components import AiComponent
 from Engine.Components import PheromoneActorComponent
 from Engine.Components import PheromoneHolderComponent
+from Engine.Components import FoodComponent
+from Engine.Components import CollisionComponent
+from Engine.Components import NestComponent
 
 from Engine.GameSettings import HEX_RADIUS, ANT_DEFAULTS
 
@@ -75,13 +78,12 @@ class GameObjectFactory(object):
 
         obj.add_component('move', MoveComponent(parent=obj,
                                                 speed=ANT_DEFAULTS['SPEED']))
+
+        obj.components['collision'] = CollisionComponent(obj)
+
         obj.add_component('ai', AiComponent(obj))
 
         obj.components['pheromone_actor'] = PheromoneActorComponent(obj)
-        obj.components['pheromone_actor'].deposit["food"] \
-                                        = ANT_DEFAULTS['DEPOSIT_FOOD']
-        obj.components['pheromone_actor'].deposit["home"] \
-                                        = ANT_DEFAULTS['DEPOSIT_HOME']
 
         return obj
 
@@ -97,6 +99,46 @@ class GameObjectFactory(object):
         obj.components['position'] = PositionComponent(obj)
 
         obj.components['pheromone_holder'] = PheromoneHolderComponent(obj)
-        obj.components['pheromone_holder'].decay = 0.8
+        obj.components['pheromone_holder'].decay = 2.0
 
         return obj
+
+    def create_food(self):
+        """ Returns a piece of food """
+
+        obj = self.create_game_object()
+        obj.components['render'] = RenderComponent(obj)
+        obj.components['render'].color = "#ff6600"
+        obj.components['render'].fill = "#220000"
+
+        size = 0.4 * self.hex_radius
+        obj.components['render'].polygon = create_octagon(size)
+
+        obj.components['position'] = PositionComponent(obj)
+
+        obj.add_component('food', FoodComponent(obj))
+
+        obj.components['collision'] = CollisionComponent(obj)
+
+        return obj
+
+    def create_nest(self):
+        """ Returns a piece of food """
+
+        obj = self.create_game_object()
+        obj.components['render'] = RenderComponent(obj)
+        obj.components['render'].color = "#0066ff"
+        obj.components['render'].fill = "#002200"
+        obj.components['render'].width = 3.0
+
+        size = 0.6 * self.hex_radius
+        obj.components['render'].polygon = create_octagon(size)
+
+        obj.components['position'] = PositionComponent(obj)
+
+        obj.components['nest'] = NestComponent(obj)
+
+        obj.components['collision'] = CollisionComponent(obj)
+
+        return obj
+

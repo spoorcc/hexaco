@@ -51,7 +51,7 @@ GRAPHICS_ENGINE.get_game_object = GAME_ENGINE.get_game_object
 PHEROMONE_ENGINE.get_game_object = GAME_ENGINE.get_game_object
 
 # Initialize all engines
-GAME_ENGINE.initialize_objects()
+GAME_ENGINE.initialize()
 
 i = 0
 

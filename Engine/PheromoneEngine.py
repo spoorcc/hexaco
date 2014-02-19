@@ -58,7 +58,6 @@ class PheromoneEngine(object):
                 xyz = game_object.components['position'].xyz()
                 key = "%+.0f%+.0f%+.0f" % (xyz[0], xyz[1], xyz[2])
                 self.holders[key] = game_object.object_id
-                print "Added holder @ %s" % key
 
             if 'pheromone_actor' in game_object.components and \
                     'position' in game_object.components:
