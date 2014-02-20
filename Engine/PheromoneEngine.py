@@ -57,7 +57,7 @@ class PheromoneEngine(object):
                     'position' in game_object.components:
                 xyz = game_object.components['position'].xyz()
                 key = "%+.0f%+.0f%+.0f" % (xyz[0], xyz[1], xyz[2])
-                self.holders[key] = game_object.object_id
+                self.holders[key] = [game_object.object_id]
 
             if 'pheromone_actor' in game_object.components and \
                     'position' in game_object.components:
@@ -76,6 +76,10 @@ class PheromoneEngine(object):
     def get_game_object(self, object_id):
         """ This method should be overloaded """
         raise NotImplementedError
+
+    def get_holder_key(self, xyz):
+        """ Get a pheromone holder key using the coordinate """
+        pass
 
     def get_holder(self, xyz):
         """ Get a pheromone holder using the coordinate """
