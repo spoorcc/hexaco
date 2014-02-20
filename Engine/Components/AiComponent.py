@@ -30,50 +30,62 @@ from Engine.Components.PheromoneActorComponent import PheromoneActorComponent
 from random import random, randint
 from Engine.GameSettings import ANT_DEFAULTS
 
+
 class AiComponent(Component):
     """An Ai component
     """
 
     def __init__(self, parent):
         self.parent = parent
-        self.interested_in = "food"
+        self.interested_in = ANT_DEFAULTS["BEHAVIOUR"]["interested_in"]
 
-        self.chances = {"listen_to_pheromone": 0.65,
-                        "listen_to_random": 0.50}
+        self.chances = ANT_DEFAULTS["BEHAVIOUR"]
+        self.pheromone_deposit_delta = ANT_DEFAULTS["DEPOSIT"]["delta"]
 
-        self.delta = 0.1
+        self.deposit_defaults = ANT_DEFAULTS["DEPOSIT"]
 
     def update(self):
         """ Takes the information and updates the actions """
         pos_comp = self.components['position']
 
         if pos_comp.center_of_tile():
+            self.act_on_collisions()
+            self.update_pheromone_deposit_levels(self.pheromone_deposit_delta)
+            pos_comp.orientation = self.choose_orientation()
 
-            self.check_collisions()
-            self.update_pheromone_deposit_levels(self.delta)
+    def choose_orientation(self):
+        dice = random()
 
-            dice = random()
+        orientation = -1
 
-            if dice <= self.chances["listen_to_pheromone"]:
-                pos_comp.orientation = \
-                               self.get_direction_using_pheromone()
-            else:
-                pos_comp.orientation = randint(0, 5)
+        if dice <= self.chances["listen_to_pheromone"]:
+            orientation = self.get_direction_using_pheromone()
+        else:
+            orientation = randint(0, 5)
+
+        return orientation
 
     def update_pheromone_deposit_levels(self, delta):
 
         deposit_levels = self.components['pheromone_actor'].deposit
 
-        if self.interested_in is "home":
+        for kind in deposit_levels:
+            if kind == self.interested_in:
+                deposit_levels[kind] = 0
+            else:
+                deposit_levels[kind] = max(deposit_levels[kind] - delta, 0)
 
-            deposit_levels["food"] = max(deposit_levels["food"] - delta, 0)
-            deposit_levels["home"] = 0
+    def reset_pheromone_deposit_levels(self):
 
-        else:
-            deposit_levels["food"] = 0
-            deposit_levels["home"] = max(deposit_levels["home"] - delta, 0)
+        deposit_levels = self.components['pheromone_actor'].deposit
 
-    def check_collisions(self):
+        for kind in deposit_levels:
+            if kind == self.interested_in:
+                deposit_levels[kind] = 0
+            else:
+                deposit_levels[kind] = self.deposit_defaults[kind]
+
+    def act_on_collisions(self):
 
         collidees = self.components['collision'].objects_collided_with
 
@@ -89,28 +101,22 @@ class AiComponent(Component):
 
         if self.interested_in == "food":
 
-            food = food_obj.components['food'].take_food(5)
-
-            deposit_levels = self.components['pheromone_actor'].deposit
-            deposit_levels["food"] = ANT_DEFAULTS["DEPOSIT_FOOD"]
-            deposit_levels["home"] = 0
+            food_comp = food_obj.components['food']
+            food = food_comp.take_food(ANT_DEFAULTS["FEEDING"]["speed"])
 
             if food > 0:
                 self.interested_in = "home"
+
+        self.reset_pheromone_deposit_levels()
 
     def found_nest(self):
 
         if self.interested_in == "home":
             self.interested_in = "food"
-
-            deposit_levels = self.components['pheromone_actor'].deposit
-
-            deposit_levels["food"] = 0
-            deposit_levels["home"] = ANT_DEFAULTS["DEPOSIT_HOME"]
+        self.reset_pheromone_deposit_levels()
 
     def get_direction_using_pheromone(self):
 
         pher_act_comp = self.components['pheromone_actor']
-        return pher_act_comp.direction_of_highest()[self.interested_in]
-
-
+        direction = pher_act_comp.direction_of_highest()
+        return direction[self.interested_in]

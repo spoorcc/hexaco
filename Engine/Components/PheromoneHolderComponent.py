@@ -38,14 +38,23 @@ class PheromoneHolderComponent(Component):
         self.parent = parent
 
         self.levels = {"food": 0.0, "home": 0.0}
-        self.decay = 0.0001
+        self.decay = {'food': {'relative': 0.00,
+                               'abs_minimum': 0},
+                      'home': {'relative': 0.0,
+                               'abs_minimum': 0}}
 
     def update(self):
         """ This will update the level of this holder """
 
         for phero_type in self.levels:
             if self.levels[phero_type] > 0.0:
+
+                delta = \
+                  max(self.levels[phero_type] *
+                    self.decay[phero_type]['relative'],
+                        self.decay[phero_type]['abs_minimum'])
+
                 self.levels[phero_type] = \
-                            max(self.levels[phero_type] - self.decay, 0.0)
+                            max(self.levels[phero_type] - delta, 0.0)
             else:
                 self.levels[phero_type] = 0.0

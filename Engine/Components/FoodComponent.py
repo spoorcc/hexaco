@@ -39,22 +39,36 @@ class FoodComponent(Component):
         super(FoodComponent, self).__init__(parent)
         self.parent = parent
 
+        self.start_amount = 0
         self.amount = 0
+
+    def set_start_amount(self, amount):
+        self.start_amount = amount
+        self.amount = amount
+        self.update_color()
 
     def take_food(self, amount):
 
         self.amount -= amount
 
         if self.amount >= 0:
+            self.update_color()
             return amount
         else:
             amount_left = abs(self.amount)
             self.reset()
             return amount_left
 
+    def update_color(self):
+
+        red = 255 * ((self.amount *1.0) / self.start_amount)
+        green = red / 2
+        blue = 0
+        self.components['render'].fill = "#%02x%02x%02x" % (red, green, blue)
+
     def reset(self):
 
         pos = random_coordinate_center_of_tile()
         self.components['position'].pos.set_position_xyz(pos[0], pos[1], pos[2])
 
-        self.amount = randint(50,500)
+        self.set_start_amount(randint(50,500))

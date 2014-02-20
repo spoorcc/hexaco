@@ -17,48 +17,24 @@
 
 ########################################################################
 
- Main Hexaco
+ Food Component Class
 
 ########################################################################
 
 Description
 -----------
-Creates all software components and manages the main game loop """
+Class for a Food component.
+Nest component gives game_objects the ability to be a nest """
 
-from Engine import GraphicsEngine
-from Engine import GameEngine
+from Engine.Components.Component import Component
 
-import Tkinter
 
-from time import sleep
+class NestComponent(Component):
+    """An Nest component
+    """
 
-ROOT = Tkinter.Tk()
+    def __init__(self, parent):
+        super(NestComponent, self).__init__(parent)
+        self.parent = parent
 
-# Create the engines
-GAME_ENGINE = GameEngine()
-GRAPHICS_ENGINE = GraphicsEngine(master=ROOT)
-
-# Set all constants
-GRAPHICS_ENGINE.set_hex_radius()
-
-# Alert other engines when a new game_object is added
-GAME_ENGINE.callback_for_new_object(GRAPHICS_ENGINE.add_component)
-
-GRAPHICS_ENGINE.get_game_object = GAME_ENGINE.get_game_object
-
-# Initialize all engines
-GAME_ENGINE.initialize()
-
-i = 0
-
-print "Starting main game loop"
-
-while 1:
-
-    i += 1
-    GRAPHICS_ENGINE.set_turn_text(i)
-
-    GAME_ENGINE.update()
-
-    GRAPHICS_ENGINE.updateScreen()
-    sleep(0.)
+        self.amount_of_ants = 0

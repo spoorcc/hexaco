@@ -40,7 +40,7 @@ from Engine.Components import FoodComponent
 from Engine.Components import CollisionComponent
 from Engine.Components import NestComponent
 
-from Engine.GameSettings import HEX_RADIUS, ANT_DEFAULTS
+from Engine.GameSettings import HEX_RADIUS, ANT_DEFAULTS, TILE_DEFAULTS
 
 
 class GameObjectFactory(object):
@@ -99,7 +99,7 @@ class GameObjectFactory(object):
         obj.components['position'] = PositionComponent(obj)
 
         obj.components['pheromone_holder'] = PheromoneHolderComponent(obj)
-        obj.components['pheromone_holder'].decay = 2.0
+        obj.components['pheromone_holder'].decay = TILE_DEFAULTS["DECAY"]
 
         return obj
 
@@ -120,6 +120,11 @@ class GameObjectFactory(object):
 
         obj.components['collision'] = CollisionComponent(obj)
 
+        obj.components['pheromone_holder'] = PheromoneHolderComponent(obj)
+        obj.components['pheromone_holder'].decay["home"]["abs_minimum"] = 10e4
+        obj.components['pheromone_holder'].levels = \
+                               {"food": 10e10, "home": -1.0}
+
         return obj
 
     def create_nest(self):
@@ -127,11 +132,11 @@ class GameObjectFactory(object):
 
         obj = self.create_game_object()
         obj.components['render'] = RenderComponent(obj)
-        obj.components['render'].color = "#0066ff"
-        obj.components['render'].fill = "#002200"
+        obj.components['render'].color = "#ffff66"
+        obj.components['render'].fill = "#00ffff"
         obj.components['render'].width = 3.0
 
-        size = 0.6 * self.hex_radius
+        size = 1.0 * self.hex_radius
         obj.components['render'].polygon = create_octagon(size)
 
         obj.components['position'] = PositionComponent(obj)
@@ -139,6 +144,11 @@ class GameObjectFactory(object):
         obj.components['nest'] = NestComponent(obj)
 
         obj.components['collision'] = CollisionComponent(obj)
+
+        obj.components['pheromone_holder'] = PheromoneHolderComponent(obj)
+        obj.components['pheromone_holder'].decay["food"]["abs_minimum"] = 10e4
+        obj.components['pheromone_holder'].levels = \
+                               {"food": -1.0, "home": 10e10}
 
         return obj
 

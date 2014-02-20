@@ -29,6 +29,7 @@ from Engine.GameObject import GameObject
 from Engine.GameObjectFactory import GameObjectFactory
 
 from Engine.CollisionEngine import CollisionEngine
+from Engine.PheromoneEngine import PheromoneEngine
 
 from Engine.LibHexagonalPosition import random_coordinate_center_of_tile
 
@@ -55,6 +56,7 @@ class GameEngine(object):
         self.objects = dict()
         self.game_object_factory = GameObjectFactory(self)
         self.collision_engine = CollisionEngine()
+        self.pheromone_engine = PheromoneEngine()
         self.callbacks_for_new_object = []
 
     def initialize(self):
@@ -67,6 +69,9 @@ class GameEngine(object):
         """ Setup all the engines """
 
         self.callback_for_new_object(self.collision_engine.add_component)
+        self.callback_for_new_object(self.pheromone_engine.add_component)
+
+        self.pheromone_engine.get_game_object = self.get_game_object
 
     def initialize_objects(self):
         """ All objects in the world will be initialized here """
@@ -87,7 +92,7 @@ class GameEngine(object):
 
         for i in range(PIECES_OF_FOOD):
             food = self.game_object_factory.create_food()
-            food.components['food'].amount = randint(50, 500)
+            food.components['food'].set_start_amount(randint(50, 500))
             pos = random_coordinate_center_of_tile()
             food.components['position'].pos.set_position_xyz(pos[0], pos[1], pos[2])
             self.add_game_object(food)
@@ -134,6 +139,7 @@ class GameEngine(object):
         """ Updates all the components in the proper order
         , called as part of the main game loop """
 
+        self.pheromone_engine.update_actors()
         self.collision_engine.update()
 
         for obj_id, obj in self.objects.iteritems():
@@ -146,3 +152,5 @@ class GameEngine(object):
 
             if 'move' in obj.components:
                 obj.components['move'].update()
+
+        self.pheromone_engine.update_holders()

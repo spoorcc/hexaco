@@ -31,7 +31,7 @@ import Tkinter
 from math import sqrt
 from copy import deepcopy
 
-from Engine.GameSettings import HEX_RADIUS, MAPSIZE
+from Engine.GameSettings import HEX_RADIUS, MAPSIZE, WINDOW_SIZE
 
 
 class GraphicsEngine(object, Frame):
@@ -65,12 +65,12 @@ class GraphicsEngine(object, Frame):
 
         self.center_screen_coordinate = None
 
-        self.set_window_size(800, 600)
+        self.set_window_size(WINDOW_SIZE[0], WINDOW_SIZE[1])
         self.set_hex_radius(HEX_RADIUS)
         self.setup_window()
 
-        assert(self.size[0] == 800)
-        assert(self.size[1] == 600)
+        assert(self.size[0] == WINDOW_SIZE[0])
+        assert(self.size[1] == WINDOW_SIZE[1])
 
     def setup_window(self):
         """ Creates the specific Tkinter components"""
@@ -208,5 +208,4 @@ class GraphicsEngine(object, Frame):
                                     state=HIDDEN)
 
         self.master.update_idletasks()  # redraw
-        #self.master.update() # process events
-
+        self.master.update() # process events

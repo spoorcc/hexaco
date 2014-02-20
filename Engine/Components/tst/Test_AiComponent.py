@@ -18,7 +18,7 @@
 ########################################################################
 
  AI Component Test Class
- 
+
 ########################################################################
 
 Description
@@ -27,6 +27,7 @@ Description
 
 import unittest
 from ..AiComponent import AiComponent
+
 
 class TestAiComponent(unittest.TestCase):
 
@@ -56,7 +57,7 @@ class TestAiComponent(unittest.TestCase):
 
     def test_defaultParent(self):
 
-        self.assertEqual( self.aiComp.parent, None )
-                
+        self.assertEqual(self.aiComp.parent, None)
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
