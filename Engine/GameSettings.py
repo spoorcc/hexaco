@@ -33,23 +33,23 @@ HEX_RADIUS = 14
 EPSILON = 1.0e-3
 
 # Ants
-NUMBER_OF_ANTS = 50
-PIECES_OF_FOOD = 5
+NUMBER_OF_ANTS = 100
+PIECES_OF_FOOD = 3
 
 # The number of rings of which the map is constructed
-MAPSIZE = 19
+MAPSIZE = 15
 
-ANT_DEFAULTS = {'SPEED': (0.25),
+ANT_DEFAULTS = {'SPEED': (0.5),
                 'DEPOSIT': {'home': 550,
                             'food': 550,
                             'delta': 50.0},
-                'BEHAVIOUR': {'listen_to_pheromone': 0.97,
+                'BEHAVIOUR': {'listen_to_pheromone': 0.80,
                               'listen_to_random': 0.50,
                               'interested_in': 'food'},
                 'FEEDING': {'speed': 1}}
 
-TILE_DEFAULTS = {'DECAY': {'food': {'relative': 0.01,
+TILE_DEFAULTS = {'DECAY': {'food': {'relative': 0.015,
                                     'abs_minimum': 5},
-                           'home': {'relative': 0.01,
+                           'home': {'relative': 0.015,
                                     'abs_minimum': 5}}}
 

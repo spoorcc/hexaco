@@ -106,6 +106,7 @@ class AiComponent(Component):
 
             if food > 0:
                 self.interested_in = "home"
+                self.components["render"].fill = "#000066"
 
         self.reset_pheromone_deposit_levels()
 
@@ -113,6 +114,7 @@ class AiComponent(Component):
 
         if self.interested_in == "home":
             self.interested_in = "food"
+            self.components["render"].fill = "#000000"
         self.reset_pheromone_deposit_levels()
 
     def get_direction_using_pheromone(self):

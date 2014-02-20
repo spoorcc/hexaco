@@ -31,7 +31,7 @@ import Tkinter
 from math import sqrt
 from copy import deepcopy
 
-from Engine.GameSettings import HEX_RADIUS, MAPSIZE, WINDOW_SIZE
+from Engine.GameSettings import HEX_RADIUS, WINDOW_SIZE
 
 
 class GraphicsEngine(object, Frame):
@@ -90,6 +90,7 @@ class GraphicsEngine(object, Frame):
                                               text="No turn",
                                               font="Arial 10",
                                               fill="#ff0000")
+
         self.win.pack(fill=BOTH, expand=1)
 
     def set_hex_radius(self, hex_radius=HEX_RADIUS):
@@ -147,7 +148,6 @@ class GraphicsEngine(object, Frame):
             print "Render/Position component of has wrong attributes"
         except:
             print "Something went wrong"
-
 
     def move_object(self, coordinates, delta_x, delta_y):
         """ Updates a list of coordinates assuming [x0,y0,x1,y1,...xN,yN]"""
