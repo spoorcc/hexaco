@@ -74,13 +74,10 @@ class CollisionEngine(object):
             else:
                 collide[key] = [obj]
 
+        # If a collision happened there is an entry
         for key in collisions:
-
-            self.inform_collided(collide[key])
-
-    def inform_collided(self, collided):
-        """ Informs the objects that have collided """
-
-        for obj in collided:
-            collided_with = [col for col in collided if col is not obj]
-            obj.components['collision'].objects_collided_with = collided_with
+            # tell every object
+            for obj in collide[key]:
+                obj.components['collision'].objects_collided_with =  \
+                    [collidee for collidee in
+                        collide[key] if collidee is not obj]

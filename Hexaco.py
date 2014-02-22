@@ -44,8 +44,6 @@ GRAPHICS_ENGINE.set_hex_radius()
 # Alert other engines when a new game_object is added
 GAME_ENGINE.callback_for_new_object(GRAPHICS_ENGINE.add_component)
 
-GRAPHICS_ENGINE.get_game_object = GAME_ENGINE.get_game_object
-
 # Initialize all engines
 GAME_ENGINE.initialize()
 

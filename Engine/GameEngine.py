@@ -71,8 +71,6 @@ class GameEngine(object):
         self.callback_for_new_object(self.collision_engine.add_component)
         self.callback_for_new_object(self.pheromone_engine.add_component)
 
-        self.pheromone_engine.get_game_object = self.get_game_object
-
     def initialize_objects(self):
         """ All objects in the world will be initialized here """
 
@@ -114,10 +112,10 @@ class GameEngine(object):
             for method in self.callbacks_for_new_object:
                 method(game_object)
 
-    def get_game_object(self, object_id):
-        """ Returns an handle to the game object identified by the
-        unique object_id """
-        return self._instance.objects[str(object_id)]
+ #   def get_game_object(self, object_id):
+ #       """ Returns an handle to the game object identified by the
+ #       unique object_id """
+ #       return self._instance.objects[str(object_id)]
 
     def create_map(self, rings):
         """ Creates a map consisting of a number of rings """

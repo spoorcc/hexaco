@@ -115,12 +115,6 @@ class GraphicsEngine(object, Frame):
         """Set the text of the turn field"""
         self.win.itemconfigure(self.turn_text, text=turn_text)
 
-    def get_game_object(self, object_id):
-        """ This method gets called by the graphics engine to get an
-        gameobject by ID, it must be replaced by the correct method """
-        raise Exception("get_game_object method should be \
-                         replaced with the correct method")
-
     def add_component(self, gameObject):
         """ If a component has a render and a move component it is added
         to the list of objects to render """
@@ -142,7 +136,7 @@ class GraphicsEngine(object, Frame):
                                                     fill=rend.fill,
                                                     tag=gameObject.name)
 
-            self.objects.append(gameObject.object_id)
+            self.objects.append(gameObject)
 
         except AttributeError:
             print "Render/Position component of has wrong attributes"
@@ -173,13 +167,7 @@ class GraphicsEngine(object, Frame):
 
     def updateScreen(self):
 
-        for object_id in self.objects:
-
-            try:
-                obj = self.get_game_object(object_id)
-
-            except:
-                print "Could not find object"
+        for obj in self.objects:
 
             pos_comp = obj.components['position']
             rend_comp = obj.components['render']

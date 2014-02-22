@@ -57,11 +57,11 @@ class PheromoneEngine(object):
                     'position' in game_object.components:
                 xyz = game_object.components['position'].xyz()
                 key = "%+.0f%+.0f%+.0f" % (xyz[0], xyz[1], xyz[2])
-                self.holders[key] = game_object.object_id
+                self.holders[key] = game_object
 
             if 'pheromone_actor' in game_object.components and \
                     'position' in game_object.components:
-                self.actors.append(game_object.object_id)
+                self.actors.append(game_object)
         except AttributeError:
             pass
 
@@ -73,10 +73,6 @@ class PheromoneEngine(object):
         blue = min(sqrt(levels["food"]), 255)
         return "#%02x%02x%02x" % (red, green, blue)
 
-    def get_game_object(self, object_id):
-        """ This method should be overloaded """
-        raise NotImplementedError
-
     def get_holder_key(self, xyz):
         """ Get a pheromone holder key using the coordinate """
         key = "%+.0f%+.0f%+.0f" % (xyz[0], xyz[1], xyz[2])
@@ -85,9 +81,8 @@ class PheromoneEngine(object):
 
     def get_holder(self, xyz):
         """ Get a pheromone holder using the coordinate """
-        obj_id = self.holders[self.get_holder_key(xyz)]
-        holder = self.get_game_object(obj_id)
-        return holder.components['pheromone_holder']
+        return self.holders[self.get_holder_key(xyz)]\
+            .components['pheromone_holder']
 
     def get_levels_xyz(self, xyz):
         """ Returns all levels of the adjacent tiles of position x, y ,z """
@@ -112,19 +107,7 @@ class PheromoneEngine(object):
     def update_actors(self):
         """ Update the objects that need pheromone data """
 
-        for object_id in self.actors:
-
-            try:
-                actor = self.get_game_object(object_id)
-
-            except NotImplementedError:
-                print "get_game_object method must be overloaded"
-
-            except KeyError:
-                del self.actors[object_id]
-                print """Could not find pheromone_actor,
-                       removed from update list of PheromoneEngine """
-
+        for actor in self.actors:
             pos_comp = actor.components['position']
 
             if pos_comp.center_of_tile():
@@ -136,44 +119,20 @@ class PheromoneEngine(object):
 
         for hold_pos in self.holders:
 
-            try:
-                object_id = self.holders[hold_pos]
-                holder = self.get_game_object(object_id)
-                ph_hold_comp = holder.components['pheromone_holder']
-                ph_hold_comp.update()
+            holder = self.holders[hold_pos]
+            ph_hold_comp = holder.components['pheromone_holder']
+            ph_hold_comp.update()
 
-                color = self.pheromone_levels_to_color(ph_hold_comp.levels)
-                holder.components['render'].fill = color
+            color = self.pheromone_levels_to_color(ph_hold_comp.levels)
+            holder.components['render'].fill = color
 
-            except NotImplementedError:
-                print "get_game_object method must be overloaded"
-
-            except KeyError:
-                del self.holders[object_id]
-                print """Could not find pheromone_actor,
-                       removed from update list of PheromoneEngine """
-
-        for object_id in self.actors:
-
-            try:
-                actor = self.get_game_object(object_id)
-                xyz = actor.components['position'].xyz()
-
-            except NotImplementedError:
-                print "get_game_object method must be overloaded"
-
-            except KeyError:
-                del self.actors[object_id]
-                print """Could not find pheromone_actor,
-                       removed from update list of PheromoneEngine """
-
+        for actor in self.actors:
             pos_comp = actor.components['position']
 
             if pos_comp.center_of_tile():
                 ph_deposit = actor.components['pheromone_actor'].deposit
 
                 xyz = pos_comp.xyz()
-
                 holder = self.get_holder(xyz)
 
                 for ph_dep in ph_deposit:
