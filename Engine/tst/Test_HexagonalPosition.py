@@ -25,7 +25,7 @@ import unittest
 from ..HexagonalPosition import HexagonalPosition
 
 
-class TestHexPos(unittest.TestCase): # pylint: disable=R0904
+class TestHexPos(unittest.TestCase):  # pylint: disable=R0904
     """Unit test class of Hexagonal Position"""
 
     ######################################################
@@ -45,7 +45,7 @@ class TestHexPos(unittest.TestCase): # pylint: disable=R0904
     def setUp(self):
         "This method is called befire each test case"
 
-        self.pos.x, self.pos.y, self.pos.z = 0, 0, 0  # pylint: disable=C0103
+        self.pos.set_position_xyz(0, 0, 0)
 
     def tearDown(self):
         "This method is called after each test case"
@@ -69,20 +69,20 @@ class TestHexPos(unittest.TestCase): # pylint: disable=R0904
 
         result = self.pos.set_position_xyz(-2, 3, -1)
 
-        self.assertEqual(self.pos.x, -2)
-        self.assertEqual(self.pos.y, 3)
-        self.assertEqual(self.pos.z, -1)
+        self.assertEqual(self.pos.x, -2.0)
+        self.assertEqual(self.pos.y, 3.0)
+        self.assertEqual(self.pos.z, -1.0)
 
         self.assertTrue(result)
 
     def test_set_position_xyz_inv_pos(self):
         """Tests if invalid position will result in no change"""
 
-        result = self.pos.set_position_xyz(-1, 0, 0)
+        result = self.pos.set_position_xyz(-1, 0, 0, 1e-3)
 
-        self.assertEqual(self.pos.x, 0)
-        self.assertEqual(self.pos.y, 0)
-        self.assertEqual(self.pos.z, 0)
+        self.assertEqual(self.pos.x, 0.0)
+        self.assertEqual(self.pos.y, 0.0)
+        self.assertEqual(self.pos.z, 0.0)
 
         self.assertFalse(result)
 

@@ -77,17 +77,23 @@ class TestLibCommon(unittest.TestCase):
 
         xyz = (0.0, 0.0, 0.0)
         deltas = (-5.0, 5.0, 0.0)
-        actual = add_delta_to_pos_if_valid(xyz, deltas, 3.0)
 
-        self.assertEqual(xyz, actual)
+        try:
+            actual = add_delta_to_pos_if_valid(xyz, deltas, 3.0)
+            self.assertEqual(xyz, actual)
+        except ValueError:
+            pass
 
     def test_add_delta_to_pos_if_valid_invalid_delta(self):
 
         xyz = (0.0, 0.0, 0.0)
         deltas = (5.0, 5.0, 0.0)
-        actual = add_delta_to_pos_if_valid(xyz, deltas, 8.0)
 
-        self.assertEqual(xyz, actual)
+        try:
+            actual = add_delta_to_pos_if_valid(xyz, deltas, 8.0)
+            self.assertEqual(xyz, actual)
+        except ValueError:
+            pass
 
 if __name__ == '__main__':
     unittest.main(verbosity=1)

@@ -116,9 +116,9 @@ class TestGraphicsEngine(unittest.TestCase):
 
         self.graph_eng.add_component(obj)
 
-        obj_id = self.graph_eng.objects[0]
+        obj_actual = self.graph_eng.objects[0]
 
-        self.assertEqual(obj_id, 115)
+        self.assertEqual(obj_actual, obj)
 
     def test_add_game_object_invalid(self):
         """ Test if adding an invalid object fails """
@@ -183,43 +183,6 @@ class TestGraphicsEngine(unittest.TestCase):
 
         self.assertAlmostEqual(x, expected[0], 3)
         self.assertAlmostEqual(y, expected[1], 3)
-
-    def test_get_game_object_call(self):
-        """ Test to verify the method can be overloaded by an other method, and is called """
-
-        # Replace the method with the mock method
-        game_eng = MagicMock()
-        game_eng.get_game_object = MagicMock()
-        self.graph_eng.get_game_object = game_eng.get_game_object
-
-        # Add an object to the object list
-        self.graph_eng.objects.append(123)
-        self.assertEqual(len(self.graph_eng.objects), 1)
-
-        # Trigger the function that should call get_game_object
-        self.graph_eng.updateScreen()
-
-        game_eng.get_game_object.assert_called_with(123)
-
-    def test_get_game_object_missing_components(self):
-        """ Test to verify that the method updating the screen fails
-        when the render or position component are missing """
-
-        # Replace the method with the mock method
-        game_eng = MagicMock()
-        game_eng.get_game_object = MagicMock()
-
-        game_eng.get_game_object.return_value = self.dummy_game_object
-
-        # Set the function to call
-        self.graph_eng.get_game_object = game_eng.get_game_object
-
-        # Add an object to the object list
-        self.graph_eng.objects.append(45)
-        self.assertEqual(len(self.graph_eng.objects), 1)
-
-        # Trigger the function that should redraw
-        self.assertRaises(KeyError, self.graph_eng.updateScreen())
 
     def test_render_component_not_affected_by_drawing(self):
         """  """

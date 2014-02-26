@@ -112,11 +112,6 @@ class GameEngine(object):
             for method in self.callbacks_for_new_object:
                 method(game_object)
 
- #   def get_game_object(self, object_id):
- #       """ Returns an handle to the game object identified by the
- #       unique object_id """
- #       return self._instance.objects[str(object_id)]
-
     def create_map(self, rings):
         """ Creates a map consisting of a number of rings """
 

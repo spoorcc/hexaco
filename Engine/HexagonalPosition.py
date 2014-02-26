@@ -74,19 +74,17 @@ class HexagonalPosition(object):
 
     ####################################################################
 
-    def set_position_xyz(self, x, y, z, max_coord=MAPSIZE):  # pylint: disable=C0103
+    def set_position_xyz(self, x, y, z, epsilon=EPSILON):  # pylint: disable=C0103
         """Sets the position in X Y Z coordinates,
         Updates the ring, side and tile variables
         Returns a boolean if it was a valid position
         """
 
+        x, y, z = float(x), float(y), float(z)
+
         # See file header for explanation of coordinate system
         # The sum must be zero to be a valid coordinate
-        if((abs(x) + abs(y) + abs(z)) >= EPSILON
-              or
-               (abs(x) < EPSILON and
-                abs(y) < EPSILON and
-                abs(z) < EPSILON )):
+        if abs(x + y) - abs(z) <= epsilon:
 
             self.x, self.y, self.z = x, y, z  # pylint: disable=C0103
             self.xyz = (x, y, z)
@@ -102,18 +100,18 @@ class HexagonalPosition(object):
         Returns a boolean if it was a valid position
         """
 
-        if not( type(ring) == type(side) == type(tile) is int):
+        if not(type(ring) == type(side) == type(tile) is int):
             return False
 
         if ring < 0:
             return False
 
-        if ( ring > 0 and tile > ring ):
+        if ring > 0 and tile > ring:
             return False
 
-        if  side < 0  or side > 5:
+        if side < 0 or side > 5:
             return False
 
-        [self.x, self.y, self.z] = calc_xyz_from_rst( ring, side, tile )
+        [self.x, self.y, self.z] = calc_xyz_from_rst(ring, side, tile)
         self.xyz = (self.x, self.y, self.z)
         return True

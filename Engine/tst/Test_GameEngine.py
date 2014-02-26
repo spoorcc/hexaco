@@ -139,17 +139,6 @@ class Testgame_engine(unittest.TestCase):  # pylint: disable=R0904
         calls = len(self.game_eng.game_object_factory.create_tile.mock_calls)
         self.assertEqual(calls, 7)
 
-    def test_get_game_object_call(self):
-        """ Test if getting the game object returns an object """
-
-        obj = self.game_eng.game_object_factory.create_game_object()
-
-        self.game_eng.add_game_object(obj)
-
-        fetched_obj = self.game_eng.get_game_object(obj.object_id)
-
-        self.assertEqual(fetched_obj, obj)
-
     def test_update(self):
         """ Test the update call """
 

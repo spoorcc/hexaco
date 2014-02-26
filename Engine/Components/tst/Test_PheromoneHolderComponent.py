@@ -70,7 +70,12 @@ class TestPheromoneHolderComponent(unittest.TestCase):
 
     def test_update(self):
 
-        self.ph_comp.decay = 1.0
+        self.ph_comp.decay["food"]["relative"] = 0.0
+        self.ph_comp.decay["home"]["relative"] = 0.0
+
+        self.ph_comp.decay["food"]["abs_minimum"] = 1.0
+        self.ph_comp.decay["home"]["abs_minimum"] = 1.0
+
         self.ph_comp.levels["food"] = 1.0
         self.ph_comp.levels["home"] = 1.0
 
