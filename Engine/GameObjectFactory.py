@@ -120,10 +120,8 @@ class GameObjectFactory(object):
 
         obj.components['collision'] = CollisionComponent(obj)
 
-        obj.components['pheromone_holder'] = PheromoneHolderComponent(obj)
-        obj.components['pheromone_holder'].decay["home"]["abs_minimum"] = 10e4
-        obj.components['pheromone_holder'].levels = \
-                               {"food": 10e10, "home": -1.0}
+        obj.components['pheromone_actor'] = PheromoneActorComponent(obj)
+        obj.components['pheromone_actor'].deposit["food"] = TILE_DEFAULTS['DECAY']['food']['abs_minimum'] * 10 
 
         return obj
 
