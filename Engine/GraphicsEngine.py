@@ -182,10 +182,6 @@ class GraphicsEngine(object, Frame):
         for [rend_comp, pos] in self.objects:
 
             # Find out where to draw
-            #[s_x, s_y] = self.game_to_screen_coordinates(pos.x, pos.y, pos.z)
-
-            #coordinates_placed = self.place_object(rend_comp.polygon,
-            #                                      s_x, s_y)
             coordinates_placed = self.place_object_xyz(rend_comp.polygon,pos.x, pos.y, pos.z)
 
             # Move the object
