@@ -136,7 +136,7 @@ class GraphicsEngine(object, Frame):
                                                     fill=rend.fill,
                                                     tag=gameObject.name)
 
-            self.objects.append(gameObject)
+            self.objects.append([rend, pos])
 
         except AttributeError:
             print "Render/Position component of has wrong attributes"
@@ -146,13 +146,25 @@ class GraphicsEngine(object, Frame):
     def place_object(self, coordinates, delta_x, delta_y):
         """ Updates a list of coordinates assuming [x0,y0,x1,y1,...xN,yN]"""
 
-        moved_coordinates = []
+        #moved_coordinates = []
 
-        for i in range(len(coordinates)):  # For each coordinate
-            if i % 2 == 0:  # X-coordinate
-                moved_coordinates += [coordinates[i] + delta_x]
-            else:         # Y-coordinate
-                moved_coordinates += [coordinates[i] + delta_y]
+        #for i in range(len(coordinates)):  # For each coordinate
+        #    if i % 2 == 0:  # X-coordinate
+        #        moved_coordinates += [coordinates[i] + delta_x]
+        #    else:         # Y-coordinate
+        #        moved_coordinates += [coordinates[i] + delta_y]
+
+        moved_coordinates = [coord + (delta_y if i%2 else delta_x) for i, coord in enumerate(coordinates)]
+
+        return moved_coordinates
+
+
+    def place_object_xyz(self, coordinates, x, y, z):
+        """ Updates a list of coordinates assuming [x0,y0,x1,y1,...xN,yN]"""
+
+        screen_x = self.size[0]/2 + self.screen_x_offset * y
+        screen_y = self.size[1]/2 - self.screen_y_offset * (2 * x + y)
+        moved_coordinates = [coord + (screen_y if i%2 else screen_x) for i, coord in enumerate(coordinates)]
 
         return moved_coordinates
 
@@ -160,39 +172,28 @@ class GraphicsEngine(object, Frame):
         """ Translates the game 3-axis coordinates to screen coordinates
         placing the center coordinates 0,0,0 in the center of the screen """
 
-        screen_x, screen_y = self.size[0]/2, self.size[1]/2
-
-        screen_x += self.screen_x_offset * y
-        screen_y -= self.screen_y_offset * (2 * x + y)
+        screen_x = self.size[0]/2 + self.screen_x_offset * y
+        screen_y = self.size[1]/2 - self.screen_y_offset * (2 * x + y)
 
         return [screen_x, screen_y]
 
     def updateScreen(self):
 
-        for obj in self.objects:
-
-            pos_comp = obj.components['position']
-            rend_comp = obj.components['render']
+        for [rend_comp, pos] in self.objects:
 
             # Find out where to draw
-            [s_x, s_y] = self.game_to_screen_coordinates(pos_comp.pos.x,
-                                                         pos_comp.pos.y,
-                                                         pos_comp.pos.z)
+            #[s_x, s_y] = self.game_to_screen_coordinates(pos.x, pos.y, pos.z)
 
-            coordinates_placed = self.place_object(rend_comp.polygon,
-                                                  s_x, s_y)
+            #coordinates_placed = self.place_object(rend_comp.polygon,
+            #                                      s_x, s_y)
+            coordinates_placed = self.place_object_xyz(rend_comp.polygon,pos.x, pos.y, pos.z)
 
             # Move the object
             self.win.coords(rend_comp.renderID, *coordinates_placed)
 
-            if rend_comp.visible:
-                self.win.itemconfig(rend_comp.renderID,
-                                    fill=rend_comp.fill,
-                                    state=DISABLED)
-            else:
-                self.win.itemconfig(rend_comp.renderID,
-                                    fill=rend_comp.fill,
-                                    state=HIDDEN)
+            self.win.itemconfig(rend_comp.renderID,
+                                fill=rend_comp.fill,
+                                state=(DISABLED if rend_comp.visible else HIDDEN))
 
         self.master.update_idletasks()  # redraw
         self.master.update() # process events
