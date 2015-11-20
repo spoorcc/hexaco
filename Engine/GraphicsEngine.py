@@ -126,7 +126,7 @@ class GraphicsEngine(object, Frame):
             [s_x, s_y] = self.game_to_screen_coordinates(pos.x, pos.y, pos.z)
 
             # Find out what to draw there
-            coords_placed = self.move_object(deepcopy(rend.polygon),
+            coords_placed = self.place_object(rend.polygon,
                                              s_x, s_y)
 
             # Find out how to draw, and draw it
@@ -143,16 +143,18 @@ class GraphicsEngine(object, Frame):
         except:
             print "Something went wrong"
 
-    def move_object(self, coordinates, delta_x, delta_y):
+    def place_object(self, coordinates, delta_x, delta_y):
         """ Updates a list of coordinates assuming [x0,y0,x1,y1,...xN,yN]"""
+
+        moved_coordinates = []
 
         for i in range(len(coordinates)):  # For each coordinate
             if i % 2 == 0:  # X-coordinate
-                coordinates[i] += delta_x
+                moved_coordinates += [coordinates[i] + delta_x]
             else:         # Y-coordinate
-                coordinates[i] += delta_y
+                moved_coordinates += [coordinates[i] + delta_y]
 
-        return coordinates
+        return moved_coordinates
 
     def game_to_screen_coordinates(self, x, y, z):
         """ Translates the game 3-axis coordinates to screen coordinates
@@ -177,10 +179,7 @@ class GraphicsEngine(object, Frame):
                                                          pos_comp.pos.y,
                                                          pos_comp.pos.z)
 
-            # Find out what to draw there
-            polygon = deepcopy(rend_comp.polygon)
-
-            coordinates_placed = self.move_object(polygon,
+            coordinates_placed = self.place_object(rend_comp.polygon,
                                                   s_x, s_y)
 
             # Move the object
