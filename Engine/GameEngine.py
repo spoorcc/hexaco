@@ -140,10 +140,14 @@ class GameEngine(object):
             # Update all sensors
 
             # Update all decisions
-            if 'ai' in obj.components:
-                obj.components['ai'].update()
+            try:
+               obj.components['ai'].update()
+            except KeyError:
+               pass
 
-            if 'move' in obj.components:
-                obj.components['move'].update()
+            try:
+               obj.components['move'].update()
+            except KeyError:
+               pass
 
         self.pheromone_engine.update_holders()
