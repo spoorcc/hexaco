@@ -9,5 +9,7 @@
 .coverage
 *.pyc
 *.bat
+*.swp
+*.pstats
 metricData.csv
 metricData.sql
