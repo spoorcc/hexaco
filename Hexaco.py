@@ -27,6 +27,7 @@ Creates all software components and manages the main game loop """
 
 from Engine import GraphicsEngine
 from Engine import GameEngine
+from Engine.GameSettings import TURNS
 
 import Tkinter
 
@@ -47,13 +48,13 @@ GAME_ENGINE.callback_for_new_object(GRAPHICS_ENGINE.add_component)
 # Initialize all engines
 GAME_ENGINE.initialize()
 
-i = 0
+i = TURNS or -1
 
 print "Starting main game loop"
 
-while 1:
+while i is not 0:
 
-    i += 1
+    i -= 1
     GRAPHICS_ENGINE.set_turn_text(i)
 
     GAME_ENGINE.update()

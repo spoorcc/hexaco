@@ -39,6 +39,9 @@ PIECES_OF_FOOD = 5
 # The number of rings of which the map is constructed
 MAPSIZE = 15
 
+# The number of turns for the game 0 = infinite
+TURNS=1000
+
 ANT_DEFAULTS = {'SPEED': (0.5),
                 'DEPOSIT': {'home': 550,
                             'food': 550,
