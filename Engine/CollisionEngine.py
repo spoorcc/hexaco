@@ -59,6 +59,7 @@ class CollisionEngine(object):
         """ Check for collisions """
 
         collide = dict()
+
         collisions = []
 
         for obj in self.colliders:
@@ -68,16 +69,19 @@ class CollisionEngine(object):
 
             obj.components['collision'].objects_collided_with = []
 
-            if key in collide:
+            try:
                 collide[key].append(obj)
                 collisions.append(key)
-            else:
+            except KeyError:
                 collide[key] = [obj]
 
         # If a collision happened there is an entry
         for key in collisions:
             # tell every object
-            for obj in collide[key]:
+            colliders = collide[key]
+
+            for obj in colliders:
                 obj.components['collision'].objects_collided_with =  \
                     [collidee for collidee in
-                        collide[key] if collidee is not obj]
+                        colliders if collidee is not obj]
+
