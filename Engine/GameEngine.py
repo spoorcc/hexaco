@@ -128,6 +128,17 @@ class GameEngine(object):
 
                     self.add_game_object(tile_obj)
 
+    def get_stats(self):
+
+        all_stats = []
+        for obj in self.objects:
+            try:
+                all_stats += [obj.components['ai'].stats]
+            except KeyError:
+                pass
+
+
+
     def update(self):
         """ Updates all the components in the proper order
         , called as part of the main game loop """

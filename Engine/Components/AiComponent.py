@@ -44,6 +44,13 @@ class AiComponent(Component):
 
         self.deposit_defaults = ANT_DEFAULTS["DEPOSIT"]
 
+        class Stats(object): pass
+
+        self.stats = Stats()
+        self.stats.found_food = 0
+        self.stats.carrying_food = 0
+        self.stats.returned_food = 0
+
     def update(self):
         """ Takes the information and updates the actions """
         pos_comp = self.components['position']
@@ -104,6 +111,9 @@ class AiComponent(Component):
             food_comp = food_obj.components['food']
             food = food_comp.take_food(ANT_DEFAULTS["FEEDING"]["speed"])
 
+            self.stats.found_food += food
+            self.stats.carrying_food += food
+
             if food > 0:
                 self.interested_in = "home"
                 self.components["render"].fill = "#000066"
@@ -115,6 +125,9 @@ class AiComponent(Component):
         if self.interested_in == "home":
             self.interested_in = "food"
             self.components["render"].fill = "#000000"
+
+            self.stats.returned_food += self.stats.carrying_food
+            self.stats.carrying_food = 0
         self.reset_pheromone_deposit_levels()
 
     def get_direction_using_pheromone(self):
