@@ -27,14 +27,14 @@ Description
 -----------
 Needed for importing classes in the module """
 
-from Component import Component
+from Engine.Components.Component import Component
 
-from AiComponent import AiComponent
-from MoveComponent import MoveComponent
-from PheromoneHolderComponent import PheromoneHolderComponent
-from PheromoneActorComponent import PheromoneActorComponent
-from RenderComponent import RenderComponent
-from PositionComponent import PositionComponent
-from FoodComponent import FoodComponent
-from CollisionComponent import CollisionComponent
-from NestComponent import NestComponent
+from Engine.Components.AiComponent import AiComponent
+from Engine.Components.MoveComponent import MoveComponent
+from Engine.Components.PheromoneHolderComponent import PheromoneHolderComponent
+from Engine.Components.PheromoneActorComponent import PheromoneActorComponent
+from Engine.Components.RenderComponent import RenderComponent
+from Engine.Components.PositionComponent import PositionComponent
+from Engine.Components.FoodComponent import FoodComponent
+from Engine.Components.CollisionComponent import CollisionComponent
+from Engine.Components.NestComponent import NestComponent

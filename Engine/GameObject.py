@@ -25,7 +25,7 @@ Description
 -----------
 Base class for a game object """
 
-from Engine.Components.Component import Component
+from Engine.Components import Component
 
 
 class GameObject(object):

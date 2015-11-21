@@ -27,13 +27,13 @@ Description
 -----------
 Needed for importing classes in the module """
 
-from GameEngine import GameEngine
-from GraphicsEngine import GraphicsEngine
-from PheromoneEngine import PheromoneEngine
+from Engine.GameEngine import GameEngine
+from Engine.GraphicsEngine import GraphicsEngine
+from Engine.PheromoneEngine import PheromoneEngine
 
-from GameObject import GameObject
-from GameObjectFactory import GameObjectFactory
+from Engine.GameObject import GameObject
+from Engine.GameObjectFactory import GameObjectFactory
 
-from GameSettings import *
+from Engine.GameSettings import *
 
-from LibCommon import *
+from Engine.LibCommon import *
