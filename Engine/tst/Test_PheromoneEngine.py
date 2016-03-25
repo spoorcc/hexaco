@@ -35,6 +35,7 @@ from Engine.GameObject import GameObject
 from Engine.Components import PositionComponent
 from Engine.Components import PheromoneHolderComponent
 from Engine.Components import PheromoneActorComponent
+from Engine.Components import RenderComponent
 
 
 class TestPheromoneEngine(unittest.TestCase):
@@ -59,6 +60,7 @@ class TestPheromoneEngine(unittest.TestCase):
         obj.object_id = self.obj_id
         obj.components['pheromone_holder'] = PheromoneHolderComponent(obj)
         obj.components['position'] = PositionComponent(obj)
+        obj.components['render'] = RenderComponent(obj)
 
         self.obj_id += 1
 
@@ -241,22 +243,24 @@ class TestPheromoneEngine(unittest.TestCase):
         self.assertListEqual(levels["home"],
                              [0.0, 10.0, 20.0, 30.0, 40.0, 50.0])
 
-    @unittest.expectedFailure
     def test_deposit_pheromone(self):
         """ Test if an object can deposit pheromones on a
         pheromone holder """
 
-        self.phero_eng.add_component(self.dummy_phero_actor)
-        self.phero_eng.add_component(self.dummy_phero_holder)
+        actor = self.dummy_phero_actor()
+        holder = self.dummy_phero_holder()
 
-        self.dummy_phero_actor.deposit["home"] = 1.0
+        actor.components['pheromone_actor'].deposit["home"] = 1.0
 
-        self.dummy_phero_holder.levels["home"] = 0.0
-        self.dummy_phero_holder.decay = 0.0
+        holder.components['pheromone_holder'].levels["home"] = 0.0
+        holder.components['pheromone_holder'].decay = 0.0
 
-        self.phero_eng.update_map()
+        self.phero_eng.add_component( actor )
+        self.phero_eng.add_component( holder )
 
-        self.assertEqual(self.dummy_phero_holder.level, 1.0)
+        self.phero_eng.update_holders()
+
+        self.assertEqual(holder.components['pheromone_holder'].levels["home"], 1.0)
 
     def test_update_actors(self):
         """ Test if the actor gets the proper levels """
