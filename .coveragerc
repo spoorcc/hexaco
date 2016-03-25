@@ -7,3 +7,4 @@ omit = *mock*
        *tkconstants*
        *pbr*
        */site-packages/*
+       *six.py*
