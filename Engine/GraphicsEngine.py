@@ -35,7 +35,6 @@ from copy import deepcopy
 from Engine.GameSettings import HEX_RADIUS, WINDOW_SIZE
 
 
-#class GraphicsEngine(object, Frame):
 class GraphicsEngine(Frame):
     """The engine managing all drawing to screen
     """
