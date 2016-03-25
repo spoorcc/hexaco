@@ -38,11 +38,12 @@ def highest_in_list(seq):
 
     for index, value in enumerate(seq):
 
-        if value and value > max_value:
+        if max_value and value and value > max_value:
             max_value = value
             max_index = [index]
+        elif not max_value:
+            max_value = value
         if value == max_value:
-
             max_index.append(index)
 
     nr_of_solutions = len(max_index)
