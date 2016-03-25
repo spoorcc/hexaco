@@ -14,7 +14,7 @@ python:
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-instal:
+install:
   - pip install nose-cov
 # command to run tests
 script: nosetests
