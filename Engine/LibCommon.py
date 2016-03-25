@@ -38,7 +38,7 @@ def highest_in_list(seq):
 
     for index, value in enumerate(seq):
 
-        if value > max_value:
+        if value and value > max_value:
             max_value = value
             max_index = [index]
         if value == max_value:
@@ -64,9 +64,9 @@ def add_delta_to_pos_if_valid(xyz, deltas, max_coord=MAPSIZE-1.0):
     """ Update position with deltas """
 
     if sum(deltas) >= EPSILON:
-        print "Sum of deltas not equal to zero x:%f y:%f z:%f" % (deltas[0],
+        print("Sum of deltas not equal to zero x:%f y:%f z:%f" % (deltas[0],
                                                                   deltas[1],
-                                                                  deltas[2])
+                                                                  deltas[2]))
         return xyz
 
     new_xyz = []

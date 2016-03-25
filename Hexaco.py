@@ -29,11 +29,14 @@ from Engine import GraphicsEngine
 from Engine import GameEngine
 from Engine.GameSettings import TURNS
 
-import Tkinter
+try:
+    from Tkinter import *
+except ImportError:
+    from tkinter import *
 
 from time import sleep
 
-ROOT = Tkinter.Tk()
+ROOT = Tk()
 
 # Create the engines
 GAME_ENGINE = GameEngine()
@@ -50,7 +53,7 @@ GAME_ENGINE.initialize()
 
 i = TURNS or -1
 
-print "Starting main game loop"
+print ("Starting main game loop")
 
 while i is not 0:
 

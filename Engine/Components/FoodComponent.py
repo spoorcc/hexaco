@@ -26,7 +26,7 @@ Description
 Class for a Food component.
 Food component gives game_objects the ability to hold food """
 
-from Component import Component
+from .Component import Component
 from Engine.LibHexagonalPosition import random_coordinate_center_of_tile
 from random import randint
 
@@ -61,8 +61,8 @@ class FoodComponent(Component):
 
     def update_color(self):
 
-        red = 255 * ((self.amount *1.0) / self.start_amount)
-        green = red / 2
+        red = int(255 * ((self.amount *1.0) / self.start_amount))
+        green = int(red / 2)
         blue = 0
         self.components['render'].fill = "#%02x%02x%02x" % (red, green, blue)
 

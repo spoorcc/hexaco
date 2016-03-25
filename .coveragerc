@@ -3,3 +3,6 @@
 omit = *mock*
        *Tkinter*
        *Tkconstants*
+       *tkinter*
+       *tkconstants*
+       *pbr*

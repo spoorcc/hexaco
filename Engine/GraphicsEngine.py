@@ -24,9 +24,10 @@
 Description
 -----------
 Base class for a Graphics Engine """
-
-from Tkinter import *
-import Tkinter
+try:
+    from Tkinter import *
+except ImportError:
+    from tkinter import *
 
 from math import sqrt
 from copy import deepcopy
@@ -34,7 +35,8 @@ from copy import deepcopy
 from Engine.GameSettings import HEX_RADIUS, WINDOW_SIZE
 
 
-class GraphicsEngine(object, Frame):
+#class GraphicsEngine(object, Frame):
+class GraphicsEngine(Frame):
     """The engine managing all drawing to screen
     """
 
@@ -44,8 +46,7 @@ class GraphicsEngine(object, Frame):
         """ There shoud only be one GraphicsEngine, so return
         the existing instance if a new one is requested """
         if not cls._instance:
-            cls._instance = super(GraphicsEngine, cls).__new__(
-                                  cls, *args, **kwargs)
+            cls._instance = super(GraphicsEngine, cls).__new__(cls)
         return cls._instance
 
     def __init__(self, master=None):
@@ -76,10 +77,10 @@ class GraphicsEngine(object, Frame):
         """ Creates the specific Tkinter components"""
 
         # Create black backgrounded window
-        self.win = Tkinter.Canvas(self.master,
-                                  width=self.size[0],
-                                  height=self.size[1],
-                                  background="#000000")
+        self.win = Canvas(self.master,
+                          width=self.size[0],
+                          height=self.size[1],
+                          background="#000000")
 
         self.win.create_text(25, 6,
                              text="Hexaco",
@@ -139,9 +140,9 @@ class GraphicsEngine(object, Frame):
             self.objects.append([rend, pos])
 
         except AttributeError:
-            print "Render/Position component of has wrong attributes"
+            print ("Render/Position component of has wrong attributes")
         except:
-            print "Something went wrong"
+            print ("Something went wrong")
 
     def place_object(self, coordinates, delta_x, delta_y):
         """ Updates a list of coordinates assuming [x0,y0,x1,y1,...xN,yN]"""

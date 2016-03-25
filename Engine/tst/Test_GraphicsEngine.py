@@ -114,11 +114,12 @@ class TestGraphicsEngine(unittest.TestCase):
         obj.components['render'] = RenderComponent(obj)
         obj.components['position'] = PositionComponent(obj)
 
+        self.assertEqual(len(self.graph_eng.objects), 0)
         self.graph_eng.add_component(obj)
 
         obj_actual = self.graph_eng.objects[0]
 
-        self.assertEqual(obj_actual, obj)
+        self.assertEqual(obj_actual, [obj.components['render'], obj.components['position'].pos] )
 
     def test_add_game_object_invalid(self):
         """ Test if adding an invalid object fails """
@@ -126,12 +127,12 @@ class TestGraphicsEngine(unittest.TestCase):
         self.graph_eng.add_component("not an object")
         self.assertEqual(len(self.graph_eng.objects), 0)
 
-    def test_move_object(self):
+    def test_place_object(self):
         """ Test if moving an object succeeds with
         different x,y coordinates """
 
         coordinates = [100, 100, 50, 50]
-        actual = self.graph_eng.move_object(coordinates, 10, 5)
+        actual = self.graph_eng.place_object(coordinates, 10, 5)
 
         self.assertEqual(actual, [110, 105, 60, 55])
 

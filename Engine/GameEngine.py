@@ -146,7 +146,7 @@ class GameEngine(object):
         self.pheromone_engine.update_actors()
         self.collision_engine.update()
 
-        for obj_id, obj in self.objects.iteritems():
+        for obj_id, obj in self.objects.items():
 
             # Update all sensors
 

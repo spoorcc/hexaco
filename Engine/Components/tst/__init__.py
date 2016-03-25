@@ -25,4 +25,4 @@ Description
 -----------
 Needed for importing classes in the module """
 
-from Test_PositionComponent import TestPositionComponent
+from .Test_PositionComponent import TestPositionComponent

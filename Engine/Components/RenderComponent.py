@@ -28,7 +28,7 @@ Description
 -----------
 Base class for a Render component """
 
-from Component import Component
+from .Component import Component
 
 class RenderComponent( Component ):
     """A Render component has a color and a shape

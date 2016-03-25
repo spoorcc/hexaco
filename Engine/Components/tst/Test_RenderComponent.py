@@ -61,7 +61,7 @@ class TestRenderComponent(unittest.TestCase):
 
     def test_defaultPolygon(self):
 
-		self.assertEqual( self.rndrComp.polygon,  [0,0,10,0,10,10,0,10] )
-        
+        self.assertEqual( self.rndrComp.polygon,  [0,0,10,0,10,10,0,10] )
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)

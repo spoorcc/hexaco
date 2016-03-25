@@ -68,9 +68,9 @@ class PheromoneEngine(object):
     def pheromone_levels_to_color(self, levels):
         """ Returns a TKinter rgb color string """
 
-        red = min(sqrt(levels["home"]), 255)
+        red = int(min(sqrt(levels["home"]), 255))
         green = 10
-        blue = min(sqrt(levels["food"]), 255)
+        blue = int(min(sqrt(levels["food"]), 255))
         return "#%02x%02x%02x" % (red, green, blue)
 
     def get_holder_key(self, xyz):
@@ -140,4 +140,4 @@ class PheromoneEngine(object):
                     try:
                         holder.levels[ph_dep] += ph_deposit[ph_dep]
                     except KeyError:
-                        print "Holder has no %s level" % ph_dep
+                        print ("Holder has no %s level" % ph_dep)

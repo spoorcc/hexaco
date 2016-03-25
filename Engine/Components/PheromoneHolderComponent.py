@@ -26,7 +26,7 @@ Description
 Class for a Pheromone Holder component.
 Pheromone component gives game_objects the ability to have a pherome level """
 
-from Component import Component
+from .Component import Component
 
 
 class PheromoneHolderComponent(Component):
