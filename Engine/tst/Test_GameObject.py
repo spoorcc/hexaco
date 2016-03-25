@@ -77,8 +77,8 @@ class TestGameObject(unittest.TestCase):
     def test_addComponent_non_valid(self):
         """ Adding a component should be handled by the object """
 
-        with self.assertRaises(TypeError):
-            self.gameObj.add_component('some_comp', 'not a component')
+        self.assertRaises(TypeError,
+            self.gameObj.add_component('some_comp', 'not a component'))
 
     def test_add_component_adds_components_handle(self):
         """ Components should be able to call other components
