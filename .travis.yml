@@ -15,5 +15,10 @@ before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - pip install nose-cov
+install:
+  - pip install python-coveralls
 # command to run tests
 script: nosetests
+
+after_succes:
+  - coveralls
