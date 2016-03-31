@@ -74,7 +74,8 @@ class TestGraphicsEngine(unittest.TestCase):
 
     #######################################################
 
-    @unittest.skipIf(version_info < (3, 0), "singleton construction does not work in 2.7")
+    @unittest.skipIf(version_info < (3, 0),
+                     "singleton construction does not work in 2.7")
     def test_singleton_property(self):
         """ Test if the singleton pattern is hold """
         graph_eng_1 = GraphicsEngine(None)
