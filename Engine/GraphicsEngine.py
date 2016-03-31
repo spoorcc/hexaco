@@ -43,7 +43,7 @@ class GraphicsEngine(Frame):
         """ There shoud only be one GraphicsEngine, so return
         the existing instance if a new one is requested """
 
-        self == "__self__"
+        self = "__self__"
         if not hasattr(cls, self):
             instance = object.__new__(cls)
             instance.init(*args, **kwargs)
