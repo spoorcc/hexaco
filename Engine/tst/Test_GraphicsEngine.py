@@ -26,6 +26,7 @@ Description
 """
 
 import unittest
+from sys import version_info
 from mock import MagicMock
 
 from copy import deepcopy
@@ -73,6 +74,8 @@ class TestGraphicsEngine(unittest.TestCase):
 
     #######################################################
 
+
+    @unittest.skipIf(version_info < (3.0))
     def test_singleton_property(self):
         """ Test if the singleton pattern is hold """
         graph_eng_1 = GraphicsEngine(None)
