@@ -46,7 +46,7 @@ class GraphicsEngine(Frame):
         self = "__self__"
         if not hasattr(cls, self):
             instance = object.__new__(cls)
-            instance.init(*args, **kwargs)
+            instance.__init__(*args, **kwargs)
             setattr(cls, self, instance)
 
         return getattr(cls, self)
