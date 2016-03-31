@@ -131,11 +131,12 @@ class GameEngine(object):
     def get_stats(self):
 
         all_stats = []
-        for obj in self.objects:
+        for key, obj in self.objects.items():
             try:
-                all_stats += [obj.components['ai'].stats]
+                all_stats += [(key, obj.components['ai'].stats.returned_food)]
             except KeyError:
                 pass
+        return all_stats
 
 
 

@@ -30,6 +30,7 @@ from Engine.Components.PheromoneActorComponent import PheromoneActorComponent
 from random import random, randint
 from Engine.GameSettings import ANT_DEFAULTS
 
+class Stats(object): pass
 
 class AiComponent(Component):
     """An Ai component
@@ -43,8 +44,6 @@ class AiComponent(Component):
         self.pheromone_deposit_delta = ANT_DEFAULTS["DEPOSIT"]["delta"]
 
         self.deposit_defaults = ANT_DEFAULTS["DEPOSIT"]
-
-        class Stats(object): pass
 
         self.stats = Stats()
         self.stats.found_food = 0
