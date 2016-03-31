@@ -6,3 +6,4 @@ omit = *mock*
        *tkinter*
        *tkconstants*
        *pbr*
+       */site-packages/*
