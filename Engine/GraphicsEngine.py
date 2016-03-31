@@ -39,14 +39,17 @@ class GraphicsEngine(Frame):
     """The engine managing all drawing to screen
     """
 
-    _instance = None
-
     def __new__(cls, *args, **kwargs):
         """ There shoud only be one GraphicsEngine, so return
         the existing instance if a new one is requested """
-        if not cls._instance:
-            cls._instance = super(GraphicsEngine, cls).__new__(cls)
-        return cls._instance
+
+        self = "__self__"
+        if not hasattr(cls, self):
+            instance = object.__new__(cls)
+            instance.__init__(*args, **kwargs)
+            setattr(cls, self, instance)
+
+        return getattr(cls, self)
 
     def __init__(self, master=None):
         Frame.__init__(self, master)
